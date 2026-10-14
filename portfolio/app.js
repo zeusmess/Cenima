@@ -62,7 +62,7 @@
   function renderStatic() {
     document.documentElement.lang = lang;
     document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
-    document.title = t(P.name) + " — " + t(P.role);
+    document.title = (P.nickname || t(P.name)) + " — " + t(P.role);
     $$("[data-i18n]").forEach(function (n) { n.textContent = UI[lang][n.dataset.i18n]; });
     $$("[data-bind]").forEach(function (n) { n.textContent = t(get(n.dataset.bind)); });
     $("#langBtn").textContent = UI[lang].lang;
@@ -72,6 +72,7 @@
       var li = el("li"); li.appendChild(el("strong", null, s.value)); li.appendChild(el("span", null, t(s.label)));
       stats.appendChild(li);
     });
+    stats.hidden = !stats.children.length;
 
     var mq = $("#marquee"); mq.innerHTML = "";
     var words = P.categories.map(function (c) { return c[lang]; });
@@ -82,7 +83,8 @@
 
     var mail = $("#mail"); mail.textContent = P.contact.email; mail.href = "mailto:" + P.contact.email;
     var wa = $("#whatsapp");
-    if (P.contact.whatsapp) wa.href = "https://wa.me/" + P.contact.whatsapp; else wa.remove();
+    wa.hidden = !P.contact.whatsapp;
+    if (P.contact.whatsapp) wa.href = "https://wa.me/" + P.contact.whatsapp;
     var soc = $("#socials"); soc.innerHTML = "";
     (P.contact.socials || []).forEach(function (s) {
       var li = el("li"); var a = el("a", null, s.label);

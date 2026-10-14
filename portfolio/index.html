@@ -14,7 +14,7 @@
   <div class="grain" aria-hidden="true"></div>
 
   <header class="nav" id="nav">
-    <a href="#top" class="brand" data-bind="name"></a>
+    <a href="#top" class="brand" data-bind="nickname"></a>
     <nav class="nav-links">
       <a href="#works" data-i18n="navWorks"></a>
       <a href="#about" data-i18n="navAbout"></a>
@@ -29,7 +29,8 @@
     <div class="letterbox bottom" aria-hidden="true"></div>
     <div class="hero-content">
       <p class="eyebrow reveal"><span class="rec"></span><span data-bind="role"></span></p>
-      <h1 class="hero-title reveal" data-bind="name"></h1>
+      <h1 class="hero-title reveal" data-bind="nickname"></h1>
+      <p class="hero-name reveal" data-bind="name"></p>
       <p class="hero-tagline reveal" data-bind="tagline"></p>
       <div class="hero-actions reveal">
         <a href="#works" class="btn primary" data-i18n="ctaWorks"></a>
@@ -79,7 +80,7 @@
   </section>
 
   <footer class="footer">
-    <span>© <span id="year"></span> <span data-bind="name"></span></span>
+    <span>© <span id="year"></span> <span data-bind="nickname"></span> — <span data-bind="name"></span></span>
     <a href="#top" data-i18n="backTop"></a>
   </footer>
 

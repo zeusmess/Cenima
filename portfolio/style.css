@@ -14,6 +14,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html { scroll-behavior: smooth; }
 html, body { margin: 0; background: var(--bg); color: var(--text); }
 body { font: 16px/1.6 var(--body); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
@@ -66,7 +67,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 @keyframes blink { 50% { opacity: .2; } }
 .hero-title { font-family: var(--display); font-weight: 400; font-size: clamp(3.2rem, 11vw, 9rem);
   line-height: .95; letter-spacing: -.02em; margin: 0; }
-[lang="ar"] .hero-title { font-family: var(--body); font-weight: 700; line-height: 1.15; letter-spacing: 0; }
+.hero-name { margin: 10px 0 0; font-size: clamp(1rem, 2vw, 1.25rem); letter-spacing: .18em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
 .hero-tagline { font-size: clamp(1rem, 2vw, 1.3rem); color: #d9d0c6; max-width: 34ch; margin: 20px 0 32px; font-weight: 300; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 26px;

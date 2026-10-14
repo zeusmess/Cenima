@@ -7,29 +7,26 @@
  * - لو صورة لسه مش موجودة، الموقع هيعرض مكانها إطار مؤقت شيك.
  */
 window.PORTFOLIO = {
-  name: { ar: "اسمك هنا", en: "Your Name" },
-  role: { ar: "مصوّر ومخرج سينمائي", en: "Cinematographer & Director" },
+  nickname: "ZEUSMESS",
+  name: { ar: "يوسف أيمن", en: "Youssef Ayman" },
+  role: { ar: "صانع محتوى بالذكاء الاصطناعي", en: "AI Creative" },
   tagline: {
-    ar: "بحكي القصص بالضوء والحركة — كل كادر له إحساس.",
-    en: "Telling stories with light and motion — every frame has a feeling."
+    ar: "فيديوهات وصور بالذكاء الاصطناعي، ديزاينز، وتلخيص واستخراج محتوى — من الفكرة لحد النتيجة النهائية.",
+    en: "AI videos and images, designs, and content summarising & extraction — from idea to final piece."
   },
 
   // صورة الخلفية الكبيرة في أول الصفحة
   heroImage: "images/hero.jpg",
 
-  // أرقام تظهر تحت العنوان (امسح أي سطر مش عاوزه)
-  stats: [
-    { value: "120+", label: { ar: "مشروع", en: "Projects" } },
-    { value: "6", label: { ar: "سنين خبرة", en: "Years" } },
-    { value: "40+", label: { ar: "عميل", en: "Clients" } }
-  ],
+  // أرقام تظهر تحت العنوان — مثال: { value: "50+", label: { ar: "مشروع", en: "Projects" } }
+  stats: [],
 
   // التصنيفات اللي بتظهر كأزرار فلترة فوق الأعمال
   categories: [
-    { id: "portrait", ar: "بورتريه", en: "Portrait" },
-    { id: "wedding", ar: "أفراح", en: "Weddings" },
-    { id: "commercial", ar: "إعلانات", en: "Commercial" },
-    { id: "film", ar: "أفلام قصيرة", en: "Short Films" }
+    { id: "ai-video", ar: "فيديوهات AI", en: "AI Videos" },
+    { id: "ai-image", ar: "صور AI", en: "AI Images" },
+    { id: "design", ar: "ديزاينز", en: "Designs" },
+    { id: "content", ar: "تلخيص واستخراج", en: "Summaries & Extraction" }
   ],
 
   // أعمالك — كرّر البلوك ده لكل صورة
@@ -37,73 +34,50 @@ window.PORTFOLIO = {
   works: [
     {
       image: "images/work-01.jpg",
-      category: "portrait",
+      category: "ai-video",
       year: "2026",
-      client: "Studio Session",
+      client: "Starbucks",
       ratio: "tall",
-      title: { ar: "ضوء الغروب", en: "Golden Hour" },
+      title: { ar: "حملة ترويجية", en: "Promo Campaign" },
       description: {
-        ar: "جلسة تصوير بورتريه في آخر ضوء النهار، بألوان دافية وإحساس هادي.",
-        en: "A portrait session in the last light of day — warm tones, quiet mood."
+        ar: "فيديو ترويجي معمول بالذكاء الاصطناعي لستاربكس.",
+        en: "An AI-generated promotional video for Starbucks."
       }
     },
     {
       image: "images/work-02.jpg",
-      category: "commercial",
+      category: "ai-image",
       year: "2026",
-      client: "Brand X",
+      client: "Starbucks",
       ratio: "wide",
-      title: { ar: "حملة إطلاق", en: "Launch Campaign" },
+      title: { ar: "صور منتجات", en: "Product Visuals" },
       description: {
-        ar: "حملة إعلانية لإطلاق منتج جديد، تصوير وإخراج وتلوين.",
-        en: "Product launch campaign — shot, directed and colour-graded."
+        ar: "صور منتجات بالذكاء الاصطناعي لحملة ترويجية.",
+        en: "AI product visuals for a promotional campaign."
       }
     },
     {
       image: "images/work-03.jpg",
-      category: "wedding",
-      year: "2025",
-      client: "Sara & Omar",
+      category: "design",
+      year: "2026",
+      client: "Starbucks",
       ratio: "tall",
-      title: { ar: "ليلة العمر", en: "The Night" },
+      title: { ar: "ديزاين سوشيال ميديا", en: "Social Media Design" },
       description: {
-        ar: "تغطية فرح كاملة بأسلوب سينمائي.",
-        en: "Full wedding coverage in a cinematic style."
+        ar: "تصميمات بوستات للسوشيال ميديا.",
+        en: "Social media post designs."
       }
     },
     {
       image: "images/work-04.jpg",
-      category: "film",
-      year: "2025",
-      client: "Independent",
+      category: "content",
+      year: "2026",
+      client: "",
       ratio: "wide",
-      title: { ar: "ظلال", en: "Shadows" },
+      title: { ar: "تلخيص محتوى", en: "Content Summary" },
       description: {
-        ar: "فيلم قصير عن الوحدة في المدينة.",
-        en: "A short film about loneliness in the city."
-      }
-    },
-    {
-      image: "images/work-05.jpg",
-      category: "portrait",
-      year: "2025",
-      client: "Editorial",
-      title: { ar: "وجوه", en: "Faces" },
-      description: {
-        ar: "سلسلة بورتريهات أبيض وأسود.",
-        en: "A black-and-white portrait series."
-      }
-    },
-    {
-      image: "images/work-06.jpg",
-      category: "commercial",
-      year: "2024",
-      client: "Café Nour",
-      ratio: "tall",
-      title: { ar: "قهوة الصبح", en: "Morning Brew" },
-      description: {
-        ar: "تصوير منتجات ومكان لكافيه.",
-        en: "Product and space photography for a café."
+        ar: "تلخيص واستخراج أهم النقاط من محتوى طويل وعرضها بشكل بصري.",
+        en: "Summarising long content and extracting the key points into a visual layout."
       }
     }
   ],
@@ -111,23 +85,19 @@ window.PORTFOLIO = {
   about: {
     image: "images/about.jpg",
     text: {
-      ar: "أنا مصوّر ومخرج بحب أحوّل اللحظات العادية لمشاهد سينمائية. بشتغل على البورتريه، الأفراح، والإعلانات — وبهتم بكل تفصيلة من الإضاءة لحد التلوين.",
-      en: "I'm a photographer and director who turns ordinary moments into cinematic scenes. I work across portraits, weddings and commercials — caring about every detail from lighting to colour grading."
+      ar: "أنا يوسف أيمن، معروف بـ ZEUSMESS. بعمل فيديوهات وصور بالذكاء الاصطناعي، ديزاينز، وتلخيص واستخراج محتوى. اشتغلت مع ستاربكس في كذا مشروع ترويجي، وبحب أحوّل أي فكرة لمحتوى يلفت النظر.",
+      en: "I'm Youssef Ayman, known as ZEUSMESS. I create AI videos and images, designs, and content summaries & extraction. I've worked with Starbucks on several promotional projects, and I love turning any idea into eye-catching content."
     },
     skills: {
-      ar: ["تصوير سينمائي", "إخراج", "تلوين", "مونتاج", "إضاءة"],
-      en: ["Cinematography", "Directing", "Colour Grading", "Editing", "Lighting"]
+      ar: ["فيديوهات AI", "صور AI", "ديزاين", "تلخيص المحتوى", "استخراج البيانات", "محتوى ترويجي"],
+      en: ["AI Video", "AI Imagery", "Design", "Summarisation", "Data Extraction", "Promo Content"]
     }
   },
 
   contact: {
-    email: "you@example.com",
-    whatsapp: "201000000000", // رقمك بالكود الدولي من غير + أو أصفار في الأول
-    socials: [
-      { label: "Instagram", url: "https://instagram.com/" },
-      { label: "Behance", url: "https://behance.net/" },
-      { label: "YouTube", url: "https://youtube.com/" }
-    ]
+    email: "you@example.com", // ✏️ الإيميل اللي عاوز العملاء يكلموك عليه
+    whatsapp: "", // رقمك بالكود الدولي من غير + (مثلاً 2010xxxxxxxx) — فاضي = الزرار مش هيظهر
+    socials: []   // مثال: { label: "Instagram", url: "https://instagram.com/zeusmess" }
   },
 
   // اللغة اللي الموقع يفتح بيها: "ar" أو "en"
