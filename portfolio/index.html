@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0a09">
+  <title>Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="nav" id="nav">
+    <a href="#top" class="brand" data-bind="name"></a>
+    <nav class="nav-links">
+      <a href="#works" data-i18n="navWorks"></a>
+      <a href="#about" data-i18n="navAbout"></a>
+      <a href="#contact" data-i18n="navContact"></a>
+    </nav>
+    <button class="lang" id="langBtn" type="button" aria-label="Switch language"></button>
+  </header>
+
+  <section class="hero" id="top">
+    <div class="hero-media" id="heroMedia"></div>
+    <div class="letterbox top" aria-hidden="true"></div>
+    <div class="letterbox bottom" aria-hidden="true"></div>
+    <div class="hero-content">
+      <p class="eyebrow reveal"><span class="rec"></span><span data-bind="role"></span></p>
+      <h1 class="hero-title reveal" data-bind="name"></h1>
+      <p class="hero-tagline reveal" data-bind="tagline"></p>
+      <div class="hero-actions reveal">
+        <a href="#works" class="btn primary" data-i18n="ctaWorks"></a>
+        <a href="#contact" class="btn ghost" data-i18n="ctaContact"></a>
+      </div>
+      <ul class="stats reveal" id="stats"></ul>
+    </div>
+    <a href="#works" class="scroll-cue" aria-label="Scroll"><span></span></a>
+  </section>
+
+  <div class="marquee" aria-hidden="true"><div class="marquee-track" id="marquee"></div></div>
+
+  <section class="section" id="works">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <h2 data-i18n="worksTitle"></h2>
+    </div>
+    <div class="filters" id="filters" role="tablist"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section class="section about" id="about">
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <h2 data-i18n="aboutTitle"></h2>
+    </div>
+    <div class="about-wrap">
+      <figure class="about-img reveal" id="aboutImg"></figure>
+      <div class="about-body reveal">
+        <p class="about-text" data-bind="about.text"></p>
+        <ul class="skills" id="skills"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section contact" id="contact">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <h2 data-i18n="contactTitle"></h2>
+    </div>
+    <p class="contact-lead reveal" data-i18n="contactLead"></p>
+    <a class="contact-mail reveal" id="mail"></a>
+    <div class="contact-actions reveal">
+      <a class="btn primary" id="whatsapp" target="_blank" rel="noopener" data-i18n="whatsapp"></a>
+    </div>
+    <ul class="socials reveal" id="socials"></ul>
+  </section>
+
+  <footer class="footer">
+    <span>© <span id="year"></span> <span data-bind="name"></span></span>
+    <a href="#top" data-i18n="backTop"></a>
+  </footer>
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" hidden>
+    <button class="lb-close" id="lbClose" type="button" aria-label="Close">✕</button>
+    <button class="lb-nav lb-prev" id="lbPrev" type="button" aria-label="Previous">‹</button>
+    <button class="lb-nav lb-next" id="lbNext" type="button" aria-label="Next">›</button>
+    <figure class="lb-figure">
+      <div class="lb-media" id="lbMedia"></div>
+      <figcaption class="lb-caption">
+        <span class="lb-count" id="lbCount"></span>
+        <h3 id="lbTitle"></h3>
+        <p id="lbDesc"></p>
+        <p class="lb-meta" id="lbMeta"></p>
+      </figcaption>
+    </figure>
+  </div>
+
+  <script src="content.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
