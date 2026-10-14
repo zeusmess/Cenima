@@ -96,8 +96,11 @@ window.PORTFOLIO = {
 
   contact: {
     email: "you@example.com", // ✏️ الإيميل اللي عاوز العملاء يكلموك عليه
-    whatsapp: "", // رقمك بالكود الدولي من غير + (مثلاً 2010xxxxxxxx) — فاضي = الزرار مش هيظهر
-    socials: []   // مثال: { label: "Instagram", url: "https://instagram.com/zeusmess" }
+    whatsapp: "201116416183", // رقمك بالكود الدولي من غير + — فاضي = الزرار مش هيظهر
+    socials: [
+      { label: "Instagram · @zeusmess", url: "https://instagram.com/zeusmess" },
+      { label: "Instagram · @zeusshit", url: "https://instagram.com/zeusshit" }
+    ]
   },
 
   // اللغة اللي الموقع يفتح بيها: "ar" أو "en"
