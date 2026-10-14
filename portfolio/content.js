@@ -9,10 +9,10 @@
 window.PORTFOLIO = {
   nickname: "ZEUSMESS",
   name: { ar: "يوسف أيمن", en: "Youssef Ayman" },
-  role: { ar: "صانع محتوى بالذكاء الاصطناعي", en: "AI Creative" },
+  role: { ar: "مصوّر · فيديو إديتور · صانع محتوى AI", en: "Photographer · Video Editor · AI Creative" },
   tagline: {
-    ar: "فيديوهات وصور بالذكاء الاصطناعي، ديزاينز، وتلخيص واستخراج محتوى — من الفكرة لحد النتيجة النهائية.",
-    en: "AI videos and images, designs, and content summarising & extraction — from idea to final piece."
+    ar: "تصوير، مونتاج فيديو، تعديل صور، ومحتوى بالذكاء الاصطناعي، وكمان ديزاينز وتلخيص واستخراج محتوى. من الفكرة لحد النتيجة النهائية.",
+    en: "Photography, video editing, photo editing and AI content, plus designs and content summarising & extraction. From idea to final piece."
   },
 
   // صورة الخلفية الكبيرة في أول الصفحة
@@ -23,6 +23,9 @@ window.PORTFOLIO = {
 
   // التصنيفات اللي بتظهر كأزرار فلترة فوق الأعمال
   categories: [
+    { id: "photo", ar: "تصوير", en: "Photography" },
+    { id: "video-edit", ar: "مونتاج فيديو", en: "Video Editing" },
+    { id: "photo-edit", ar: "تعديل صور", en: "Photo Editing" },
     { id: "ai-video", ar: "فيديوهات AI", en: "AI Videos" },
     { id: "ai-image", ar: "صور AI", en: "AI Images" },
     { id: "design", ar: "ديزاينز", en: "Designs" },
@@ -85,12 +88,12 @@ window.PORTFOLIO = {
   about: {
     image: "images/about.jpg",
     text: {
-      ar: "أنا يوسف أيمن، معروف بـ ZEUSMESS. بعمل فيديوهات وصور بالذكاء الاصطناعي، ديزاينز، وتلخيص واستخراج محتوى. اشتغلت مع ستاربكس في كذا مشروع ترويجي، وبحب أحوّل أي فكرة لمحتوى يلفت النظر.",
-      en: "I'm Youssef Ayman, known as ZEUSMESS. I create AI videos and images, designs, and content summaries & extraction. I've worked with Starbucks on several promotional projects, and I love turning any idea into eye-catching content."
+      ar: "أنا يوسف أيمن، معروف بـ ZEUSMESS. مصوّر وفيديو إديتور وبعدّل صور، وكمان بعمل فيديوهات وصور بالذكاء الاصطناعي وديزاينز وتلخيص واستخراج محتوى. اشتغلت مع ستاربكس في كذا مشروع ترويجي، وبحب أحوّل أي فكرة لمحتوى يلفت النظر.",
+      en: "I'm Youssef Ayman, known as ZEUSMESS. I'm a photographer, video editor and photo editor, and I also create AI videos and images, designs, and content summaries & extraction. I've worked with Starbucks on several promotional projects, and I love turning any idea into eye-catching content."
     },
     skills: {
-      ar: ["فيديوهات AI", "صور AI", "ديزاين", "تلخيص المحتوى", "استخراج البيانات", "محتوى ترويجي"],
-      en: ["AI Video", "AI Imagery", "Design", "Summarisation", "Data Extraction", "Promo Content"]
+      ar: ["تصوير", "مونتاج فيديو", "تعديل صور", "فيديوهات AI", "صور AI", "ديزاين", "تلخيص المحتوى", "استخراج البيانات", "محتوى ترويجي"],
+      en: ["Photography", "Video Editing", "Photo Editing", "AI Video", "AI Imagery", "Design", "Summarisation", "Data Extraction", "Promo Content"]
     }
   },
 
