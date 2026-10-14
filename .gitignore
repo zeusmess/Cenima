@@ -7,3 +7,4 @@ work/
 output/
 *.mp4
 .env
+!portfolio/media/*.mp4
