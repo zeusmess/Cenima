@@ -1,0 +1,13 @@
+# Install everything with:  pip install -r requirements.txt
+numpy>=1.24
+Pillow>=10.0
+# OpenCV 5 removed the face detector this project uses, so stay on 4.x.
+opencv-python-headless>=4.8,<5
+# Bundles a ready-to-use FFmpeg, so beginners don't have to install it separately.
+imageio-ffmpeg>=0.5
+# The mobile web app
+Flask>=3.0
+
+# Optional extras (remove the # to install them):
+# pillow-heif>=0.16   # open iPhone .HEIC photos directly
+# pytest>=8.0         # run the tests

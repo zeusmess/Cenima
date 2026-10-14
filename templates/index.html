@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0e0d0c">
+  <title>Cinematic Portrait</title>
+  <style>
+    :root {
+      --bg: #0e0d0c; --card: #1a1816; --line: #2e2a26; --text: #f3ede6;
+      --muted: #a39a90; --accent: #e8a35a; --accent-ink: #1a1208; --danger: #ff7b6b;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: var(--bg); color: var(--text);
+      font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    main { max-width: 520px; margin: 0 auto; padding: 24px 16px 48px; }
+    h1 { font-size: 1.6rem; margin: 0 0 4px; letter-spacing: -0.01em; }
+    .sub { color: var(--muted); margin: 0 0 20px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+      padding: 16px; margin-bottom: 16px; }
+    .step { font-size: .75rem; text-transform: uppercase; letter-spacing: .08em;
+      color: var(--accent); margin: 0 0 8px; font-weight: 600; }
+    label { display: block; font-weight: 600; margin: 14px 0 6px; }
+    label:first-of-type { margin-top: 0; }
+    .hint { color: var(--muted); font-size: .85rem; font-weight: 400; }
+    select, input[type=file] { width: 100%; font-size: 16px; padding: 12px; border-radius: 10px;
+      border: 1px solid var(--line); background: #111; color: var(--text); }
+    input[type=range] { width: 100%; accent-color: var(--accent); height: 32px; }
+    .row { display: flex; justify-content: space-between; align-items: baseline; }
+    .row output { color: var(--muted); font-variant-numeric: tabular-nums; }
+    .drop { display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 8px; min-height: 180px; border: 2px dashed var(--line); border-radius: 14px;
+      cursor: pointer; text-align: center; padding: 16px; overflow: hidden; position: relative; }
+    .drop img { max-width: 100%; max-height: 320px; border-radius: 10px; display: none; }
+    .drop.has-photo img { display: block; }
+    .drop.has-photo .drop-text { display: none; }
+    .drop input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    details summary { cursor: pointer; font-weight: 600; padding: 4px 0; }
+    button { width: 100%; font-size: 1.05rem; font-weight: 700; padding: 16px; border: 0;
+      border-radius: 12px; background: var(--accent); color: var(--accent-ink); cursor: pointer; }
+    button:disabled { opacity: .5; cursor: default; }
+    .btn-link { display: block; text-align: center; text-decoration: none; padding: 16px;
+      border-radius: 12px; font-weight: 700; background: var(--accent); color: var(--accent-ink); }
+    .btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--line);
+      margin-top: 10px; }
+    .bar { height: 10px; background: #111; border-radius: 99px; overflow: hidden; margin: 12px 0 6px; }
+    .bar > div { height: 100%; width: 0; background: var(--accent); transition: width .4s; }
+    .status { color: var(--muted); font-size: .9rem; }
+    .error { color: var(--danger); }
+    video { width: 100%; border-radius: 12px; background: #000; aspect-ratio: 9 / 16; margin-bottom: 12px; }
+    .hidden { display: none; }
+    .tip { color: var(--muted); font-size: .85rem; margin-top: 12px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Cinematic Portrait</h1>
+  <p class="sub">Turn a portrait photo into a 1080×1920 video for Reels &amp; TikTok. Your face is never altered — only the camera moves.</p>
+
+  <form id="form">
+    <section class="card">
+      <p class="step">Step 1 · Your photo</p>
+      <div class="drop" id="drop">
+        <img id="preview" alt="Selected photo">
+        <div class="drop-text"><strong>Tap to choose a portrait</strong><br>
+          <span class="hint">JPG or PNG · face clearly visible · the bigger the better</span></div>
+        <input type="file" name="photo" id="photo" accept="image/*" required>
+      </div>
+    </section>
+
+    <section class="card">
+      <p class="step">Step 2 · Style</p>
+      <label for="look">Colour grade</label>
+      <select name="look" id="look">
+        {% for key, look in looks.items() %}
+        <option value="{{ key }}">{{ look.label }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="motion">Camera movement</label>
+      <select name="motion" id="motion">
+        <option value="story">Story – 3 shots: wide, medium, close-up</option>
+        <option value="push">Single slow push-in</option>
+      </select>
+
+      <label for="duration"><span class="row">Length <output id="durationOut">10 s</output></span></label>
+      <input type="range" name="duration" id="duration" min="5" max="30" step="1" value="10">
+
+      <details>
+        <summary>More options</summary>
+        <label for="transition">Transition between shots</label>
+        <select name="transition" id="transition">
+          <option value="leak">Camera glide + warm light flash</option>
+          <option value="glide">Camera glide only</option>
+          <option value="dip">Dip to black</option>
+        </select>
+
+        <label for="grain"><span class="row">Film grain <output id="grainOut">50%</output></span></label>
+        <input type="range" name="grain" id="grain" min="0" max="1" step="0.05" value="0.5">
+
+        <label for="leaks"><span class="row">Light leaks <output id="leaksOut">50%</output></span></label>
+        <input type="range" name="leaks" id="leaks" min="0" max="1" step="0.05" value="0.5">
+
+        <label for="bokeh"><span class="row">Floating bokeh <output id="bokehOut">40%</output></span></label>
+        <input type="range" name="bokeh" id="bokeh" min="0" max="1" step="0.05" value="0.4">
+
+        <label for="fade_out">Ending</label>
+        <select name="fade_out" id="fade_out">
+          <option value="1">Fade to black</option>
+          <option value="0">No fade (better for looping)</option>
+        </select>
+
+        <label for="music">Music <span class="hint">(optional – MP3/M4A/WAV)</span></label>
+        <input type="file" name="music" id="music" accept="audio/*">
+      </details>
+    </section>
+
+    <button type="submit" id="go">Create my video</button>
+    <p class="status error" id="formError"></p>
+  </form>
+
+  <section class="card hidden" id="progressCard">
+    <p class="step">Step 3 · Rendering</p>
+    <div class="bar"><div id="barFill"></div></div>
+    <p class="status" id="statusText">Uploading…</p>
+    <p class="tip">Keep this page open. A 10-second video usually takes 1–3 minutes.</p>
+  </section>
+
+  <section class="card hidden" id="resultCard">
+    <p class="step">Step 4 · Download</p>
+    <video id="result" controls playsinline loop muted preload="metadata"></video>
+    <a class="btn-link" id="download" href="#" download="cinematic_portrait.mp4">Download MP4</a>
+    <button type="button" class="btn-link btn-secondary" id="again">Make another</button>
+    <p class="status" id="note"></p>
+    <p class="tip"><strong>iPhone:</strong> tap Download, then the share icon → <em>Save Video</em>.<br>
+      <strong>Android:</strong> tap Download; the video goes to your Downloads / Files app.</p>
+  </section>
+</main>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const form = $("form");
+
+  for (const [id, fmt] of [["duration", v => v + " s"], ["grain", v => Math.round(v * 100) + "%"],
+                           ["leaks", v => Math.round(v * 100) + "%"], ["bokeh", v => Math.round(v * 100) + "%"]]) {
+    $(id).addEventListener("input", () => { $(id + "Out").textContent = fmt($(id).value); });
+  }
+
+  $("photo").addEventListener("change", () => {
+    const file = $("photo").files[0];
+    if (!file) return;
+    $("preview").src = URL.createObjectURL(file);
+    $("drop").classList.add("has-photo");
+  });
+
+  function show(id, visible) { $(id).classList.toggle("hidden", !visible); }
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    $("formError").textContent = "";
+    if (!$("photo").files.length) { $("formError").textContent = "Please choose a photo first."; return; }
+    $("go").disabled = true;
+    show("progressCard", true);
+    show("resultCard", false);
+    $("barFill").style.width = "0%";
+    $("statusText").textContent = "Uploading…";
+    $("progressCard").scrollIntoView({ behavior: "smooth", block: "center" });
+    try {
+      const response = await fetch("/api/render", { method: "POST", body: new FormData(form) });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Upload failed");
+      poll(data.job_id);
+    } catch (err) {
+      fail(err.message);
+    }
+  });
+
+  function fail(message) {
+    show("progressCard", false);
+    $("go").disabled = false;
+    $("formError").textContent = message;
+  }
+
+  async function poll(jobId) {
+    try {
+      const response = await fetch("/api/jobs/" + jobId);
+      const job = await response.json();
+      if (!response.ok) throw new Error(job.error || "Something went wrong");
+      $("barFill").style.width = Math.round((job.progress || 0) * 100) + "%";
+      $("statusText").textContent = job.message;
+      if (job.status === "error") return fail(job.message);
+      if (job.status === "done") return done(job);
+    } catch (err) {
+      // Phones sometimes drop a request when the screen locks; just retry.
+      $("statusText").textContent = "Reconnecting…";
+    }
+    setTimeout(() => poll(jobId), 1500);
+  }
+
+  function done(job) {
+    show("progressCard", false);
+    show("resultCard", true);
+    $("go").disabled = false;
+    $("result").src = job.video_url + "#t=0.8";  // shows a frame before playing (iPhone)
+    $("download").href = job.download_url;
+    $("note").textContent = job.note || "";
+    $("resultCard").scrollIntoView({ behavior: "smooth" });
+  }
+
+  $("again").addEventListener("click", () => {
+    show("resultCard", false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+</script>
+</body>
+</html>
