@@ -2,7 +2,9 @@
 
 بورتفوليو يوسف أيمن (ZEUSMESS): أبيض وأسود ورمادي، ستايل بيكسل 8-بت، وأصوات جيمز.
 
-**اللينك:** https://claude.ai/artifact/3xkQChZwuVc3bQH2Qv9HoN
+**اللينك الثابت:** https://zeusmess.github.io/Cenima/ (بعد تفعيل GitHub Pages)
+
+**نسخة claude.ai:** https://claude.ai/artifact/3xkQChZwuVc3bQH2Qv9HoN
 
 ## الملفات
 
@@ -10,8 +12,8 @@
 |---|---|
 | `content.js` | **كل الكلام والأعمال والحملات.** ده الملف اللي بتعدّله. |
 | `media/` | الصور (`.webp`) والفيديوهات (`.mp4` + صورة غلاف `.webp` بنفس الاسم)، واللوجو `logo.png` |
-| `logo.js` | اللوجو (العين) متحوّل لبيكسل |
-| `fonts/` | خط البيكسل العربي Arabixel (رخصة CC BY 4.0، لازم يفضل اسمه مكتوب في الفوتر) |
+| `logo.js` | اللوجو (العين) متحوّل لبيكسل، للأماكن الصغيرة |
+| `media/logo-*.png` | اللوجو الأصلي (فوق في الصفحة)، والنني لوحده عشان يتحرك |
 | `index.html` · `style.css` · `app.js` | الشكل والحركة والأصوات |
 
 ## تعديل أي حاجة
@@ -39,5 +41,10 @@ ffmpeg -ss 1 -i in.mp4 -frames:v 1 -vf "scale=-2:720" media/my-video.webp
 
 ## النشر والمشاركة
 
-- **اللينك فوق خاص بيك لحد ما تشاركه:** افتح اللينك ← زرار **Share** ← اختار إن أي حد معاه اللينك يقدر يفتحه ← انسخ اللينك وابعته.
-- **دومين خاص بيك (اختياري):** اسحب فولدر `portfolio` كله على https://app.netlify.com/drop، أو فعّل GitHub Pages من Settings ← Pages.
+**تفعيل اللينك الثابت (مرة واحدة بس):**
+1. افتح https://github.com/zeusmess/Cenima/settings/pages
+2. في **Source** اختار **Deploy from a branch**.
+3. في **Branch** اختار `ccr-dd2087df-39dlt3` والفولدر `/ (root)`، ودوس **Save**.
+4. استنى دقيقتين، والموقع هيفتح على **https://zeusmess.github.io/Cenima/**
+
+أي تعديل يترفع على الفرع ده بيظهر على اللينك لوحده بعد دقيقة أو اتنين.
