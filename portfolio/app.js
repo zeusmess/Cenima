@@ -13,7 +13,7 @@
       servicesKicker: "INVENTORY", servicesTitle: "بعمل إيه",
       aboutKicker: "عنّي", contactTitle: "عندك فكرة؟ يلا نعملها",
       contactLead: "ابعتلي على واتساب أو انستجرام، وهرد عليك بسرعة.",
-      whatsapp: "كلمني واتساب", lang: "EN", video: "VIDEO", photo: "PHOTO", items: "عمل", level: "LEVEL", world: "WORLD",
+      whatsapp: "كلمني واتساب", email: "ابعتلي إيميل", copied: "اتنسخ ✓", lang: "EN", video: "VIDEO", photo: "PHOTO", items: "عمل", level: "LEVEL", world: "WORLD",
       sound: "الصوت", hover: "عدّي عليه يتلوّن"
     },
     en: {
@@ -22,7 +22,7 @@
       servicesKicker: "INVENTORY", servicesTitle: "What I do",
       aboutKicker: "About me", contactTitle: "Got an idea? Let's make it",
       contactLead: "Message me on WhatsApp or Instagram and I'll get back to you fast.",
-      whatsapp: "Chat on WhatsApp", lang: "عربي", video: "VIDEO", photo: "PHOTO", items: "pieces", level: "LEVEL", world: "WORLD",
+      whatsapp: "Chat on WhatsApp", email: "Send an email", copied: "Copied ✓", lang: "عربي", video: "VIDEO", photo: "PHOTO", items: "pieces", level: "LEVEL", world: "WORLD",
       sound: "Sound", hover: "Hover for colour"
     }
   };
@@ -85,48 +85,6 @@
     return rows.map(function (r) { var a = r.indexOf("#"), b = r.lastIndexOf("#"); return a < 0 ? r : r.slice(0, a) + "#".repeat(b - a + 1) + r.slice(b + 1); });
   }
 
-  /* ---------- Arabic shaping for the pixel font ----------
-     The pixel font only has presentation forms, so letters are joined here
-     to render the same in every browser. */
-  var AR = { "ء": [0xFE80], "آ": [0xFE81, 0xFE82], "أ": [0xFE83, 0xFE84], "ؤ": [0xFE85, 0xFE86], "إ": [0xFE87, 0xFE88],
-    "ئ": [0xFE89, 0xFE8A, 0xFE8B, 0xFE8C], "ا": [0xFE8D, 0xFE8E], "ب": [0xFE8F, 0xFE90, 0xFE91, 0xFE92], "ة": [0xFE93, 0xFE94],
-    "ت": [0xFE95, 0xFE96, 0xFE97, 0xFE98], "ث": [0xFE99, 0xFE9A, 0xFE9B, 0xFE9C], "ج": [0xFE9D, 0xFE9E, 0xFE9F, 0xFEA0],
-    "ح": [0xFEA1, 0xFEA2, 0xFEA3, 0xFEA4], "خ": [0xFEA5, 0xFEA6, 0xFEA7, 0xFEA8], "د": [0xFEA9, 0xFEAA], "ذ": [0xFEAB, 0xFEAC],
-    "ر": [0xFEAD, 0xFEAE], "ز": [0xFEAF, 0xFEB0], "س": [0xFEB1, 0xFEB2, 0xFEB3, 0xFEB4], "ش": [0xFEB5, 0xFEB6, 0xFEB7, 0xFEB8],
-    "ص": [0xFEB9, 0xFEBA, 0xFEBB, 0xFEBC], "ض": [0xFEBD, 0xFEBE, 0xFEBF, 0xFEC0], "ط": [0xFEC1, 0xFEC2, 0xFEC3, 0xFEC4],
-    "ظ": [0xFEC5, 0xFEC6, 0xFEC7, 0xFEC8], "ع": [0xFEC9, 0xFECA, 0xFECB, 0xFECC], "غ": [0xFECD, 0xFECE, 0xFECF, 0xFED0],
-    "ف": [0xFED1, 0xFED2, 0xFED3, 0xFED4], "ق": [0xFED5, 0xFED6, 0xFED7, 0xFED8], "ك": [0xFED9, 0xFEDA, 0xFEDB, 0xFEDC],
-    "ل": [0xFEDD, 0xFEDE, 0xFEDF, 0xFEE0], "م": [0xFEE1, 0xFEE2, 0xFEE3, 0xFEE4], "ن": [0xFEE5, 0xFEE6, 0xFEE7, 0xFEE8],
-    "ه": [0xFEE9, 0xFEEA, 0xFEEB, 0xFEEC], "و": [0xFEED, 0xFEEE], "ى": [0xFEEF, 0xFEF0], "ي": [0xFEF1, 0xFEF2, 0xFEF3, 0xFEF4] };
-  var LAM_ALEF = { "آ": [0xFEF5, 0xFEF6], "أ": [0xFEF7, 0xFEF8], "إ": [0xFEF9, 0xFEFA], "ا": [0xFEFB, 0xFEFC] };
-  var isMark = function (c) { var n = c.charCodeAt(0); return (n >= 0x064B && n <= 0x065F) || n === 0x0670; };
-  var dual = function (c) { return c === "ـ" || (AR[c] && AR[c].length === 4); };
-  var joins = function (c) { return c === "ـ" || (AR[c] && c !== "ء"); };
-  function shapeAr(str) {
-    if (!/[ء-ي]/.test(str)) return str;
-    var ch = Array.from(str), out = "";
-    function near(i, dir) { for (var j = i + dir; j >= 0 && j < ch.length; j += dir) { if (!isMark(ch[j])) return ch[j]; } return ""; }
-    for (var i = 0; i < ch.length; i++) {
-      var c = ch[i];
-      if (!AR[c]) { out += c; continue; }
-      var prev = near(i, -1), next = near(i, 1);
-      var jp = dual(prev) && c !== "ء";
-      if (c === "ل" && LAM_ALEF[next]) {
-        out += String.fromCharCode(LAM_ALEF[next][jp ? 1 : 0]);
-        while (++i < ch.length && isMark(ch[i])) out += ch[i];
-        continue;
-      }
-      var jn = dual(c) && joins(next);
-      var f = AR[c], k = jp && jn ? 3 : jp ? 1 : jn ? 2 : 0;
-      out += String.fromCharCode(f[k] || f[0]);
-    }
-    return out;
-  }
-  function shapeTree(root) {
-    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null), n;
-    while ((n = w.nextNode())) { var s = shapeAr(n.nodeValue); if (s !== n.nodeValue) n.nodeValue = s; }
-  }
-
   /* ---------- 8-bit sound effects (Web Audio, no files) ---------- */
   var sfxOn = (function () { try { return localStorage.getItem("zm-sfx") !== "0"; } catch (e) { return true; } })();
   var actx = null;
@@ -165,6 +123,7 @@
   function src(it) { return "media/" + (it.v || it.i) + (it.v ? ".mp4" : ".webp"); }
   function poster(it) { return "media/" + (it.v || it.i) + ".webp"; }
   function pad(n) { return String(n).padStart(2, "0"); }
+  function selectText(n) { var r = document.createRange(); r.selectNodeContents(n); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); }
   function fillEyes(root) { $$("[data-eye]", root).forEach(function (n) { n.innerHTML = ""; n.appendChild(eye(n.dataset.eye)); }); }
 
   /* ---------- Static text ---------- */
@@ -213,8 +172,15 @@
       var a = el("a", "pbtn big"); a.href = s.url; a.target = "_blank"; a.rel = "noopener"; a.dataset.sfx = "click";
       a.appendChild(ico("insta")); a.appendChild(document.createTextNode(s.label)); acts.appendChild(a);
     });
-    if (P.contact.email) { var m = el("a", "pbtn big"); m.href = "mailto:" + P.contact.email; m.appendChild(ico("mail")); m.appendChild(document.createTextNode(P.contact.email)); acts.appendChild(m); }
+    if (P.contact.email) { var m = el("a", "pbtn big"); m.href = "mailto:" + P.contact.email; m.dataset.sfx = "click"; m.appendChild(ico("mail")); m.appendChild(document.createTextNode(U.email)); acts.appendChild(m); }
     var ph = $("#phone"); ph.textContent = P.contact.whatsapp ? "+" + P.contact.whatsapp : ""; ph.hidden = !P.contact.whatsapp;
+    // Show the address itself too, so it can be copied when a mail app does not open.
+    var cm = $("#copyMail"); cm.hidden = !P.contact.email; cm.textContent = P.contact.email || "";
+    cm.onclick = function () {
+      sfx("click");
+      var done = function () { cm.textContent = U.copied; setTimeout(function () { cm.textContent = P.contact.email; }, 1400); };
+      try { navigator.clipboard.writeText(P.contact.email).then(done, function () { selectText(cm); }); } catch (e) { selectText(cm); }
+    };
     $("#year").textContent = new Date().getFullYear();
 
     ["h2", ".tagline", ".hero-name", ".tag", ".kicker", ".player-text", ".continue-lead", ".footer span", ".world-intro"].forEach(function (s) { $$(s).forEach(function (n) { n.classList.add("glow"); }); });
@@ -222,9 +188,6 @@
 
   /* ---------- Hero ---------- */
   function renderHero() {
-    var he = $("#heroEye"); he.innerHTML = ""; he.appendChild(eye(63));
-    var ne = $("#navEye"); ne.innerHTML = ""; ne.appendChild(eye(31));
-    var be = $("#bootEye"); be.innerHTML = ""; be.appendChild(eye(31));
     fillEyes(document);
     var spots = [
       ["camera", 54, 6, 12, 1.4, 0], ["play", 46, 88, 8, 2, -.6], ["spark", 34, 82, 40, 1.1, -1.2], ["film", 42, 10, 46, 1.8, -.3],
@@ -273,6 +236,14 @@
       var w = iris.ownerSVGElement.viewBox.baseVal.width, k = Math.max(1, Math.round(w / 16));
       var m = Math.min(1, d / 300);
       iris.style.transform = px < -9000 ? "" : "translate(" + Math.round(dx / d * k * m) + "px," + Math.round(dy / d * k * m * .7) + "px)";
+    });
+    // The iris of the original logo follows the pointer too
+    $$(".logo-iris").forEach(function (iris) {
+      var r = iris.parentNode.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > vh || r.width < 80) return;
+      var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      var dx = px - cx, dy = py - cy, d = Math.max(1, Math.hypot(dx, dy)), m = Math.min(1, d / 400) * r.width * .07;
+      iris.style.transform = px < -9000 ? "" : "translate(" + (dx / d * m).toFixed(1) + "px," + (dy / d * m * .7).toFixed(1) + "px)";
     });
     // Floaters drift away from the pointer
     var mx = (px / vw - .5) * -18, my = (py / vh - .5) * -18;
@@ -428,7 +399,7 @@
     $("#lbPrev").style.visibility = multi ? "" : "hidden"; $("#lbNext").style.visibility = multi ? "" : "hidden";
     $("#lbCount").textContent = pad(lbIdx + 1) + " / " + pad(lbGroup.items.length);
     $("#lbTitle").textContent = lbGroup.title.en.toUpperCase();
-    $("#lbDesc").textContent = shapeAr(t(lbGroup.desc));
+    $("#lbDesc").textContent = t(lbGroup.desc);
   }
   function paintLBButtons() {
     $("#lbClose").innerHTML = ""; $("#lbClose").appendChild(ico("close"));
@@ -495,7 +466,6 @@
     renderHero();
     paintSound();
     paintLBButtons();
-    shapeTree(document.body);
     collectGlow();
     if (midIO) { midIO.disconnect(); glowEls.forEach(function (n) { midIO.observe(n); }); }
   }

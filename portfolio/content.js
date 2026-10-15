@@ -118,7 +118,7 @@ window.PORTFOLIO = {
           title: { en: "Neon Nights", ar: "ليالي النيون" },
           tags: { ar: ["فيديو AI", "ستايل جيمز"], en: ["AI Video", "Game Style"] },
           desc: { ar: "شوارع نيون، موتوسيكلات، ومترو بالليل بروح الجيمز.", en: "Neon streets, motorbikes and late-night subways with a video-game soul." },
-          items: [{ v: "vice-taxi", r: 0.562 }, { v: "neon-tunnel", r: 0.562 }, { v: "vice-street", r: 0.743 }, { v: "subway-kitty", r: 0.748 }, { i: "subway-kitty-still", r: 0.747 }]
+          items: [{ v: "vice-taxi", r: 0.562 }, { v: "neon-tunnel", r: 0.562 }, { v: "vice-street", r: 0.743 }, { v: "subway-kitty", r: 0.748 }]
         },
         {
           title: { en: "Zeus: The Game", ar: "زيوس: اللعبة" },
@@ -151,7 +151,7 @@ window.PORTFOLIO = {
   },
 
   contact: {
-    email: "", // ✏️ الإيميل اللي عاوز العملاء يكلموك عليه (فاضي = مش هيظهر)
+    email: "zeusmess8@gmail.com",
     whatsapp: "201116416183",
     socials: [
       { label: "zeusmess", url: "https://instagram.com/zeusmess" },
