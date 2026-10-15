@@ -19,6 +19,7 @@ import uuid
 from flask import Flask, abort, jsonify, render_template, request, send_file
 
 from cinematic import LOOKS, Settings, render_video
+from cinematic.captions import PLATFORMS, CaptionError, find_provider, write_caption
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 WORK_DIR = os.path.join(BASE_DIR, "work")
@@ -90,7 +91,45 @@ def _number(name: str, default: float, lo: float, hi: float) -> float:
 
 @app.get("/")
 def index():
-    return render_template("index.html", looks=LOOKS)
+    provider, error = None, ""
+    try:
+        found = find_provider()
+        provider = found[0] if found else None
+    except CaptionError as exc:  # a key is set but the setup is incomplete
+        error = str(exc)
+    return render_template("index.html", looks=LOOKS, caption_provider=provider,
+                           caption_error=error)
+
+
+@app.post("/api/caption")
+def caption():
+    look = request.form.get("look", "")
+    platform = request.form.get("platform", "instagram")
+    photo_path = None
+    photo = request.files.get("photo")
+    if request.form.get("use_photo") == "1" and photo and photo.filename:
+        ext = os.path.splitext(photo.filename)[1].lower() or ".jpg"
+        if ext not in PHOTO_TYPES:
+            return jsonify(error="Please upload a JPG or PNG photo."), 400
+        photo_path = os.path.join(UPLOAD_DIR, f"caption_{uuid.uuid4().hex[:12]}{ext}")
+        photo.save(photo_path)
+    try:
+        result = write_caption(
+            description=request.form.get("description", ""),
+            look_label=LOOKS[look].label if look in LOOKS else "",
+            platform=platform if platform in PLATFORMS else "instagram",
+            photo_path=photo_path)
+    except CaptionError as exc:
+        return jsonify(error=str(exc)), 502
+    except Exception:  # e.g. a photo Pillow cannot open
+        return jsonify(error="Could not write a caption."), 500
+    finally:
+        if photo_path:
+            try:
+                os.remove(photo_path)
+            except OSError:
+                pass
+    return jsonify(result)
 
 
 @app.post("/api/render")

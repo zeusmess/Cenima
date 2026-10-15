@@ -110,6 +110,7 @@ Codespaces gives you a free computer in the cloud that runs the web app. Free ac
 2. **Step 2 · Style:** choose the colour grade, the camera movement and the length. **More options** has the transition type, grain, light leaks, bokeh, the ending and optional music.
 3. Tap **Create my video**. A progress bar appears. **Keep the page open.** A 10-second video takes about 1–3 minutes.
 4. **Step 4 · Download:** watch the preview, then tap **Download MP4**.
+5. **Caption & hashtags (optional):** with a free AI key set up, tap **Write caption** to get a ready-to-paste caption and hashtags. See **[AI captions](docs/AI_CAPTIONS.md)**.
 
 ## 💾 Saving the finished video
 
@@ -212,12 +213,14 @@ cinematic/
   effects.py                 Film grain, light leaks, bokeh
   face.py                    Face detection (used for framing only)
   ffmpeg_tools.py            Finds FFmpeg and sets Reels/TikTok encoding options
+  captions.py                Optional AI caption + hashtags (free LLM APIs)
 colab/Cinematic_Portrait.ipynb   Google Colab notebook
 docs/AI_ANIMATION.md         Optional AI animation services and API keys
+docs/AI_CAPTIONS.md          Optional free AI captions: keys, providers, privacy
 tests/                       Automated tests
 .devcontainer/               Auto-setup for GitHub Codespaces
 ```
 
 ## 🔒 Privacy
 
-Everything runs on your own computer, codespace or Colab session. Photos are **not** sent to any AI service. The web app deletes uploaded photos as soon as the video is made, and clears out finished videos older than 3 hours whenever a new video is started. The web app is meant for personal use on your own network, not as a public website.
+Everything runs on your own computer, codespace or Colab session. Photos are **not** sent to any AI service. The only exception is the optional [AI caption](docs/AI_CAPTIONS.md) feature, and only if you set it up and tick *Let the AI see my photo*. The web app deletes uploaded photos as soon as the video is made, and clears out finished videos older than 3 hours whenever a new video is started. The web app is meant for personal use on your own network, not as a public website.

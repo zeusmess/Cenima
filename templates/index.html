@@ -23,8 +23,12 @@
     label { display: block; font-weight: 600; margin: 14px 0 6px; }
     label:first-of-type { margin-top: 0; }
     .hint { color: var(--muted); font-size: .85rem; font-weight: 400; }
-    select, input[type=file] { width: 100%; font-size: 16px; padding: 12px; border-radius: 10px;
+    select, input[type=file], input[type=text], textarea { width: 100%; font-size: 16px; padding: 12px; border-radius: 10px;
       border: 1px solid var(--line); background: #111; color: var(--text); }
+    input[type=text], textarea { font: inherit; }
+    textarea { resize: vertical; }
+    .check { display: flex; gap: 10px; align-items: center; font-weight: 400; }
+    .check input { width: 20px; height: 20px; margin: 0; accent-color: var(--accent); }
     input[type=range] { width: 100%; accent-color: var(--accent); height: 32px; }
     .row { display: flex; justify-content: space-between; align-items: baseline; }
     .row output { color: var(--muted); font-variant-numeric: tabular-nums; }
@@ -50,6 +54,8 @@
     video { width: 100%; border-radius: 12px; background: #000; aspect-ratio: 9 / 16; margin-bottom: 12px; }
     .hidden { display: none; }
     .tip { color: var(--muted); font-size: .85rem; margin-top: 12px; }
+    .step.later { margin-top: 20px; }
+    .field-action { margin-top: 14px; }
   </style>
 </head>
 <body>
@@ -134,6 +140,36 @@
     <p class="status" id="note"></p>
     <p class="tip"><strong>iPhone:</strong> tap Download, then the share icon → <em>Save Video</em>.<br>
       <strong>Android:</strong> tap Download; the video goes to your Downloads / Files app.</p>
+
+    <p class="step later">Caption &amp; hashtags</p>
+    {% if caption_provider %}
+    <label for="captionAbout">What is the video about? <span class="hint">(optional – e.g. birthday, Cairo at sunset)</span></label>
+    <input type="text" id="captionAbout" maxlength="300">
+
+    <label for="captionPlatform">Platform</label>
+    <select id="captionPlatform">
+      <option value="instagram">Instagram Reels</option>
+      <option value="tiktok">TikTok</option>
+    </select>
+
+    {% if caption_provider.vision %}
+    <label class="check" for="captionPhoto"><input type="checkbox" id="captionPhoto">
+      <span>Let the AI see my photo <span class="hint">(sent to {{ caption_provider.name }})</span></span></label>
+    {% endif %}
+
+    <button type="button" class="field-action" id="captionGo">Write caption</button>
+    <p class="status" id="captionStatus"></p>
+    <div class="hidden" id="captionResult">
+      <textarea id="captionText" rows="5" readonly aria-label="Caption &amp; hashtags"></textarea>
+      <button type="button" class="btn-link btn-secondary" id="captionCopy">Copy caption</button>
+      <p class="tip">Written by {{ caption_provider.name }}. Check it before you post.</p>
+    </div>
+    {% elif caption_error %}
+    <p class="status error">AI caption setup: {{ caption_error }} See <strong>docs/AI_CAPTIONS.md</strong>.</p>
+    {% else %}
+    <p class="tip">Want an AI-written caption? Set a free key as <strong>GEMINI_API_KEY</strong>
+      (from Google AI Studio) and restart the app. See <strong>docs/AI_CAPTIONS.md</strong>.</p>
+    {% endif %}
   </section>
 </main>
 
@@ -204,7 +240,51 @@
     $("result").src = job.video_url + "#t=0.8";  // shows a frame before playing (iPhone)
     $("download").href = job.download_url;
     $("note").textContent = job.note || "";
+    if ($("captionResult")) {  // a new video starts with no old caption showing
+      show("captionResult", false);
+      $("captionStatus").textContent = "";
+    }
     $("resultCard").scrollIntoView({ behavior: "smooth" });
+  }
+
+  if ($("captionGo")) {
+    $("captionGo").addEventListener("click", async () => {
+      const body = new FormData();
+      body.append("description", $("captionAbout").value);
+      body.append("platform", $("captionPlatform").value);
+      body.append("look", $("look").value);
+      if ($("captionPhoto") && $("captionPhoto").checked && $("photo").files.length) {
+        body.append("use_photo", "1");
+        body.append("photo", $("photo").files[0]);
+      }
+      $("captionStatus").className = "status";
+      $("captionStatus").textContent = "Writing…";
+      $("captionGo").disabled = true;
+      try {
+        const response = await fetch("/api/caption", { method: "POST", body });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Could not write a caption.");
+        $("captionText").value = data.text;
+        $("captionStatus").textContent = "";
+        show("captionResult", true);
+      } catch (err) {
+        $("captionStatus").className = "status error";
+        $("captionStatus").textContent = err.message;
+      } finally {
+        $("captionGo").disabled = false;
+      }
+    });
+
+    $("captionCopy").addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText($("captionText").value);
+      } catch (err) {  // older phones or plain http: select it so a long-press copies it
+        $("captionText").select();
+        document.execCommand("copy");
+      }
+      $("captionCopy").textContent = "Copied!";
+      setTimeout(() => { $("captionCopy").textContent = "Copy caption"; }, 1500);
+    });
   }
 
   $("again").addEventListener("click", () => {
