@@ -169,7 +169,7 @@
       wa.appendChild(ico("chat")); wa.appendChild(document.createTextNode(U.whatsapp)); acts.appendChild(wa);
     }
     (P.contact.socials || []).forEach(function (s) {
-      var a = el("a", "pbtn big"); a.href = s.url; a.target = "_blank"; a.rel = "noopener"; a.dataset.sfx = "click";
+      var a = el("a", "pbtn big latin"); a.href = s.url; a.target = "_blank"; a.rel = "noopener"; a.dataset.sfx = "click";
       a.appendChild(ico("insta")); a.appendChild(document.createTextNode(s.label)); acts.appendChild(a);
     });
     if (P.contact.email) { var m = el("a", "pbtn big"); m.href = "mailto:" + P.contact.email; m.dataset.sfx = "click"; m.appendChild(ico("mail")); m.appendChild(document.createTextNode(U.email)); acts.appendChild(m); }

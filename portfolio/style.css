@@ -10,9 +10,9 @@
   --silver: #c9c9c9;  /* headings at rest */
   --white: #ffffff;   /* lit text */
   --px: 4px;          /* one "pixel" of the UI */
-  --f-title: "Press Start 2P", "Silkscreen", "Reem Kufi", monospace;
-  --f-head: "Silkscreen", "Reem Kufi", "Press Start 2P", sans-serif;
-  --f-body: "Pixelify Sans", "IBM Plex Sans Arabic", "Silkscreen", sans-serif;
+  --f-title: "Press Start 2P", "Silkscreen", "Noto Naskh Arabic", monospace;
+  --f-head: "Silkscreen", "Noto Naskh Arabic", "Press Start 2P", serif;
+  --f-body: "Pixelify Sans", "Noto Naskh Arabic", "Silkscreen", serif;
   --gutter-l: max(16px, env(safe-area-inset-left, 0px));
   --gutter-r: max(16px, env(safe-area-inset-right, 0px));
   --pad-x: clamp(0px, 4vw, 56px);
@@ -28,7 +28,9 @@ body { margin: 0; font: 18px/1.55 var(--f-body); overflow-x: hidden; -webkit-fon
   cursor: var(--cur, auto); }
 :lang(ar) body, body:lang(ar) { font-size: 18px; line-height: 1.8; }
 /* In Arabic, Arabic faces come first so spaces and punctuation use their metrics */
-html:lang(ar) { --f-head: "Reem Kufi", "Silkscreen", sans-serif; --f-body: "IBM Plex Sans Arabic", "Pixelify Sans", sans-serif; }
+html:lang(ar) { --f-head: "Pixelify Sans", "Noto Naskh Arabic", serif; --f-body: "Pixelify Sans", "Noto Naskh Arabic", serif; }
+#langBtn, .latin { font-family: "Silkscreen", monospace !important; }
+html:lang(ar) body { font-weight: 500; }
 a { color: inherit; text-decoration: none; }
 a, button, .tile, .pbtn { cursor: var(--cur-hand, pointer); }
 img, video { display: block; max-width: 100%; }
@@ -46,8 +48,8 @@ body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-even
 
 /* Light pixel treatment for Arabic display type: fine scanlines through the letters */
 :lang(ar) h2, :lang(ar) .hero-name, :lang(ar) .lvl-title span, :lang(ar) .slot h3 {
-  -webkit-mask-image: repeating-linear-gradient(to bottom, #000 0 2px, rgba(0,0,0,.65) 2px 3px);
-  mask-image: repeating-linear-gradient(to bottom, #000 0 2px, rgba(0,0,0,.65) 2px 3px); }
+  -webkit-mask-image: repeating-linear-gradient(to bottom, #000 0 3px, rgba(0,0,0,.78) 3px 4px);
+  mask-image: repeating-linear-gradient(to bottom, #000 0 3px, rgba(0,0,0,.78) 3px 4px); }
 
 /* Original logo (smooth), with the iris as its own layer so it can follow the pointer */
 .logo-mark { position: relative; display: block; width: 100%; aspect-ratio: 800 / 565; }
@@ -208,7 +210,7 @@ h2 { margin: 0; font: 700 clamp(26px, 4.6vw, 48px)/1.15 var(--f-head); color: va
 .lvl-no .bar { display: inline-flex; gap: 3px; } .lvl-no .bar i { width: 8px; height: 10px; background: var(--ink-3); } .lvl-no .bar i.on { background: var(--white); }
 .lvl-title { margin: 10px 0 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; }
 .lvl-title b { font: 400 clamp(18px, 3vw, 30px)/1.25 var(--f-title); color: var(--white); direction: ltr; }
-.lvl-title span { font: 700 24px/1.3 "Reem Kufi", var(--f-head); color: var(--silver); }
+.lvl-title span { font: 700 24px/1.4 "Noto Naskh Arabic", var(--f-head); color: var(--silver); }
 .lvl-desc { margin: 8px 0 0; max-width: 62ch; }
 .lvl-tags { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; list-style: none; padding: 0; margin: 0; }
 .lvl-tags li { padding: 6px 10px; border: 2px solid var(--ink-3); font: 700 13px/1 var(--f-head); text-transform: uppercase; color: var(--gray); white-space: nowrap; }
