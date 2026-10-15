@@ -11,6 +11,7 @@ window.PORTFOLIO = {
   nickname: "ZEUSMESS",
   name: { ar: "يوسف أيمن", en: "Youssef Ayman" },
   role: { ar: "فيديو إديتور · مصوّر · صانع محتوى AI", en: "Video Editor · Photographer · AI Creative" },
+  // الأيقونات المتاحة: film camera wand play spark brush doc cup chat insta mail eye
   tagline: {
     ar: "بصوّر، بعمل مونتاج، بعدّل صور، وبطلّع أفكار مجنونة بالذكاء الاصطناعي. من الفكرة لحد آخر فريم.",
     en: "I shoot, edit, retouch and build wild ideas with AI. From the first idea to the last frame."
@@ -153,8 +154,8 @@ window.PORTFOLIO = {
     email: "", // ✏️ الإيميل اللي عاوز العملاء يكلموك عليه (فاضي = مش هيظهر)
     whatsapp: "201116416183",
     socials: [
-      { label: "@zeusmess", url: "https://instagram.com/zeusmess" },
-      { label: "@zeusshit", url: "https://instagram.com/zeusshit" }
+      { label: "zeusmess", url: "https://instagram.com/zeusmess" },
+      { label: "zeusshit", url: "https://instagram.com/zeusshit" }
     ]
   },
 

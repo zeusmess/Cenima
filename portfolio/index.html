@@ -3,105 +3,112 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#08070d">
   <title>ZEUSMESS</title>
+  <meta name="claude:viewport-fit-sides" content="cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="Youssef Ayman (ZEUSMESS): video editor, photographer and AI creative.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800;900&family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=Pixelify+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="bg" aria-hidden="true">
-    <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
-    <span class="gridlines"></span>
+  <div class="scan" aria-hidden="true"></div>
+
+  <!-- Boot screen: shows the logo, then gets out of the way on its own -->
+  <div class="boot" id="boot" aria-hidden="true">
+    <div class="boot-eye" id="bootEye"></div>
+    <div class="boot-bar"><span></span></div>
+    <p class="boot-hint" id="bootHint">PRESS START</p>
   </div>
-  <div class="noise" aria-hidden="true"></div>
 
   <header class="nav" id="nav">
-    <a href="#top" class="brand"><span class="brand-dot"></span><span data-bind="nickname"></span></a>
+    <a href="#top" class="brand" aria-label="ZEUSMESS"><span class="brand-eye" id="navEye"></span><span class="brand-name">ZEUSMESS</span></a>
     <nav class="nav-links" id="navLinks"></nav>
-    <button class="lang" id="langBtn" type="button" aria-label="Switch language"></button>
+    <button class="pbtn icon-btn" id="soundBtn" type="button" aria-label="Sound"></button>
+    <button class="pbtn" id="langBtn" type="button" aria-label="Switch language"></button>
   </header>
 
-  <section class="hero" id="top">
-    <div class="floaters" id="floaters" aria-hidden="true"></div>
-    <div class="hero-inner">
-      <p class="pill reveal"><span class="live"></span><span data-i18n="available"></span></p>
-      <h1 class="hero-title reveal" data-bind="nickname"></h1>
-      <p class="hero-name reveal" data-bind="name"></p>
-      <ul class="role-chips reveal" id="roleChips"></ul>
-      <p class="hero-tagline reveal" data-bind="tagline"></p>
-      <div class="hero-actions reveal">
-        <a href="#starbucks" class="btn primary" data-i18n="ctaWorks"></a>
-        <a href="#contact" class="btn glass" data-i18n="ctaContact"></a>
+  <main>
+    <section class="hero" id="top">
+      <div class="floaters" id="floaters" aria-hidden="true"></div>
+      <div class="hero-eye" id="heroEye" aria-hidden="true"></div>
+      <p class="tag"><span class="blink"></span> <span data-i18n="available"></span></p>
+      <h1 class="title" data-bind="nickname"></h1>
+      <p class="hero-name" data-bind="name"></p>
+      <ul class="roles" id="roles"></ul>
+      <p class="tagline" data-bind="tagline"></p>
+      <div class="actions">
+        <a href="#starbucks" class="pbtn solid" data-i18n="ctaWorks" data-sfx="click"></a>
+        <a href="#contact" class="pbtn" data-i18n="ctaContact" data-sfx="click"></a>
       </div>
-    </div>
-    <div class="reel-stage">
-      <div class="reel" id="reel"></div>
-    </div>
-  </section>
-
-  <div class="tapes" aria-hidden="true">
-    <div class="tape t1"><div class="tape-track" id="tape1"></div></div>
-    <div class="tape t2"><div class="tape-track" id="tape2"></div></div>
-  </div>
-
-  <section class="section" id="services">
-    <div class="head">
-      <span class="kicker" data-i18n="servicesKicker"></span>
-      <h2 data-i18n="servicesTitle"></h2>
-    </div>
-    <div class="bento" id="bento"></div>
-  </section>
-
-  <div id="collections"></div>
-
-  <section class="section" id="about">
-    <div class="about-card reveal">
-      <div class="about-media" id="aboutImg"></div>
-      <div class="about-body">
-        <span class="kicker" data-i18n="aboutKicker"></span>
-        <h2 class="about-name"><span data-bind="name"></span> <em data-bind="nickname"></em></h2>
-        <p class="about-text" data-bind="about.text"></p>
-        <ul class="skill-cloud" id="skills"></ul>
+      <div class="window reel-win">
+        <div class="win-bar"><span class="win-eye" data-eye="15"></span><span class="win-title">SHOWREEL.MP4</span><span class="win-dots"><i></i><i></i><i></i></span></div>
+        <div class="reel" id="reel"></div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="section" id="contact">
-    <div class="cta reveal">
-      <div class="cta-floaters" id="ctaFloaters" aria-hidden="true"></div>
-      <span class="kicker" data-i18n="contactKicker"></span>
-      <h2 class="cta-title" data-i18n="contactTitle"></h2>
-      <p class="cta-lead" data-i18n="contactLead"></p>
-      <div class="cta-actions">
-        <a class="btn primary big" id="whatsapp" target="_blank" rel="noopener"></a>
-        <a class="btn glass big" id="mail"></a>
-      </div>
-      <ul class="socials" id="socials"></ul>
+    <div class="tapes" aria-hidden="true">
+      <div class="tape t1"><div class="tape-track" id="tape1"></div></div>
+      <div class="tape t2"><div class="tape-track" id="tape2"></div></div>
     </div>
-  </section>
+
+    <section class="section" id="services">
+      <div class="head">
+        <span class="kicker" data-i18n="servicesKicker"></span>
+        <h2 data-i18n="servicesTitle"></h2>
+      </div>
+      <div class="inventory" id="inventory"></div>
+    </section>
+
+    <div id="collections"></div>
+
+    <section class="section" id="about">
+      <div class="divider" aria-hidden="true"><span data-eye="15"></span></div>
+      <div class="player">
+        <div class="player-photo" id="aboutImg"><span class="player-tag">PLAYER 1</span></div>
+        <div class="player-body">
+          <span class="kicker" data-i18n="aboutKicker"></span>
+          <h2 class="player-name"><span data-bind="name"></span><em>ZEUSMESS</em></h2>
+          <p class="player-text" data-bind="about.text"></p>
+          <ul class="chips" id="skills"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="continue">
+        <div class="floaters" id="ctaFloaters" aria-hidden="true"></div>
+        <div class="continue-eye" data-eye="31" aria-hidden="true"></div>
+        <span class="kicker blink-text">CONTINUE?</span>
+        <h2 class="continue-title" data-i18n="contactTitle"></h2>
+        <p class="continue-lead" data-i18n="contactLead"></p>
+        <div class="actions" id="contactActions"></div>
+        <p class="phone" id="phone"></p>
+      </div>
+    </section>
+  </main>
 
   <footer class="footer">
-    <span>© <span id="year"></span> <span data-bind="nickname"></span> · <span data-bind="name"></span></span>
-    <a href="#top" data-i18n="backTop"></a>
+    <a href="#top" class="foot-eye" aria-label="Back to top" data-eye="15"></a>
+    <span><bdi>© <span id="year"></span> ZEUSMESS</bdi> · <span data-bind="name"></span></span>
+    <span class="credit">Arabic font: <a href="https://arabiandev.itch.io/arabixel-adventure-font" target="_blank" rel="noopener">Arabixel</a> by ArabianDev (CC BY 4.0)</span>
   </footer>
 
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" hidden>
-    <button class="lb-btn lb-close" id="lbClose" type="button" aria-label="Close">✕</button>
-    <button class="lb-btn lb-prev" id="lbPrev" type="button" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
-    <button class="lb-btn lb-next" id="lbNext" type="button" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
-    <figure class="lb-figure">
+    <div class="lb-frame">
+      <div class="win-bar"><span class="win-eye" data-eye="15"></span><span class="win-title" id="lbTitle"></span><button class="lb-x pbtn icon-btn" id="lbClose" type="button" aria-label="Close"></button></div>
       <div class="lb-media" id="lbMedia"></div>
-      <figcaption class="lb-caption">
-        <span class="lb-count" id="lbCount"></span>
-        <h3 id="lbTitle"></h3>
-        <p id="lbDesc"></p>
-      </figcaption>
-    </figure>
+      <div class="lb-foot">
+        <button class="pbtn icon-btn" id="lbPrev" type="button" aria-label="Previous"></button>
+        <div class="lb-info"><span class="lb-count" id="lbCount"></span><p id="lbDesc"></p></div>
+        <button class="pbtn icon-btn" id="lbNext" type="button" aria-label="Next"></button>
+      </div>
+    </div>
   </div>
 
   <script src="content.js"></script>
+  <script src="logo.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

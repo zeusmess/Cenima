@@ -1,109 +1,171 @@
 (function () {
   "use strict";
-  var P = window.PORTFOLIO;
+  var P = window.PORTFOLIO, LOGO = window.ZM_LOGO;
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var canHover = window.matchMedia("(hover: hover)").matches;
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   var UI = {
     ar: {
       nav: [["#services", "خدماتي"], ["#starbucks", "ستاربكس"], ["#work", "أعمالي"], ["#about", "عنّي"], ["#contact", "تواصل"]],
-      available: "متاح لمشاريع جديدة", ctaWorks: "شوف الشغل", ctaContact: "يلا نشتغل",
-      servicesKicker: "بعمل إيه", servicesTitle: "كل اللي محتاجه في مكان واحد",
-      aboutKicker: "عنّي", contactKicker: "تواصل", contactTitle: "عندك فكرة؟ يلا نعملها",
+      available: "متاح لمشاريع جديدة", ctaWorks: "ابدأ اللعب", ctaContact: "يلا نشتغل",
+      servicesKicker: "INVENTORY", servicesTitle: "بعمل إيه",
+      aboutKicker: "عنّي", contactTitle: "عندك فكرة؟ يلا نعملها",
       contactLead: "ابعتلي على واتساب أو انستجرام، وهرد عليك بسرعة.",
-      whatsapp: "كلمني واتساب", backTop: "لفوق ↑", lang: "EN", video: "فيديو", photo: "صورة", items: "عمل"
+      whatsapp: "كلمني واتساب", lang: "EN", video: "VIDEO", photo: "PHOTO", items: "عمل", level: "LEVEL", world: "WORLD",
+      sound: "الصوت", hover: "عدّي عليه يتلوّن"
     },
     en: {
-      nav: [["#services", "Services"], ["#starbucks", "Starbucks"], ["#work", "Work"], ["#about", "About"], ["#contact", "Contact"]],
-      available: "Available for new projects", ctaWorks: "See the work", ctaContact: "Let's work",
-      servicesKicker: "What I do", servicesTitle: "Everything you need, in one place",
-      aboutKicker: "About me", contactKicker: "Contact", contactTitle: "Got an idea? Let's make it",
+      nav: [["#services", "Skills"], ["#starbucks", "Starbucks"], ["#work", "Work"], ["#about", "About"], ["#contact", "Contact"]],
+      available: "Available for new projects", ctaWorks: "Start game", ctaContact: "Let's work",
+      servicesKicker: "INVENTORY", servicesTitle: "What I do",
+      aboutKicker: "About me", contactTitle: "Got an idea? Let's make it",
       contactLead: "Message me on WhatsApp or Instagram and I'll get back to you fast.",
-      whatsapp: "Chat on WhatsApp", backTop: "Back to top ↑", lang: "عربي", video: "Video", photo: "Photo", items: "pieces"
+      whatsapp: "Chat on WhatsApp", lang: "عربي", video: "VIDEO", photo: "PHOTO", items: "pieces", level: "LEVEL", world: "WORLD",
+      sound: "Sound", hover: "Hover for colour"
     }
   };
 
-  // Glyphs for the 3D clay icons (24×24, filled)
-  var GLYPH = {
-    camera: "M9 4 7.5 6H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-2.5L15 4H9Zm3 4.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Zm0 2.2a2.3 2.3 0 1 0 0 4.6 2.3 2.3 0 0 0 0-4.6Z",
-    play: "M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z",
-    film: "M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Zm-.4-4.6 15.3-2.6a1 1 0 0 1 1.2.8l.4 2.2L4.3 7.6l-.4-2a1 1 0 0 1 .7-1.2Z",
-    wand: "M3 19.5 14.5 8l1.5 1.5L4.5 21 3 19.5ZM16 2l1 2.5 2.5 1-2.5 1L16 9l-1-2.5-2.5-1 2.5-1L16 2Zm4 8 .6 1.4 1.4.6-1.4.6L20 14l-.6-1.4-1.4-.6 1.4-.6L20 10Z",
-    spark: "M12 2l2.2 6.3 6.3 2.2-6.3 2.2L12 19l-2.2-6.3-6.3-2.2 6.3-2.2L12 2Zm7 13 1 2.5 2.5 1-2.5 1L19 22l-1-2.5-2.5-1 2.5-1L19 15Z",
-    brush: "M20.7 3.3a1 1 0 0 0-1.4 0L10 12.6l1.4 1.4 9.3-9.3a1 1 0 0 0 0-1.4ZM8.5 14A3.5 3.5 0 0 0 5 17.5c0 1.2-.8 2-2 2.5 1 .6 2.3 1 3.5 1a4 4 0 0 0 4-4 3 3 0 0 0-2-3Z",
-    doc: "M6 2h8l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm2 9v2h8v-2H8Zm0 4v2h6v-2H8Z",
-    cup: "M5 8h14l-1.6 12.2A2 2 0 0 1 15.4 22H8.6a2 2 0 0 1-2-1.8L5 8Zm-1-3h16v2H4V5Zm3-3h10l1 2H6l1-2Z",
-    insta: "M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm5 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm5.5-3.6a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4Z",
-    chat: "M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm-3.4 5.5c.3 0 .6 0 .8.5l1 2.3c.1.3 0 .6-.2.8l-.7.8c.8 1.5 2 2.6 3.5 3.4l.8-.8c.2-.2.5-.3.8-.2l2.3 1c.4.2.5.5.5.8 0 1.4-1.3 2.4-2.6 2.3-4-.4-7.3-3.7-7.6-7.6-.1-1.3.9-2.6 2.2-2.6h.2Z",
-    mail: "M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm1 2.4V17h16V7.4l-8 5.3-8-5.3Z",
-    soundOn: "M4 9h4l5-4v14l-5-4H4V9Zm12.5-1.5a6 6 0 0 1 0 9l-1.4-1.4a4 4 0 0 0 0-6.2l1.4-1.4Z",
-    soundOff: "M4 9h4l5-4v14l-5-4H4V9Zm11.3.7 1.4-1.4L19 10.6l2.3-2.3 1.4 1.4-2.3 2.3 2.3 2.3-1.4 1.4-2.3-2.3-2.3 2.3-1.4-1.4 2.3-2.3-2.3-2.3Z"
+  /* ---------- 12×12 pixel sprites ---------- */
+  var SPRITES = {
+    camera: ["............", "....####....", "..########..", ".##########.", ".###....###.", ".##..##..##.", ".##.####.##.", ".##..##..##.", ".###....###.", ".##########.", "............", "............"],
+    play: ["............", "...#........", "...###......", "...#####....", "...#######..", "...########.", "...#######..", "...#####....", "...###......", "...#........", "............", "............"],
+    film: ["............", ".##..##..##.", ".##########.", "............", ".##########.", ".#........#.", ".#..####..#.", ".#..####..#.", ".#........#.", ".##########.", "............", "............"],
+    wand: ["........#...", ".......###..", "........#..#", "......##....", ".....##.....", "....##......", "...##.......", "..##........", ".##.........", "##..........", "............", "............"],
+    spark: ["......#.....", "......#.....", ".....###....", ".....###....", "...#######..", ".###########", "...#######..", ".....###....", ".....###....", "......#.....", "......#.....", "............"],
+    brush: ["..........##", ".........###", "........###.", ".......###..", "......###...", ".....###....", "...##.#.....", "..####......", "..####......", ".####.......", "###.........", "............"],
+    doc: ["..######....", "..#....##...", "..#.....##..", "..#......#..", "..#.####.#..", "..#......#..", "..#.####.#..", "..#......#..", "..#.###..#..", "..#......#..", "..########..", "............"],
+    cup: ["............", "..########..", ".##########.", "..#......#..", "..#.####.#..", "..#.#..#.#..", "..#.####.#..", "...#....#...", "...#....#...", "...######...", "............", "............"],
+    chat: ["...######...", "..#......#..", ".#........#.", ".#.##.....#.", ".#.##.....#.", ".#..##....#.", ".#...####.#.", ".#........#.", "..#......#..", ".#.######...", "##..........", "............"],
+    insta: [".##########.", "#..........#", "#.......##.#", "#...####...#", "#..#....#..#", "#..#....#..#", "#..#....#..#", "#..#....#..#", "#...####...#", "#..........#", ".##########.", "............"],
+    mail: ["............", "############", "##........##", "#.#......#.#", "#..#....#..#", "#...####...#", "#..........#", "#..........#", "############", "............", "............", "............"],
+    soundOn: ["............", "....#.......", "...##...#...", "..###....#..", "####..#..#..", "####...#.#..", "####...#.#..", "####..#..#..", "..###....#..", "...##...#...", "....#.......", "............"],
+    soundOff: ["............", "....#.......", "...##.......", "..###.#...#.", "####...#.#..", "####....#...", "####...#.#..", "..###.#...#.", "...##.......", "....#.......", "............", "............"],
+    next: ["............", "...#........", "...##.......", "....##......", ".....##.....", "......##....", ".....##.....", "....##......", "...##.......", "...#........", "............", "............"],
+    prev: ["............", "........#...", ".......##...", "......##....", ".....##.....", "....##......", ".....##.....", "......##....", ".......##...", "........#...", "............", "............"],
+    close: ["##........##", ".##......##.", "..##....##..", "...##..##...", "....####....", ".....##.....", "....####....", "...##..##...", "..##....##..", ".##......##.", "##........##", "............"]
   };
-  var SERVICE_COLOR = { film: "pink", camera: "violet", wand: "orange", play: "cyan", spark: "lime", brush: "blue", doc: "green" };
-  var ARROW = '<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>';
+  var CURSOR = ["#.........", "##........", "#.#.......", "#..#......", "#...#.....", "#....#....", "#.....#...", "#......#..", "#.......#.", "#....#####", "#..#.#....", "#.#..#....", "##....#...", ".......#..", "......##.."];
+  var HAND = ["....##......", "...#..#.....", "...#..#.....", "...#..###...", "...#..#..##.", ".###..#..#.#", "#..#.....#.#", "#..#.......#", ".#.........#", "..#........#", "...#......#.", "....######.."];
 
-  var lang = (function () {
-    try { return localStorage.getItem("zm-lang") || P.defaultLang || "ar"; } catch (e) { return P.defaultLang || "ar"; }
-  })();
+  function runs(rows, dx, dy) {
+    var d = "";
+    rows.forEach(function (row, y) {
+      var x = 0;
+      while (x < row.length) {
+        if (row[x] === "#") { var s = x; while (x < row.length && row[x] === "#") x++; d += "M" + (s + dx) + " " + (y + dy) + "h" + (x - s) + "v1h-" + (x - s) + "z"; }
+        else x++;
+      }
+    });
+    return d;
+  }
+  var NS = "http://www.w3.org/2000/svg";
+  function svgEl(rows, extraRows) {
+    var w = rows[0].length, h = rows.length;
+    var s = document.createElementNS(NS, "svg");
+    s.setAttribute("viewBox", "0 0 " + w + " " + h); s.setAttribute("class", "pix"); s.setAttribute("aria-hidden", "true");
+    var p = document.createElementNS(NS, "path"); p.setAttribute("d", runs(rows, 0, 0)); s.appendChild(p);
+    if (extraRows) { var q = document.createElementNS(NS, "path"); q.setAttribute("d", runs(extraRows, 0, 0)); q.setAttribute("class", "iris"); s.appendChild(q); }
+    return s;
+  }
+  function eye(size) { var L = LOGO[String(size)]; return svgEl(L.eye, L.iris); }
+  function ico(name, size) {
+    var w = document.createElement("span"); w.className = "ico";
+    if (size) w.style.setProperty("--s", size + "px");
+    w.appendChild(svgEl(SPRITES[name])); return w;
+  }
+  function svgURI(rows, fillRows, scale) {
+    var w = rows[0].length * scale, h = rows.length * scale;
+    var body = (fillRows ? '<path fill="#000" d="' + runs(fillRows, 0, 0) + '"/>' : "") + '<path fill="#fff" d="' + runs(rows, 0, 0) + '"/>';
+    return "url(\"data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '" viewBox="0 0 ' + rows[0].length + ' ' + rows.length + '" shape-rendering="crispEdges">' + body + "</svg>") + "\")";
+  }
+  // Fill the inside of an outline sprite so the cursor reads on any background.
+  function solid(rows) {
+    return rows.map(function (r) { var a = r.indexOf("#"), b = r.lastIndexOf("#"); return a < 0 ? r : r.slice(0, a) + "#".repeat(b - a + 1) + r.slice(b + 1); });
+  }
 
+  /* ---------- Arabic shaping for the pixel font ----------
+     The pixel font only has presentation forms, so letters are joined here
+     to render the same in every browser. */
+  var AR = { "ء": [0xFE80], "آ": [0xFE81, 0xFE82], "أ": [0xFE83, 0xFE84], "ؤ": [0xFE85, 0xFE86], "إ": [0xFE87, 0xFE88],
+    "ئ": [0xFE89, 0xFE8A, 0xFE8B, 0xFE8C], "ا": [0xFE8D, 0xFE8E], "ب": [0xFE8F, 0xFE90, 0xFE91, 0xFE92], "ة": [0xFE93, 0xFE94],
+    "ت": [0xFE95, 0xFE96, 0xFE97, 0xFE98], "ث": [0xFE99, 0xFE9A, 0xFE9B, 0xFE9C], "ج": [0xFE9D, 0xFE9E, 0xFE9F, 0xFEA0],
+    "ح": [0xFEA1, 0xFEA2, 0xFEA3, 0xFEA4], "خ": [0xFEA5, 0xFEA6, 0xFEA7, 0xFEA8], "د": [0xFEA9, 0xFEAA], "ذ": [0xFEAB, 0xFEAC],
+    "ر": [0xFEAD, 0xFEAE], "ز": [0xFEAF, 0xFEB0], "س": [0xFEB1, 0xFEB2, 0xFEB3, 0xFEB4], "ش": [0xFEB5, 0xFEB6, 0xFEB7, 0xFEB8],
+    "ص": [0xFEB9, 0xFEBA, 0xFEBB, 0xFEBC], "ض": [0xFEBD, 0xFEBE, 0xFEBF, 0xFEC0], "ط": [0xFEC1, 0xFEC2, 0xFEC3, 0xFEC4],
+    "ظ": [0xFEC5, 0xFEC6, 0xFEC7, 0xFEC8], "ع": [0xFEC9, 0xFECA, 0xFECB, 0xFECC], "غ": [0xFECD, 0xFECE, 0xFECF, 0xFED0],
+    "ف": [0xFED1, 0xFED2, 0xFED3, 0xFED4], "ق": [0xFED5, 0xFED6, 0xFED7, 0xFED8], "ك": [0xFED9, 0xFEDA, 0xFEDB, 0xFEDC],
+    "ل": [0xFEDD, 0xFEDE, 0xFEDF, 0xFEE0], "م": [0xFEE1, 0xFEE2, 0xFEE3, 0xFEE4], "ن": [0xFEE5, 0xFEE6, 0xFEE7, 0xFEE8],
+    "ه": [0xFEE9, 0xFEEA, 0xFEEB, 0xFEEC], "و": [0xFEED, 0xFEEE], "ى": [0xFEEF, 0xFEF0], "ي": [0xFEF1, 0xFEF2, 0xFEF3, 0xFEF4] };
+  var LAM_ALEF = { "آ": [0xFEF5, 0xFEF6], "أ": [0xFEF7, 0xFEF8], "إ": [0xFEF9, 0xFEFA], "ا": [0xFEFB, 0xFEFC] };
+  var isMark = function (c) { var n = c.charCodeAt(0); return (n >= 0x064B && n <= 0x065F) || n === 0x0670; };
+  var dual = function (c) { return c === "ـ" || (AR[c] && AR[c].length === 4); };
+  var joins = function (c) { return c === "ـ" || (AR[c] && c !== "ء"); };
+  function shapeAr(str) {
+    if (!/[ء-ي]/.test(str)) return str;
+    var ch = Array.from(str), out = "";
+    function near(i, dir) { for (var j = i + dir; j >= 0 && j < ch.length; j += dir) { if (!isMark(ch[j])) return ch[j]; } return ""; }
+    for (var i = 0; i < ch.length; i++) {
+      var c = ch[i];
+      if (!AR[c]) { out += c; continue; }
+      var prev = near(i, -1), next = near(i, 1);
+      var jp = dual(prev) && c !== "ء";
+      if (c === "ل" && LAM_ALEF[next]) {
+        out += String.fromCharCode(LAM_ALEF[next][jp ? 1 : 0]);
+        while (++i < ch.length && isMark(ch[i])) out += ch[i];
+        continue;
+      }
+      var jn = dual(c) && joins(next);
+      var f = AR[c], k = jp && jn ? 3 : jp ? 1 : jn ? 2 : 0;
+      out += String.fromCharCode(f[k] || f[0]);
+    }
+    return out;
+  }
+  function shapeTree(root) {
+    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null), n;
+    while ((n = w.nextNode())) { var s = shapeAr(n.nodeValue); if (s !== n.nodeValue) n.nodeValue = s; }
+  }
+
+  /* ---------- 8-bit sound effects (Web Audio, no files) ---------- */
+  var sfxOn = (function () { try { return localStorage.getItem("zm-sfx") !== "0"; } catch (e) { return true; } })();
+  var actx = null;
+  function audio() {
+    if (!actx) { var A = window.AudioContext || window.webkitAudioContext; if (!A) return null; actx = new A(); }
+    if (actx.state === "suspended") actx.resume();
+    return actx;
+  }
+  function tone(freq, start, dur, type, vol) {
+    var a = actx, o = a.createOscillator(), g = a.createGain(), t = a.currentTime + start;
+    o.type = type || "square"; o.frequency.setValueAtTime(freq, t);
+    g.gain.setValueAtTime(vol || .05, t); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + dur + .02);
+  }
+  var SFX = {
+    hover: function () { tone(1320, 0, .035, "square", .025); },
+    click: function () { tone(660, 0, .05); tone(990, .05, .08); },
+    open: function () { [523, 659, 784, 1047].forEach(function (f, i) { tone(f, i * .045, .09); }); },
+    close: function () { [1047, 784, 523].forEach(function (f, i) { tone(f, i * .045, .08); }); },
+    step: function () { tone(880, 0, .04, "triangle", .06); tone(1175, .04, .06, "triangle", .05); },
+    level: function () { [392, 523, 659].forEach(function (f, i) { tone(f, i * .06, .08, "square", .03); }); },
+    start: function () { [262, 330, 392, 523, 392, 523, 659, 784].forEach(function (f, i) { tone(f, i * .085, .11, "square", .045); }); tone(131, 0, .7, "triangle", .06); }
+  };
+  function sfx(name) { if (!sfxOn || !actx) return; try { SFX[name](); } catch (e) {} }
+  var lastHover = 0;
+  function hoverSfx() { var n = Date.now(); if (n - lastHover > 70) { lastHover = n; sfx("hover"); } }
+  function unlockAudio() { if (sfxOn) audio(); }
+  window.addEventListener("pointerdown", unlockAudio, { capture: true });
+  window.addEventListener("keydown", unlockAudio, { capture: true });
+
+  /* ---------- Helpers ---------- */
+  var lang = (function () { try { return localStorage.getItem("zm-lang") || P.defaultLang || "ar"; } catch (e) { return P.defaultLang || "ar"; } })();
   function t(v) { return v && typeof v === "object" && !Array.isArray(v) ? (v[lang] != null ? v[lang] : v.en) : (v || ""); }
   function get(path) { return path.split(".").reduce(function (o, k) { return o && o[k]; }, P); }
-  function el(tag, cls, text) {
-    var n = document.createElement(tag);
-    if (cls) n.className = cls;
-    if (text != null) n.textContent = text;
-    return n;
-  }
-  function svg(name) {
-    var ns = "http://www.w3.org/2000/svg";
-    var s = document.createElementNS(ns, "svg"); s.setAttribute("viewBox", "0 0 24 24"); s.setAttribute("aria-hidden", "true");
-    var p = document.createElementNS(ns, "path"); p.setAttribute("d", GLYPH[name]); p.setAttribute("fill-rule", "evenodd");
-    s.appendChild(p); return s;
-  }
-  function icon(name, color, extra) {
-    var d = el("span", "ico c-" + (color || "violet") + (extra ? " " + extra : ""));
-    d.appendChild(svg(name)); return d;
-  }
-  function src(item) { return "media/" + (item.v || item.i) + (item.v ? ".mp4" : ".webp"); }
-  function poster(item) { return "media/" + (item.v || item.i) + ".webp"; }
+  function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+  function src(it) { return "media/" + (it.v || it.i) + (it.v ? ".mp4" : ".webp"); }
+  function poster(it) { return "media/" + (it.v || it.i) + ".webp"; }
   function pad(n) { return String(n).padStart(2, "0"); }
-
-  /* ---------- Floating 3D objects ---------- */
-  var FLOAT_SPOTS = [
-    { k: "ico", g: "camera", c: "violet", s: 92, x: 7, y: 16, d: 1.4, r: -12 },
-    { k: "ico", g: "play", c: "pink", s: 78, x: 86, y: 12, d: 2, r: 10 },
-    { k: "ico", g: "spark", c: "lime", s: 64, x: 80, y: 44, d: 1.1, r: -6 },
-    { k: "ico", g: "film", c: "cyan", s: 70, x: 12, y: 52, d: 1.8, r: 8 },
-    { k: "ico", g: "cup", c: "green", s: 58, x: 92, y: 70, d: .8, r: -10 },
-    { k: "ico", g: "wand", c: "orange", s: 54, x: 3, y: 80, d: 1.2, r: 12 },
-    { k: "orb", c1: "#c6ff3d", c2: "#3f6212", s: 46, x: 24, y: 8, d: 2.4 },
-    { k: "orb", c1: "#ffb3d6", c2: "#be185d", s: 34, x: 70, y: 26, d: 2.8 },
-    { k: "torus", s: 120, x: 88, y: 88, d: .6, r: 20 },
-    { k: "star4", c: "#c6ff3d", s: 30, x: 30, y: 62, d: 3 },
-    { k: "star4", c: "#2ee6ff", s: 22, x: 66, y: 6, d: 3.2 }
-  ];
-  function buildFloaters(box, spots) {
-    box.innerHTML = "";
-    spots.forEach(function (f, i) {
-      var w = el("div", "float");
-      w.style.left = f.x + "%"; w.style.top = f.y + "%";
-      w.style.setProperty("--d", f.d);
-      var inner;
-      if (f.k === "ico") { inner = icon(f.g, f.c); }
-      else { inner = el("span", f.k); if (f.c1) { inner.style.setProperty("--c1", f.c1); inner.style.setProperty("--c2", f.c2); } if (f.c) inner.style.setProperty("--c", f.c); }
-      inner.style.setProperty("--s", f.s + "px");
-      inner.style.setProperty("--rot", (f.r || 0) + "deg");
-      inner.style.setProperty("--delay", (-i * .7) + "s");
-      w.appendChild(inner);
-      box.appendChild(w);
-    });
-  }
-  window.addEventListener("pointermove", function (e) {
-    if (e.pointerType !== "mouse") return;
-    var x = (e.clientX / window.innerWidth - .5) * -24, y = (e.clientY / window.innerHeight - .5) * -24;
-    $$(".floaters, .cta-floaters, .coll-floaters").forEach(function (b) { b.style.setProperty("--px", x.toFixed(1)); b.style.setProperty("--py", y.toFixed(1)); });
-  }, { passive: true });
+  function fillEyes(root) { $$("[data-eye]", root).forEach(function (n) { n.innerHTML = ""; n.appendChild(eye(n.dataset.eye)); }); }
 
   /* ---------- Static text ---------- */
   function renderStatic() {
@@ -113,48 +175,73 @@
     document.title = P.nickname + " · " + t(P.role);
     $$("[data-i18n]").forEach(function (n) { n.textContent = U[n.dataset.i18n]; });
     $$("[data-bind]").forEach(function (n) { var v = get(n.dataset.bind); n.textContent = typeof v === "string" ? v : t(v); });
-    $("#langBtn").textContent = U.lang;
+    var lb = $("#langBtn"); lb.textContent = U.lang;
 
     var nav = $("#navLinks"); nav.innerHTML = "";
-    U.nav.forEach(function (l) { var a = el("a", null, l[1]); a.href = l[0]; nav.appendChild(a); });
+    U.nav.forEach(function (l) { var a = el("a", "glow", l[1]); a.href = l[0]; nav.appendChild(a); });
 
-    var chips = $("#roleChips"); chips.innerHTML = "";
-    t(P.role).split(" · ").forEach(function (r, i) {
-      var li = el("li"); li.appendChild(icon(["film", "camera", "spark"][i % 3], ["pink", "violet", "lime"][i % 3])); li.appendChild(document.createTextNode(r)); chips.appendChild(li);
-    });
+    var roles = $("#roles"); roles.innerHTML = "";
+    t(P.role).split(" · ").forEach(function (r, i) { var li = el("li", "glow"); li.appendChild(ico(["film", "camera", "spark"][i % 3])); li.appendChild(document.createTextNode(r)); roles.appendChild(li); });
 
-    var words = P.services.map(function (s) { return s.en; });
+    var words = P.services.map(function (s) { return s.en.toUpperCase(); });
     ["#tape1", "#tape2"].forEach(function (id, k) {
       var tr = $(id); tr.innerHTML = "";
       var list = k ? words.slice().reverse() : words;
-      for (var i = 0; i < 4; i++) list.forEach(function (w) { tr.appendChild(el("span", null, w)); });
+      for (var i = 0; i < 4; i++) list.forEach(function (w) { tr.appendChild(el("span", null, w)); var s = el("span", "sep"); s.appendChild(eye(15)); tr.appendChild(s); });
     });
 
-    var bento = $("#bento"); bento.innerHTML = "";
-    P.services.forEach(function (s) {
-      var c = el("article", "svc reveal");
-      c.appendChild(icon(s.icon, SERVICE_COLOR[s.icon]));
-      c.appendChild(el("h3", null, s[lang]));
-      c.appendChild(el("p", null, t(s.d)));
-      bento.appendChild(c);
+    var inv = $("#inventory"); inv.innerHTML = "";
+    P.services.forEach(function (s, i) {
+      var c = el("article", "slot");
+      c.appendChild(ico(s.icon));
+      c.appendChild(el("h3", "glow", s[lang]));
+      c.appendChild(el("p", "glow", t(s.d)));
+      c.appendChild(el("span", "key", "x" + pad(i + 1)));
+      c.addEventListener("mouseenter", hoverSfx);
+      inv.appendChild(c);
     });
 
     var skills = $("#skills"); skills.innerHTML = "";
-    P.services.forEach(function (s) { var li = el("li"); li.appendChild(icon(s.icon, SERVICE_COLOR[s.icon])); li.appendChild(document.createTextNode(s[lang])); skills.appendChild(li); });
+    P.services.forEach(function (s) { var li = el("li", "glow"); li.appendChild(ico(s.icon)); li.appendChild(document.createTextNode(s[lang])); skills.appendChild(li); });
 
-    var wa = $("#whatsapp"); wa.innerHTML = ""; wa.hidden = !P.contact.whatsapp;
-    if (P.contact.whatsapp) { wa.href = "https://wa.me/" + P.contact.whatsapp; wa.appendChild(svg("chat")); wa.appendChild(document.createTextNode(U.whatsapp)); }
-    var mail = $("#mail"); mail.innerHTML = ""; mail.hidden = !P.contact.email;
-    if (P.contact.email) { mail.href = "mailto:" + P.contact.email; mail.appendChild(svg("mail")); mail.appendChild(document.createTextNode(P.contact.email)); }
-    var soc = $("#socials"); soc.innerHTML = "";
+    var acts = $("#contactActions"); acts.innerHTML = "";
+    if (P.contact.whatsapp) {
+      var wa = el("a", "pbtn solid big"); wa.href = "https://wa.me/" + P.contact.whatsapp; wa.target = "_blank"; wa.rel = "noopener"; wa.dataset.sfx = "click";
+      wa.appendChild(ico("chat")); wa.appendChild(document.createTextNode(U.whatsapp)); acts.appendChild(wa);
+    }
     (P.contact.socials || []).forEach(function (s) {
-      var li = el("li"); var a = el("a"); a.href = s.url; a.target = "_blank"; a.rel = "noopener";
-      a.appendChild(icon("insta", "pink", "round")); a.appendChild(document.createTextNode(s.label)); li.appendChild(a); soc.appendChild(li);
+      var a = el("a", "pbtn big"); a.href = s.url; a.target = "_blank"; a.rel = "noopener"; a.dataset.sfx = "click";
+      a.appendChild(ico("insta")); a.appendChild(document.createTextNode(s.label)); acts.appendChild(a);
     });
+    if (P.contact.email) { var m = el("a", "pbtn big"); m.href = "mailto:" + P.contact.email; m.appendChild(ico("mail")); m.appendChild(document.createTextNode(P.contact.email)); acts.appendChild(m); }
+    var ph = $("#phone"); ph.textContent = P.contact.whatsapp ? "+" + P.contact.whatsapp : ""; ph.hidden = !P.contact.whatsapp;
     $("#year").textContent = new Date().getFullYear();
+
+    ["h2", ".tagline", ".hero-name", ".tag", ".kicker", ".player-text", ".continue-lead", ".footer span", ".world-intro"].forEach(function (s) { $$(s).forEach(function (n) { n.classList.add("glow"); }); });
   }
 
-  /* ---------- Hero showreel ---------- */
+  /* ---------- Hero ---------- */
+  function renderHero() {
+    var he = $("#heroEye"); he.innerHTML = ""; he.appendChild(eye(63));
+    var ne = $("#navEye"); ne.innerHTML = ""; ne.appendChild(eye(31));
+    var be = $("#bootEye"); be.innerHTML = ""; be.appendChild(eye(31));
+    fillEyes(document);
+    var spots = [
+      ["camera", 54, 6, 12, 1.4, 0], ["play", 46, 88, 8, 2, -.6], ["spark", 34, 82, 40, 1.1, -1.2], ["film", 42, 10, 46, 1.8, -.3],
+      ["cup", 38, 92, 62, .8, -1.6], ["wand", 34, 4, 78, 1.2, -.9], ["brush", 28, 22, 26, 2.4, -2, 1], ["doc", 26, 72, 22, 2.6, -1.4, 1]
+    ];
+    buildFloaters($("#floaters"), spots);
+    buildFloaters($("#ctaFloaters"), [["chat", 46, 6, 14, 1.6, 0], ["insta", 42, 88, 18, 2, -.8], ["mail", 34, 86, 74, 1.2, -1.4], ["spark", 26, 12, 76, 2.4, -.4, 1]]);
+  }
+  function buildFloaters(box, spots) {
+    box.innerHTML = "";
+    spots.forEach(function (f) {
+      var w = el("div", "float" + (f[6] ? " dim" : ""));
+      w.style.left = f[2] + "%"; w.style.top = f[3] + "%"; w.style.setProperty("--d", f[4]);
+      var i = ico(f[0]); i.style.setProperty("--size", f[1] + "px"); i.style.setProperty("--delay", f[5] + "s");
+      w.appendChild(i); box.appendChild(w);
+    });
+  }
   var reelBuilt = false;
   function renderReel() {
     if (reelBuilt) return; reelBuilt = true;
@@ -163,68 +250,97 @@
     v.src = src(P.showreel); v.poster = poster(P.showreel);
     v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true; v.setAttribute("playsinline", ""); v.preload = "metadata";
     box.appendChild(v);
-    var b = el("button", "reel-sound"); b.type = "button"; b.setAttribute("aria-label", "Sound"); b.appendChild(svg("soundOff"));
-    b.onclick = function () { v.muted = !v.muted; b.innerHTML = ""; b.appendChild(svg(v.muted ? "soundOff" : "soundOn")); if (v.paused) v.play(); };
-    box.appendChild(b);
+    var hint = el("span", "reel-hint"); box.appendChild(hint);
+    var b = el("button", "pbtn icon-btn"); b.type = "button"; b.setAttribute("aria-label", "Showreel sound");
+    function paint() { b.innerHTML = ""; b.appendChild(ico(v.muted ? "soundOff" : "soundOn")); hint.textContent = v.muted ? "SOUND OFF" : "SOUND ON"; }
+    b.onclick = function () { v.muted = !v.muted; box.classList.toggle("color", !v.muted); paint(); sfx("click"); if (v.paused) v.play(); };
+    paint(); box.appendChild(b);
     var p = v.play(); if (p && p.catch) p.catch(function () {});
   }
-  function onScrollReel() {
-    var p = Math.min(1, Math.max(0, window.scrollY / (window.innerHeight * .6)));
-    var r = $("#reel"); r.style.setProperty("--tilt", (24 * (1 - p)).toFixed(2) + "deg"); r.style.setProperty("--scale", (.92 + .08 * p).toFixed(3));
+
+  /* ---------- Pointer: eye tracking, parallax, text glow ---------- */
+  var px = -9999, py = -9999, glowEls = [], ticking = false;
+  function collectGlow() { glowEls = $$(".glow"); }
+  function frame() {
+    ticking = false;
+    var vw = window.innerWidth, vh = window.innerHeight;
+    // Pupils follow the pointer
+    $$(".pix .iris").forEach(function (iris) {
+      var r = iris.ownerSVGElement.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > vh) return;
+      var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      var dx = px - cx, dy = py - cy, d = Math.max(1, Math.hypot(dx, dy));
+      var w = iris.ownerSVGElement.viewBox.baseVal.width, k = Math.max(1, Math.round(w / 16));
+      var m = Math.min(1, d / 300);
+      iris.style.transform = px < -9000 ? "" : "translate(" + Math.round(dx / d * k * m) + "px," + Math.round(dy / d * k * m * .7) + "px)";
+    });
+    // Floaters drift away from the pointer
+    var mx = (px / vw - .5) * -18, my = (py / vh - .5) * -18;
+    $$(".floaters").forEach(function (b) { b.style.setProperty("--mx", mx.toFixed(1)); b.style.setProperty("--my", my.toFixed(1)); });
+    // Text near the pointer lights up white
+    glowEls.forEach(function (n) {
+      var r = n.getBoundingClientRect();
+      if (r.bottom < -50 || r.top > vh + 50) { n.classList.remove("lit"); return; }
+      var dx = Math.max(r.left - px, 0, px - r.right), dy = Math.max(r.top - py, 0, py - r.bottom);
+      n.classList.toggle("lit", dx * dx + dy * dy < 60 * 60);
+    });
   }
+  function queue() { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }
+  window.addEventListener("pointermove", function (e) { if (e.pointerType === "touch") return; px = e.clientX; py = e.clientY; queue(); }, { passive: true });
+  window.addEventListener("scroll", function () { if (canHover) queue(); }, { passive: true });
+  // On touch screens, text in the middle of the screen lights up as you scroll.
+  var midIO = !canHover && "IntersectionObserver" in window ? new IntersectionObserver(function (en) {
+    en.forEach(function (e) { e.target.classList.toggle("lit", e.isIntersecting); });
+  }, { rootMargin: "-38% 0px -38% 0px" }) : null;
 
   /* ---------- Collections ---------- */
-  var groupsFlat = [];
   function renderCollections() {
     var root = $("#collections"); root.innerHTML = "";
-    groupsFlat = [];
-    P.collections.forEach(function (c) {
-      var sec = el("section", "collection " + (c.theme || "default")); sec.id = c.id;
-      var head = el("div", "coll-head reveal");
+    P.collections.forEach(function (c, ci) {
+      var sec = el("section", "world" + (c.theme === "starbucks" ? " featured" : "")); sec.id = c.id;
+      var head = el("div", "world-head");
       var left = el("div");
-      left.appendChild(el("span", "kicker", t(c.kicker)));
-      left.appendChild(el("h2", "coll-title", t(c.title)));
-      left.appendChild(el("p", "coll-intro", t(c.intro)));
+      var lab = el("span", "world-label"); lab.appendChild(document.createTextNode(UI[lang].world + " " + (ci + 1))); left.appendChild(lab);
+      left.appendChild(el("h2", "glow", t(c.title)));
+      left.appendChild(el("p", "world-intro glow", t(c.intro)));
       head.appendChild(left);
-      var badge = el("div", "coll-badge");
-      if (c.theme === "starbucks") badge.appendChild(icon("cup", "green"));
-      else badge.appendChild(icon("spark", "violet"));
-      head.appendChild(badge);
+      var badge = el("div", "world-badge"); badge.appendChild(c.theme === "starbucks" ? ico("cup") : eye(31)); head.appendChild(badge);
       sec.appendChild(head);
 
-      var chapters = el("nav", "chapters");
-      sec.appendChild(chapters);
+      var levels = el("nav", "levels"); levels.setAttribute("aria-label", t(c.title)); sec.appendChild(levels);
 
       c.groups.forEach(function (g, gi) {
         var gid = c.id + "-" + (gi + 1);
-        var a = el("a", null, (lang === "ar" ? t(g.title) : g.title.en)); a.href = "#" + gid; chapters.appendChild(a);
-        groupsFlat.push(g);
+        var a = el("a"); a.href = "#" + gid;
+        a.appendChild(el("b", null, pad(gi + 1))); a.appendChild(document.createTextNode(lang === "ar" ? g.title.ar : g.title.en));
+        a.addEventListener("mouseenter", hoverSfx); a.addEventListener("click", function () { sfx("step"); });
+        levels.appendChild(a);
 
-        var block = el("article", "group"); block.id = gid;
-        var gh = el("div", "group-head reveal");
-        gh.appendChild(el("span", "g-num", pad(gi + 1)));
-        var h = el("h3", "g-title"); h.appendChild(el("b", null, g.title.en)); h.appendChild(el("span", null, g.title.ar)); gh.appendChild(h);
-        var tags = el("ul", "g-tags");
+        var block = el("article", "level"); block.id = gid;
+        var gh = el("div", "level-head");
+        var l = el("div");
+        var no = el("span", "lvl-no"); no.appendChild(document.createTextNode(UI[lang].level + " " + pad(gi + 1) + "/" + pad(c.groups.length)));
+        var bar = el("span", "bar"); for (var b = 0; b < c.groups.length; b++) bar.appendChild(el("i", b <= gi ? "on" : null)); no.appendChild(bar);
+        l.appendChild(no);
+        var h = el("h3", "lvl-title"); h.appendChild(el("b", "glow", g.title.en)); h.appendChild(el("span", "glow", g.title.ar)); l.appendChild(h);
+        l.appendChild(el("p", "lvl-desc glow", t(g.desc)));
+        gh.appendChild(l);
+        var tags = el("ul", "lvl-tags");
         t(g.tags).forEach(function (x) { tags.appendChild(el("li", null, x)); });
         tags.appendChild(el("li", null, g.items.length + " " + UI[lang].items));
         gh.appendChild(tags);
-        gh.appendChild(el("p", "g-desc", t(g.desc)));
         block.appendChild(gh);
 
         var wrap = el("div", "rail-wrap");
         var rail = el("div", "rail");
         g.items.forEach(function (it, ii) { rail.appendChild(tile(g, it, ii)); });
         wrap.appendChild(rail);
-        var prev = el("button", "rail-btn prev"); prev.type = "button"; prev.innerHTML = ARROW; prev.setAttribute("aria-label", "Previous");
-        var next = el("button", "rail-btn next"); next.type = "button"; next.innerHTML = ARROW; next.setAttribute("aria-label", "Next");
-        (lang === "ar" ? next : prev).firstChild.style.transform = "scaleX(-1)";
+        var prev = el("button", "pbtn icon-btn rail-btn prev"); prev.type = "button"; prev.setAttribute("aria-label", "Previous"); prev.appendChild(ico(lang === "ar" ? "next" : "prev"));
+        var next = el("button", "pbtn icon-btn rail-btn next"); next.type = "button"; next.setAttribute("aria-label", "Next"); next.appendChild(ico(lang === "ar" ? "prev" : "next"));
         var dir = lang === "ar" ? -1 : 1;
-        prev.onclick = function () { rail.scrollBy({ left: -dir * rail.clientWidth * .8, behavior: "smooth" }); };
-        next.onclick = function () { rail.scrollBy({ left: dir * rail.clientWidth * .8, behavior: "smooth" }); };
-        function sync() {
-          var max = rail.scrollWidth - rail.clientWidth, x = Math.abs(rail.scrollLeft);
-          prev.disabled = x < 8; next.disabled = x > max - 8;
-        }
+        prev.onclick = function () { sfx("step"); rail.scrollBy({ left: -dir * rail.clientWidth * .8, behavior: "smooth" }); };
+        next.onclick = function () { sfx("step"); rail.scrollBy({ left: dir * rail.clientWidth * .8, behavior: "smooth" }); };
+        function sync() { var max = rail.scrollWidth - rail.clientWidth, x = Math.abs(rail.scrollLeft); prev.disabled = x < 8; next.disabled = x > max - 8; }
         rail.addEventListener("scroll", sync, { passive: true });
         wrap.appendChild(prev); wrap.appendChild(next);
         block.appendChild(wrap);
@@ -233,33 +349,21 @@
       });
       root.appendChild(sec);
     });
-    watchChapters();
+    watchLevels();
   }
 
   function tile(g, it, idx) {
     var d = el("div", "tile"); d.tabIndex = 0; d.setAttribute("role", "button");
     d.style.setProperty("--r", it.r || 1);
     d.setAttribute("aria-label", g.title.en + " " + (idx + 1));
-    var img = new Image(); img.src = poster(it); img.alt = t(g.title); img.loading = "lazy"; img.decoding = "async";
+    var img = new Image(); img.src = poster(it); img.alt = g.title.en + " · " + g.title.ar; img.loading = "lazy"; img.decoding = "async";
     d.appendChild(img);
-    var badge = el("span", "tile-badge"); badge.appendChild(svg(it.v ? "play" : "camera")); badge.appendChild(document.createTextNode(it.v ? UI[lang].video : UI[lang].photo));
-    d.appendChild(badge);
-    if (it.v) {
-      var pl = el("span", "tile-play"); pl.appendChild(icon("play", "pink", "round")); d.appendChild(pl);
-      d._item = it;
-      if (canHover) {
-        d.addEventListener("mouseenter", function () { playTile(d); });
-        d.addEventListener("mouseleave", function () { stopTile(d); });
-      } else if (touchIO) touchIO.observe(d);
-    }
+    d.appendChild(el("span", "tile-badge", it.v ? "▶ VIDEO" : "◼ PHOTO"));
+    if (it.v) { var e = el("span", "tile-eye"); var s = el("span"); s.appendChild(eye(15)); e.appendChild(s); d.appendChild(e); d._item = it; }
     if (canHover) {
-      d.addEventListener("pointermove", function (e) {
-        var r = d.getBoundingClientRect();
-        d.style.setProperty("--ry", (((e.clientX - r.left) / r.width - .5) * 10).toFixed(2) + "deg");
-        d.style.setProperty("--rx", (((e.clientY - r.top) / r.height - .5) * -10).toFixed(2) + "deg");
-      });
-      d.addEventListener("pointerleave", function () { d.style.setProperty("--rx", "0deg"); d.style.setProperty("--ry", "0deg"); });
-    }
+      d.addEventListener("mouseenter", function () { hoverSfx(); if (it.v) playTile(d); });
+      d.addEventListener("mouseleave", function () { if (it.v) stopTile(d); });
+    } else if (tileIO) tileIO.observe(d);
     d.onclick = function () { openLB(g, idx); };
     d.onkeydown = function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLB(g, idx); } };
     return d;
@@ -267,39 +371,37 @@
   function playTile(d) {
     var v = d.querySelector("video");
     if (!v) {
-      v = document.createElement("video");
-      v.muted = true; v.loop = true; v.playsInline = true; v.setAttribute("playsinline", ""); v.preload = "auto";
+      v = document.createElement("video"); v.muted = true; v.loop = true; v.playsInline = true; v.setAttribute("playsinline", ""); v.preload = "auto";
       v.src = src(d._item);
       v.addEventListener("playing", function () { if (d._want) d.classList.add("playing"); });
       d.insertBefore(v, d.children[1]);
     }
-    d._want = true;
-    var p = v.play(); if (p && p.catch) p.catch(function () {});
+    d._want = true; var p = v.play(); if (p && p.catch) p.catch(function () {});
   }
-  function stopTile(d) {
-    d._want = false; d.classList.remove("playing");
-    var v = d.querySelector("video"); if (v) v.pause();
-  }
-  // On touch screens, preview videos that are mostly on screen.
-  var touchIO = !canHover && "IntersectionObserver" in window ? new IntersectionObserver(function (en) {
-    en.forEach(function (e) { if (e.intersectionRatio > .7) playTile(e.target); else stopTile(e.target); });
+  function stopTile(d) { d._want = false; d.classList.remove("playing"); var v = d.querySelector("video"); if (v) v.pause(); }
+  // Touch screens: the tile that is mostly on screen gets its colour back and previews.
+  var tileIO = !canHover && "IntersectionObserver" in window ? new IntersectionObserver(function (en) {
+    en.forEach(function (e) {
+      var on = e.intersectionRatio > .7; e.target.classList.toggle("on", on);
+      if (e.target._item) { if (on) playTile(e.target); else stopTile(e.target); }
+    });
   }, { threshold: [0, .7, 1] }) : null;
 
-  var chapterIO = null;
-  function watchChapters() {
+  var levelIO = null, currentLevel = null;
+  function watchLevels() {
     if (!("IntersectionObserver" in window)) return;
-    if (chapterIO) chapterIO.disconnect();
-    chapterIO = new IntersectionObserver(function (en) {
+    if (levelIO) levelIO.disconnect();
+    levelIO = new IntersectionObserver(function (en) {
       en.forEach(function (e) {
         if (!e.isIntersecting) return;
-        var link = document.querySelector('.chapters a[href="#' + e.target.id + '"]');
-        if (!link) return;
+        var link = document.querySelector('.levels a[href="#' + e.target.id + '"]'); if (!link) return;
         $$("a", link.parentNode).forEach(function (a) { a.classList.toggle("on", a === link); });
-        var bar = link.parentNode, off = link.offsetLeft - bar.clientWidth / 2 + link.clientWidth / 2;
-        bar.scrollTo({ left: off, behavior: "smooth" });
+        var bar = link.parentNode; bar.scrollTo({ left: link.offsetLeft - bar.clientWidth / 2 + link.clientWidth / 2, behavior: "smooth" });
+        if (currentLevel && currentLevel !== e.target.id) sfx("level");
+        currentLevel = e.target.id;
       });
     }, { rootMargin: "-45% 0px -50% 0px" });
-    $$(".group").forEach(function (g) { chapterIO.observe(g); });
+    $$(".level").forEach(function (g) { levelIO.observe(g); });
   }
 
   /* ---------- Lightbox ---------- */
@@ -307,31 +409,31 @@
   function openLB(g, i) {
     lastFocus = document.activeElement; lbGroup = g; lbIdx = i;
     $$(".tile.playing").forEach(stopTile);
-    lb.hidden = false; requestAnimationFrame(function () { lb.classList.add("open"); });
-    document.body.style.overflow = "hidden";
-    showLB(); $("#lbClose").focus();
+    lb.hidden = false; document.body.style.overflow = "hidden";
+    sfx("open"); showLB(); $("#lbClose").focus();
   }
   function closeLB() {
     var v = $("#lbMedia video"); if (v) v.pause();
-    lb.classList.remove("open"); document.body.style.overflow = "";
-    setTimeout(function () { lb.hidden = true; $("#lbMedia").innerHTML = ""; }, 300);
-    if (lastFocus) lastFocus.focus();
+    lb.hidden = true; $("#lbMedia").innerHTML = ""; document.body.style.overflow = "";
+    sfx("close"); if (lastFocus) lastFocus.focus();
   }
-  function stepLB(dir) { var n = lbGroup.items.length; lbIdx = (lbIdx + dir + n) % n; showLB(); }
+  function stepLB(d) { var n = lbGroup.items.length; lbIdx = (lbIdx + d + n) % n; sfx("step"); showLB(); }
   function showLB() {
     var it = lbGroup.items[lbIdx], m = $("#lbMedia"); m.innerHTML = "";
     if (it.v) {
-      var v = document.createElement("video");
-      v.src = src(it); v.poster = poster(it); v.controls = true; v.autoplay = true; v.playsInline = true; v.setAttribute("playsinline", "");
+      var v = document.createElement("video"); v.src = src(it); v.poster = poster(it); v.controls = true; v.autoplay = true; v.playsInline = true; v.setAttribute("playsinline", "");
       m.appendChild(v);
-    } else {
-      var img = new Image(); img.src = src(it); img.alt = t(lbGroup.title); m.appendChild(img);
-    }
+    } else { var img = new Image(); img.src = src(it); img.alt = lbGroup.title.en; m.appendChild(img); }
     var multi = lbGroup.items.length > 1;
-    $("#lbPrev").hidden = !multi; $("#lbNext").hidden = !multi;
+    $("#lbPrev").style.visibility = multi ? "" : "hidden"; $("#lbNext").style.visibility = multi ? "" : "hidden";
     $("#lbCount").textContent = pad(lbIdx + 1) + " / " + pad(lbGroup.items.length);
-    $("#lbTitle").textContent = lbGroup.title.en + " · " + lbGroup.title.ar;
-    $("#lbDesc").textContent = t(lbGroup.desc);
+    $("#lbTitle").textContent = lbGroup.title.en.toUpperCase();
+    $("#lbDesc").textContent = shapeAr(t(lbGroup.desc));
+  }
+  function paintLBButtons() {
+    $("#lbClose").innerHTML = ""; $("#lbClose").appendChild(ico("close"));
+    $("#lbPrev").innerHTML = ""; $("#lbPrev").appendChild(ico(lang === "ar" ? "next" : "prev"));
+    $("#lbNext").innerHTML = ""; $("#lbNext").appendChild(ico(lang === "ar" ? "prev" : "next"));
   }
   $("#lbClose").onclick = closeLB;
   $("#lbPrev").onclick = function () { stepLB(-1); };
@@ -354,47 +456,49 @@
 
   /* ---------- About ---------- */
   function renderAbout() {
-    var box = $("#aboutImg"); box.innerHTML = "";
-    var img = new Image(); img.src = src(P.about.image); img.alt = t(P.name); img.loading = "lazy"; box.appendChild(img);
+    var box = $("#aboutImg"); $$("img", box).forEach(function (i) { i.remove(); });
+    var img = new Image(); img.src = src(P.about.image); img.alt = t(P.name); img.loading = "lazy"; box.insertBefore(img, box.firstChild);
   }
 
-  /* ---------- Reveal ---------- */
-  var io = "IntersectionObserver" in window ? new IntersectionObserver(function (en) {
-    en.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
-  }, { threshold: .12 }) : null;
-  function observeReveals() {
-    $$(".reveal:not(.in)").forEach(function (n, k) {
-      if (!io) { n.classList.add("in"); return; }
-      if (n.classList.contains("svc")) n.style.transitionDelay = (k % 4) * 70 + "ms";
-      io.observe(n);
-    });
-  }
+  /* ---------- Sound + language buttons ---------- */
+  function paintSound() { var b = $("#soundBtn"); b.innerHTML = ""; b.appendChild(ico(sfxOn ? "soundOn" : "soundOff")); b.setAttribute("aria-pressed", String(sfxOn)); b.title = UI[lang].sound; }
+  $("#soundBtn").onclick = function () {
+    sfxOn = !sfxOn; try { localStorage.setItem("zm-sfx", sfxOn ? "1" : "0"); } catch (e) {}
+    if (sfxOn) { audio(); sfx("click"); } paintSound();
+  };
+  $("#langBtn").onclick = function () {
+    lang = lang === "ar" ? "en" : "ar"; try { localStorage.setItem("zm-lang", lang); } catch (e) {}
+    sfx("click"); render();
+  };
+  document.addEventListener("click", function (e) { var a = e.target.closest && e.target.closest("[data-sfx]"); if (a) sfx(a.dataset.sfx); });
+  document.addEventListener("mouseover", function (e) { var a = e.target.closest && e.target.closest(".pbtn, .nav-links a, .brand"); if (a && !a.contains(e.relatedTarget)) hoverSfx(); });
+
+  /* ---------- Boot ---------- */
+  var boot = $("#boot");
+  function endBoot(withSound) { if (boot.classList.contains("done")) return; if (withSound) { audio(); sfx("start"); } boot.classList.add("done"); }
+  boot.addEventListener("pointerdown", function () { endBoot(true); });
+  window.addEventListener("keydown", function () { endBoot(true); }, { once: true });
+  setTimeout(function () { endBoot(false); }, reduced ? 0 : 2600);
+
+  /* ---------- Cursor ---------- */
+  var root = document.documentElement.style;
+  root.setProperty("--cur", svgURI(CURSOR, solid(CURSOR), 2) + " 0 0, auto");
+  root.setProperty("--cur-hand", svgURI(HAND, solid(HAND), 2) + " 8 0, pointer");
+  var fav = document.createElement("link"); fav.rel = "icon";
+  fav.href = svgURI(LOGO["31"].eye.map(function (r, y) { return r.split("").map(function (c, x) { return c === "#" || LOGO["31"].iris[y][x] === "#" ? "#" : "."; }).join(""); }), null, 2).slice(5, -2);
+  document.head.appendChild(fav);
 
   function render() {
     renderStatic();
     renderCollections();
     renderAbout();
-    $$(".hero .reveal").forEach(function (n, i) { n.style.transitionDelay = i * 80 + "ms"; });
-    observeReveals();
+    renderHero();
+    paintSound();
+    paintLBButtons();
+    shapeTree(document.body);
+    collectGlow();
+    if (midIO) { midIO.disconnect(); glowEls.forEach(function (n) { midIO.observe(n); }); }
   }
-
-  $("#langBtn").onclick = function () {
-    lang = lang === "ar" ? "en" : "ar";
-    try { localStorage.setItem("zm-lang", lang); } catch (e) {}
-    render();
-    $$(".reveal").forEach(function (n) { n.classList.add("in"); });
-  };
-
-  buildFloaters($("#floaters"), FLOAT_SPOTS);
-  buildFloaters($("#ctaFloaters"), [
-    { k: "ico", g: "chat", c: "lime", s: 70, x: 6, y: 14, d: 1.6, r: -12 },
-    { k: "ico", g: "insta", c: "pink", s: 64, x: 88, y: 18, d: 2, r: 12 },
-    { k: "ico", g: "mail", c: "cyan", s: 54, x: 84, y: 72, d: 1.2, r: -8 },
-    { k: "orb", c1: "#c4b5fd", c2: "#5b21b6", s: 48, x: 10, y: 74, d: 2.4 },
-    { k: "star4", c: "#c6ff3d", s: 26, x: 22, y: 40, d: 3 }
-  ]);
   render();
   renderReel();
-  window.addEventListener("scroll", onScrollReel, { passive: true });
-  onScrollReel();
 })();
