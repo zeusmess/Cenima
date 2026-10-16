@@ -78,18 +78,18 @@
   // ---------- named moments (render.js stills @drop · verify measures the 'av' ones) ----------
   const markers = {
     hook: { t: ev.hook, sync: 'av' },
-    froth: { t: ev.froth, sync: 'av' },
+    froth: { t: ev.froth, sync: 'v' },
     ice1: { t: ev.ice[0], sync: 'av' },
-    ice2: { t: ev.ice[1], sync: 'av' },
-    ice3: { t: ev.ice[2], sync: 'av' },
-    ice4: { t: ev.ice[3], sync: 'av' },
+    ice2: { t: ev.ice[1], sync: 'v' },
+    ice3: { t: ev.ice[2], sync: 'v' },
+    ice4: { t: ev.ice[3], sync: 'v' },
     pour: ev.pour,
     count3: { t: ev.count[0], sync: 'v' },
     breath: ev.breath,
     drop: { t: ev.drop, sync: 'av' },
     chip1: { t: ev.chips[0], sync: 'av' },
     chip4: { t: ev.chips[3], sync: 'av' },
-    end: { t: ev.end, sync: 'av' },
+    end: { t: ev.end, sync: 'v' },
   };
 
   const SCORE = { FPS, STYLE, FORMAT, W, H, SAFE, WIDE, DURATION, clock, T, BEAT, S, m, chords, chordAt, HOOK, lead, ev, vo, chipText, markers };
