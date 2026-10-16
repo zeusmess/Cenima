@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Headless Chromium as root (cloud containers) needs --no-sandbox.
+exec /opt/pw-browsers/chromium-1194/chrome-linux/chrome --no-sandbox "$@"

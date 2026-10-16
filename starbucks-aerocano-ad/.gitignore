@@ -1,0 +1,4 @@
+out/*
+!out/starbucks-aerocano-ad.mp4
+tools/voices/*.onnx
+tools/voices/*.onnx.json

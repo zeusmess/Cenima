@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Hype-announcer wrapper around piper (the engine calls `piper --model M --output_file F` with text on stdin).
+# Faster, more expressive delivery, then a broadcast chain: slightly deeper pitch, chest + presence EQ,
+# hard compression and a touch of saturation so the voice punches through the EDM.
+set -euo pipefail
+REAL=${REAL_PIPER:-/usr/local/bin/piper}
+if [[ "${1:-}" == "--help" ]]; then exec "$REAL" --help; fi
+MODEL=""; OUT=""
+while [[ $# -gt 0 ]]; do case "$1" in --model) MODEL=$2; shift 2;; --output_file) OUT=$2; shift 2;; *) shift;; esac; done
+RAW=$(mktemp --suffix=.wav)
+"$REAL" --model "$MODEL" --output_file "$RAW" --length-scale "${VO_LENGTH:-0.86}" --noise-scale 0.8 --noise-w-scale 0.9 --sentence-silence 0.08 >/dev/null 2>&1
+ffmpeg -v error -y -i "$RAW" -af "asetrate=22050*0.94,aresample=22050,atempo=1.0638,\
+equalizer=f=140:t=q:w=1:g=4,equalizer=f=3200:t=q:w=1.2:g=5,equalizer=f=8000:t=h:w=1:g=2,\
+acompressor=threshold=-22dB:ratio=6:attack=3:release=60:makeup=6,asoftclip=type=tanh,alimiter=limit=0.95" "$OUT"
+rm -f "$RAW"
