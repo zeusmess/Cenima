@@ -109,6 +109,12 @@ window.PORTFOLIO = {
       },
       groups: [
         {
+          title: { en: "The Museum", ar: "المتحف" },
+          tags: { ar: ["تصوير", "صور متنوعة"], en: ["Photography", "Mixed"] },
+          desc: { ar: "صور متنوعة: من المتحف المصري للبحر والجبل وشوارع القاهرة بالليل.", en: "A mixed gallery: from the Egyptian Museum to the sea, the mountains and Cairo at night." },
+          items: [{ i: "museum-01", r: 0.715 }, { i: "museum-02", r: 0.75 }, { i: "museum-03", r: 0.726 }, { i: "museum-04", r: 0.667 }, { i: "museum-05", r: 0.667 }, { i: "museum-06", r: 0.748 }, { i: "museum-07", r: 0.665 }, { i: "museum-08", r: 0.75 }, { i: "museum-09", r: 0.667 }, { i: "museum-10", r: 0.75 }, { i: "museum-11", r: 0.75 }, { i: "museum-12", r: 1.5 }, { i: "museum-13", r: 1.788 }]
+        },
+        {
           title: { en: "Red Room", ar: "الأوضة الحمرا" },
           tags: { ar: ["تصوير", "تعديل صور"], en: ["Photography", "Retouching"] },
           desc: { ar: "سلسلة بورتريه بالأحمر: سينما، تليفزيونات، وأقنعة.", en: "A portrait series in red: cinema seats, CRT screens and masks." },
