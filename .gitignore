@@ -12,3 +12,8 @@ output/
 dist/crazygames-*/
 # Twinsight promo videos are deliverables
 !promo/*.mp4
+
+# Twinsight Android build: intermediate files, and the signing key (never commit it)
+build/
+android/*.keystore
+android/*.password

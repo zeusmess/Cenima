@@ -22,4 +22,14 @@ python3 tools/build_crazygames.py
 
 ينتج `dist/twinsight-crazygames-basic.zip` (أول رفع، بلا إعلانات) و`dist/twinsight-crazygames-full.zip` (بعد اختيار اللعبة لـ Full Launch: إعلانات وحفظ تقدّم). الخطوط في `game/fonts` (رخصة OFL). خطوات الرفع والترويج والأغلفة والفيديوهات في [`promo/LAUNCH.md`](../promo/LAUNCH.md).
 
-الأغلفة تُرسم من `tools/promo/cover.html`.
+الأغلفة تُرسم من `tools/promo/cover.html`، وأيقونة التطبيق من `tools/promo/icon.html`.
+
+## تطبيق أندرويد (APK)
+
+```
+ANDROID_HOME=/path/to/android-sdk python3 tools/build_apk.py
+```
+
+ينتج `dist/twinsight-1.0.0.apk`: تطبيق WebView بملء الشاشة، الكود في `android/` بلا Gradle وبلا مكتبات إضافية. اللعبة وخطوطها داخل التطبيق نفسه، فتشتغل بدون إنترنت، والصلاحية الوحيدة هي الاهتزاز. يحتاج JDK وAndroid SDK فيه build-tools و`platforms;android-36`.
+
+التطبيق موقّع بمفتاح `android/twinsight-release.keystore` (كلمة سره في `android/twinsight-release.password`). الملفان لا يُرفعان على GitHub. احتفظ بهما: أي تحديث للتطبيق لازم يتوقّع بنفس المفتاح، وإلا أندرويد يرفض تثبيته فوق النسخة القديمة. عند كل تحديث زوّد `VERSION_CODE` في `tools/build_apk.py`.

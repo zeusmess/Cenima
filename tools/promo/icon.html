@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Twinsight icon</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+  canvas { display: block; width: 100vw; height: 100vh; }
+</style>
+</head>
+<body>
+<canvas id="cv"></canvas>
+<script>
+// App icon: the split world with the eye on the seam, both gaps lined up and a light entering.
+// #fg  = adaptive-icon foreground (108dp layer, art kept inside the 66dp safe circle)
+// #full = legacy square icon and store icon (art fills more of the frame)
+const cv = document.getElementById('cv'), ctx = cv.getContext('2d');
+const TAU = Math.PI * 2, DEG = Math.PI / 180;
+const fg = location.hash === '#fg';
+const S = innerWidth;
+cv.width = S; cv.height = S;
+
+function almond(x, y, ew, eh) {
+  const a = Math.min(eh * 0.62, ew * 0.45);
+  ctx.beginPath();
+  ctx.moveTo(x - ew, y);
+  ctx.bezierCurveTo(x - ew + a, y - a, x - ew * 0.42, y - eh, x, y - eh);
+  ctx.bezierCurveTo(x + ew * 0.42, y - eh, x + ew - a, y - a, x + ew, y);
+  ctx.bezierCurveTo(x + ew - a, y + a, x + ew * 0.42, y + eh, x, y + eh);
+  ctx.bezierCurveTo(x - ew * 0.42, y + eh, x - ew + a, y + a, x - ew, y);
+  ctx.closePath();
+}
+
+const cx = S / 2, cy = S / 2, EW = S * (fg ? 0.27 : 0.4), EH = EW * 0.7;
+ctx.fillStyle = '#000'; ctx.fillRect(0, 0, S, S);
+ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, S / 2, S);
+ctx.globalCompositeOperation = 'difference';
+ctx.fillStyle = '#fff'; ctx.strokeStyle = '#fff'; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+
+ctx.lineWidth = EW * 0.06;
+almond(cx, cy, EW, EH); ctx.stroke();
+almond(cx, cy, EW * 0.75, EW * 0.51); ctx.stroke();
+
+const gapA = -125 * DEG;
+const ring = (r, w, g) => {
+  ctx.lineWidth = w;
+  const cap = (w / 2) / r;
+  ctx.beginPath(); ctx.arc(cx, cy, r, gapA + g + cap, gapA - g - cap + TAU); ctx.stroke();
+};
+ring(EW * 0.4, EW * 0.11, 34 * DEG);
+ring(EW * 0.215, EW * 0.09, 32 * DEG);
+ctx.beginPath(); ctx.arc(cx, cy, EW * 0.075, 0, TAU); ctx.fill();
+
+// A light entering through the lined-up gaps.
+const d = EW * 0.62, lx = cx + Math.cos(gapA) * d, ly = cy + Math.sin(gapA) * d;
+ctx.beginPath(); ctx.arc(lx, ly, EW * 0.055, 0, TAU); ctx.fill();
+ctx.globalCompositeOperation = 'source-over';
+document.body.dataset.ready = '1';
+</script>
+</body>
+</html>

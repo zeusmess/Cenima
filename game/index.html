@@ -181,6 +181,17 @@ p{margin:0;line-height:1.8}
   .card{padding:20px 20px;gap:14px}
   .final{font-size:46px}
 }
+/* Phones held sideways: very little height for the menu */
+@media (max-height:430px){
+  .menu{padding-block:10px 8px}
+  .brand .cap{display:none}
+  .logo{font-size:clamp(30px,12vh,60px)}
+  .menu-foot{gap:8px}
+  .btn.mode{min-height:46px;padding:6px 10px;gap:2px}
+  .btn.mode span{font-size:11px}
+  .row .btn{min-height:36px;padding:6px 12px;font-size:13px}
+  .row .icon-btn{width:36px;height:36px}
+}
 @media (prefers-reduced-motion: reduce){
   .toast{animation:none}
   .btn,.bar i{transition:none}
@@ -1637,6 +1648,19 @@ $('#joinForm').addEventListener('submit', e => {
 $('#btnSwap').addEventListener('click', () => { Net.myPart = Net.myPart === 'iris' ? 'pupil' : 'iris'; olView(); });
 $('#btnOlStart').addEventListener('click', () => act('start'));
 $('#btnOlBack').addEventListener('click', () => { if (Net.nr) { leaveRoom(); S.openT = 1; olView(); olError(''); } else showScreen('scrMenu'); });
+
+/* ---------- Android app hooks (the APK calls these; nothing else does) ---------- */
+// Back button: returns true when the game handled it, false to let the app close.
+window.__twinsightBack = () => {
+  if (S.busy) return true;
+  if (S.mode === 'play') { act('pause'); return true; }
+  if (S.mode === 'pause') { act('resume'); return true; }
+  if (!$('#scrHow').hidden || !$('#scrAch').hidden) { showScreen('scrMenu'); return true; }
+  if (!$('#scrOnline').hidden) { $('#btnOlBack').click(); return true; }
+  if (S.mode !== 'menu') { toMenu(); return true; }
+  return false;
+};
+window.__twinsightPause = () => { if (S.mode === 'play' && Net.role !== 'guest') pause(''); };
 
 /* ---------- Loop & boot ---------- */
 let last = performance.now();

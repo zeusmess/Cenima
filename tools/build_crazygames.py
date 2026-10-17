@@ -63,20 +63,24 @@ def fetch_fonts():
     print(f"fonts: {len(saved)} files, {len(out)} @font-face rules")
 
 
-def build(target):
+def page_html(target, with_sdk):
+    """game/index.html with self-hosted fonts and the given build target (and the CrazyGames SDK if asked)."""
+    if not (FONTS / "fonts.css").exists():
+        fetch_fonts()
     html = SRC.read_text(encoding="utf-8")
     links = re.compile(r'<link rel="preconnect"[^>]*>\n<link rel="preconnect"[^>]*>\n<link rel="stylesheet" href="https://fonts\.googleapis\.com[^>]*>')
     if not links.search(html):
         sys.exit("build: the Google Fonts <link> lines were not found in game/index.html")
-    html = links.sub('<link rel="stylesheet" href="fonts/fonts.css">\n' + SDK_TAG, html, count=1)
+    html = links.sub('<link rel="stylesheet" href="fonts/fonts.css">' + ("\n" + SDK_TAG if with_sdk else ""), html, count=1)
     meta = '<meta name="twinsight-target" content="web">'
     if meta not in html:
         sys.exit("build: the twinsight-target <meta> was not found in game/index.html")
     html = html.replace(meta, f'<meta name="twinsight-target" content="{target}">')
-    html = html.replace('<meta name="claude:viewport-fit-sides" content="cover">\n', "")
+    return html.replace('<meta name="claude:viewport-fit-sides" content="cover">\n', "")
 
-    name = "basic" if target == "cg-basic" else "full"
-    out = DIST / f"crazygames-{name}"
+
+def write_page(out, html):
+    """Write index.html and the font files into a fresh folder."""
     if out.exists():
         shutil.rmtree(out)
     (out / "fonts").mkdir(parents=True)
@@ -84,6 +88,12 @@ def build(target):
     for f in sorted(FONTS.iterdir()):
         if f.suffix in {".woff2", ".css", ".txt"}:
             shutil.copy2(f, out / "fonts" / f.name)
+
+
+def build(target):
+    name = "basic" if target == "cg-basic" else "full"
+    out = DIST / f"crazygames-{name}"
+    write_page(out, page_html(target, with_sdk=True))
 
     zpath = DIST / f"twinsight-crazygames-{name}.zip"
     with zipfile.ZipFile(zpath, "w", zipfile.ZIP_DEFLATED) as z:
