@@ -48,6 +48,17 @@ kbd{font-family:var(--font-display);font-size:11px;font-weight:600;border:1.5px 
 .lives svg{width:12px;height:12px;display:block}
 .icon-btn{width:40px;height:40px;border-radius:50%;border:1.5px solid currentColor;background:transparent;color:inherit;display:grid;place-items:center;padding:0;cursor:pointer;touch-action:manipulation;flex:none}
 .icon-btn svg{width:16px;height:16px}
+/* Shootout HUD: team, kicks and score replace score, stage and lives */
+.hud.so{gap:8px}
+.hud.so .eye-only,.hud:not(.so) .so-only{display:none!important}
+.so-team{display:flex;flex-direction:column;align-items:flex-start;gap:7px}
+.h-side .so-team{align-items:flex-end}
+.so-lbl{font-family:var(--font-display);font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;line-height:1.3;white-space:nowrap}
+.is-ar .so-lbl{font-family:var(--font-body);font-size:12px;letter-spacing:0}
+.sdots{display:flex;gap:5px;direction:ltr}
+.sdots svg{width:12px;height:12px;display:block;flex:none}
+.sdots .pend{opacity:.4}
+.h-stage b.so-score{font-size:28px;letter-spacing:.02em;line-height:1;font-variant-numeric:tabular-nums;direction:ltr;white-space:nowrap}
 
 /* Touch / key pads */
 .pads{position:absolute;left:0;right:0;bottom:0;z-index:3;direction:ltr;display:flex;flex-direction:column;gap:10px;padding-block:16px 18px;pointer-events:none}
@@ -60,6 +71,7 @@ kbd{font-family:var(--font-display);font-size:11px;font-weight:600;border:1.5px 
 .pads.solo .pad-labels{grid-template-columns:1fr}
 .pads.solo .pad-row{grid-template-columns:repeat(2,1fr)}
 .pads.solo #lblR,.pads.solo #z2,.pads.solo #z3{display:none}
+.pads.so .ic-rot,.pads:not(.so) .ic-dir{display:none}
 @media (hover:hover) and (pointer:fine){.z i{display:none}}
 @media (hover:none){.z kbd{display:none}}
 
@@ -70,8 +82,8 @@ kbd{font-family:var(--font-display);font-size:11px;font-weight:600;border:1.5px 
 .brand{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
 .logo{font-family:var(--font-display);font-weight:800;font-size:clamp(36px,min(11.2vw,15vh),104px);line-height:.95;letter-spacing:-.02em;margin:0;direction:ltr}
 .tag{max-width:36ch;font-size:15px;line-height:1.8;margin:0;text-wrap:balance}
-.menu-foot{width:100%;max-width:460px;display:flex;flex-direction:column;gap:14px}
-.modes{direction:ltr;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.menu-foot{width:100%;max-width:600px;display:flex;flex-direction:column;gap:14px}
+.modes{direction:ltr;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 .best{direction:ltr;text-align:center;margin:0;display:flex;justify-content:center;align-items:baseline;gap:10px}
 .best b{font-family:var(--font-display);font-weight:600;font-size:14px;font-variant-numeric:tabular-nums}
 
@@ -148,6 +160,23 @@ p{margin:0;line-height:1.8}
 .dot{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--white)}
 .dot.ok{background:var(--white)}
 .err{font-size:13px;text-align:center;border:1.5px dashed var(--white);border-radius:14px;padding:8px 12px}
+/* Shootout sheets */
+.so-opt{flex-direction:column;gap:3px;min-height:64px;border-radius:22px;padding:10px 14px}
+.so-opt b{font-weight:600;font-size:15px}
+.so-opt span{font-size:12px;font-weight:400;line-height:1.4;color:var(--grey)}
+.so-opt.primary span{color:var(--black);opacity:.7}
+.so-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.is-ar #soDiff{direction:rtl}
+.is-ar #soDiff button{font-family:var(--font-body);font-size:13px;letter-spacing:0}
+.so-card .so-info{gap:14px}
+.so-how{border-top:1px solid var(--hair);padding-top:16px;display:flex;flex-direction:column;gap:8px}
+.so-how b{font-family:var(--font-display);font-weight:800;font-size:15px;letter-spacing:.14em;direction:ltr}
+.is-ar .so-how b{text-align:right}
+.so-sum{display:grid;grid-template-columns:auto 1fr auto;gap:10px 14px;align-items:center;width:100%;max-width:320px;direction:ltr}
+.so-sum .sdots{flex-wrap:wrap}
+.so-sum b{font-family:var(--font-display);font-weight:800;font-size:17px;font-variant-numeric:tabular-nums}
+.trophy{width:58px;height:58px;display:block}
+.sel{user-select:text;-webkit-user-select:text;word-break:break-word}
 
 /* Toast */
 .toast{position:absolute;z-index:8;top:96px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;background:var(--white);color:var(--black);border-radius:999px;padding:10px 20px;white-space:nowrap;max-width:calc(100% - 32px);animation:toast-in .35s ease}
@@ -155,6 +184,12 @@ p{margin:0;line-height:1.8}
 @keyframes toast-in{from{opacity:0;transform:translate(-50%,-8px)}to{opacity:1;transform:translate(-50%,0)}}
 
 @media (max-width:520px){
+  .modes{grid-template-columns:1fr 1fr}
+  .modes .so{grid-column:1/-1;order:-1}
+  .sdots{gap:4px}
+  .sdots svg{width:10px;height:10px}
+  .so-lbl{font-size:10px;letter-spacing:.14em}
+  .h-stage b.so-score{font-size:24px}
   .duo2{grid-template-columns:1fr}
   .card{padding:24px 18px}
   .h-score b{font-size:24px}
@@ -180,6 +215,12 @@ p{margin:0;line-height:1.8}
   .z i{width:38px;height:38px}
   .card{padding:20px 20px;gap:14px}
   .final{font-size:46px}
+  .btn.big{min-height:48px}
+}
+/* Wide but short frames: the shootout sheet becomes two columns */
+@media (max-height:560px) and (min-width:700px){
+  .so-card{max-width:780px;flex-direction:row;align-items:center;gap:26px}
+  .so-card>div{flex:1;min-width:0}
 }
 /* Phones held sideways: very little height for the menu */
 @media (max-height:430px){
@@ -191,6 +232,8 @@ p{margin:0;line-height:1.8}
   .btn.mode span{font-size:11px}
   .row .btn{min-height:36px;padding:6px 12px;font-size:13px}
   .row .icon-btn{width:36px;height:36px}
+  .so-card p{font-size:13px;line-height:1.6}
+  .so-opt{min-height:52px;padding:6px 12px}
 }
 @media (prefers-reduced-motion: reduce){
   .toast{animation:none}
@@ -204,18 +247,22 @@ p{margin:0;line-height:1.8}
 
   <header class="hud blend" id="hud" hidden>
     <div class="h-score">
-      <span class="cap">Score</span>
-      <b id="hScore">0</b>
-      <span class="mult" id="hMult">×1</span>
+      <span class="cap eye-only">Score</span>
+      <b class="eye-only" id="hScore">0</b>
+      <span class="mult eye-only" id="hMult">×1</span>
+      <div class="so-team so-only"><span class="so-lbl" id="soNameW">White</span><div class="sdots" id="soDotsW"></div></div>
     </div>
     <div class="h-stage">
-      <span class="cap" id="hNum">Stage 01</span>
-      <b id="hName">DAWN</b>
-      <span class="ar ar-only" id="hAr">الفجر</span>
-      <div class="bar" aria-hidden="true"><i id="hBar"></i></div>
+      <span class="cap eye-only" id="hNum">Stage 01</span>
+      <b class="eye-only" id="hName">DAWN</b>
+      <span class="ar ar-only eye-only" id="hAr">الفجر</span>
+      <div class="bar eye-only" aria-hidden="true"><i id="hBar"></i></div>
+      <b class="so-score so-only" id="soScore">0 – 0</b>
+      <span class="so-lbl so-only" id="soInfo"></span>
     </div>
     <div class="h-side">
-      <div class="lives" id="hLives"></div>
+      <div class="lives eye-only" id="hLives"></div>
+      <div class="so-team so-only"><span class="so-lbl" id="soNameB">Black</span><div class="sdots" id="soDotsB"></div></div>
       <button class="icon-btn" id="btnPause" data-ta="pause"><svg viewBox="0 0 20 20" fill="currentColor"><rect x="5" y="4" width="3.2" height="12" rx="1"/><rect x="11.8" y="4" width="3.2" height="12" rx="1"/></svg></button>
     </div>
   </header>
@@ -223,10 +270,10 @@ p{margin:0;line-height:1.8}
   <div class="pads blend" id="pads" hidden>
     <div class="pad-labels"><span class="cap" id="lblL">Iris</span><span class="cap" id="lblR">Pupil</span></div>
     <div class="pad-row">
-      <span class="z" id="z1"><i><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 10a5.5 5.5 0 1 0 1.6-3.9"/><path d="M5.7 2.8v3.6h3.6"/></svg></i><kbd id="k1">A</kbd></span>
-      <span class="z" id="z2"><i><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 10a5.5 5.5 0 1 1-1.6-3.9"/><path d="M14.3 2.8v3.6h-3.6"/></svg></i><kbd id="k2">D</kbd></span>
-      <span class="z" id="z3"><i><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 10a5.5 5.5 0 1 0 1.6-3.9"/><path d="M5.7 2.8v3.6h3.6"/></svg></i><kbd id="k3">←</kbd></span>
-      <span class="z" id="z4"><i><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 10a5.5 5.5 0 1 1-1.6-3.9"/><path d="M14.3 2.8v3.6h-3.6"/></svg></i><kbd id="k4">→</kbd></span>
+      <span class="z" id="z1"><i><svg class="ic-rot" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 10a5.5 5.5 0 1 0 1.6-3.9"/><path d="M5.7 2.8v3.6h3.6"/></svg><svg class="ic-dir" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l-5 5 5 5"/></svg></i><kbd id="k1">A</kbd></span>
+      <span class="z" id="z2"><i><svg class="ic-rot" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 10a5.5 5.5 0 1 1-1.6-3.9"/><path d="M14.3 2.8v3.6h-3.6"/></svg><svg class="ic-dir" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5l5 5-5 5"/></svg></i><kbd id="k2">D</kbd></span>
+      <span class="z" id="z3"><i><svg class="ic-rot" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 10a5.5 5.5 0 1 0 1.6-3.9"/><path d="M5.7 2.8v3.6h3.6"/></svg><svg class="ic-dir" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l-5 5 5 5"/></svg></i><kbd id="k3">←</kbd></span>
+      <span class="z" id="z4"><i><svg class="ic-rot" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 10a5.5 5.5 0 1 1-1.6-3.9"/><path d="M14.3 2.8v3.6h-3.6"/></svg><svg class="ic-dir" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5l5 5-5 5"/></svg></i><kbd id="k4">→</kbd></span>
     </div>
   </div>
 
@@ -240,11 +287,12 @@ p{margin:0;line-height:1.8}
     <div class="menu-foot">
       <div class="modes">
         <button class="btn mode" id="btnSolo"><b data-t="solo"></b><span data-t="soloSub"></span></button>
+        <button class="btn mode so" id="btnSO"><b data-t="so"></b><span data-t="soSub"></span></button>
         <button class="btn mode" id="btnDuo"><b data-t="duo"></b><span data-t="duoSub"></span></button>
       </div>
       <div class="row">
         <button class="btn" id="btnOnline" hidden data-t="online"></button>
-        <button class="btn" id="btnAch"><span data-t="ach"></span><span class="n" id="achCount">0/14</span></button>
+        <button class="btn" id="btnAch"><span data-t="ach"></span><span class="n" id="achCount">0/19</span></button>
         <button class="btn" id="btnHow" data-t="how"></button>
         <button class="btn" id="btnLang" data-t="lang" data-ta="langAria"></button>
         <button class="icon-btn" id="btnSoundMenu"></button>
@@ -271,6 +319,10 @@ p{margin:0;line-height:1.8}
         <li><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="3.4 3.4"/><circle cx="20" cy="20" r="4.5" fill="currentColor"/></svg><div><b data-t="shiftT"></b><span data-t="shiftD"></span></div></li>
       </ul>
       <p class="muted" data-t="howFoot"></p>
+      <div class="so-how">
+        <b>SHOOTOUT</b>
+        <p data-th="soHow"></p>
+      </div>
       <button class="btn primary" data-back data-t="gotIt"></button>
     </div>
   </section>
@@ -330,7 +382,55 @@ p{margin:0;line-height:1.8}
       <div class="col">
         <button class="btn primary big" id="btnResume" data-t="resume"></button>
         <button class="btn" id="btnSoundPause"></button>
-        <button class="btn ghost" id="btnQuit" data-t="quit"></button>
+        <button class="btn ghost" id="btnQuit"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Shootout: pick a match -->
+  <section class="screen sheet" id="scrSO" hidden>
+    <div class="card so-card">
+      <div class="col so-info">
+        <div class="head"><h2>SHOOTOUT</h2><p class="ar-title ar-only">ضربات الترجيح</p></div>
+        <p data-t="soIntro"></p>
+        <p class="muted" data-th="soKeys"></p>
+      </div>
+      <div class="col">
+        <button class="btn primary big so-opt" id="btnSO2"><b data-t="so2"></b><span data-t="so2Sub"></span></button>
+        <div class="or" data-t="soVs"></div>
+        <div class="pick">
+          <span data-t="soLevel"></span>
+          <div class="seg" id="soDiff" role="group" data-ta="soLevel">
+            <button type="button" data-d="0" data-t="d0" aria-pressed="false"></button>
+            <button type="button" data-d="1" data-t="d1" aria-pressed="true"></button>
+            <button type="button" data-d="2" data-t="d2" aria-pressed="false"></button>
+          </div>
+        </div>
+        <div class="so-opts">
+          <button class="btn so-opt" id="btnSOAI"><b data-t="soAI"></b><span data-t="soAISub"></span></button>
+          <button class="btn so-opt" id="btnSOCup"><b data-t="soCup"></b><span data-t="soCupSub"></span></button>
+        </div>
+        <button class="btn ghost" data-back data-t="back"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Shootout: full time -->
+  <section class="screen sheet" id="scrSOEnd" hidden>
+    <div class="card center">
+      <span class="cap" id="seCap">Shootout</span>
+      <svg class="trophy" id="seCup" hidden viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 7h18v10a9 9 0 0 1-18 0z" fill="currentColor"/><path d="M15 10H9v3a6 6 0 0 0 6 6M33 10h6v3a6 6 0 0 1-6 6"/><path d="M24 26v8M18 41h12M20 34h8"/></svg>
+      <div class="head center"><h2 id="seTitle">WHITE WINS</h2><p class="ar-title ar-only" id="seAr"></p></div>
+      <div class="final" id="seScore">0 – 0</div>
+      <div class="so-sum" id="seSum"></div>
+      <div class="chips" id="seAch"></div>
+      <div class="col">
+        <button class="btn primary big" id="btnSOAgain"></button>
+        <div class="row">
+          <button class="btn" id="btnShare"><svg class="vid" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="14.5" cy="5" r="2.2"/><circle cx="5.5" cy="10" r="2.2"/><circle cx="14.5" cy="15" r="2.2"/><path d="M7.5 9l5-2.8M7.5 11l5 2.8"/></svg><span data-t="share"></span></button>
+          <button class="btn ghost" id="btnSOMenu" data-t="menu"></button>
+        </div>
+        <p class="muted sel" id="seMsg" hidden></p>
       </div>
     </div>
   </section>
@@ -484,7 +584,29 @@ const STR = {
     noRooms: 'Two-device play isn’t available for your account here.', joinFail: 'Couldn’t join the room. Try again.',
     hostLost: 'Lost the connection to the host. Wait for them to come back, or leave the room.',
     pPaused: 'Your partner paused the game.', pLeft: 'Your partner left the room. They can rejoin with the same code.',
-    youPaused: 'You paused the game.', hiddenPause: 'The game paused because the page was hidden.'
+    youPaused: 'You paused the game.', hiddenPause: 'The game paused because the page was hidden.',
+    canvasSO: 'Game area: a penalty shootout. The ball moves along the top of the eye and the keeper guards the goal line inside it',
+    so: 'SHOOTOUT', soSub: 'Penalties · 1 or 2 players',
+    soIntro: 'Penalties on the eye. The shooter slides the ball along the top, the keeper slides the gloves along the goal line. When the countdown ends, the ball flies straight in. 5 kicks each, then sudden death.',
+    soKeys: 'White (left): {A} {D} or the left half of the screen. Black (right): {L} {R} or the right half. Against the AI you are White and can use either.',
+    so2: 'Two players', so2Sub: 'One keyboard or one screen',
+    soVs: 'or play the AI', soLevel: 'AI level', d0: 'AMATEUR', d1: 'PRO', d2: 'LEGEND',
+    soAI: 'Play vs AI', soAISub: 'One match at this level', soCup: 'Cup', soCupSub: 'Amateur, then Pro, then Legend',
+    soHow: 'Penalties on the eye. The shooter slides the ball along the top, the keeper slides the gloves along the goal line, and the ball flies in when the countdown ends. Wait, fake one way, go the other at the last moment. White uses {A} {D}, Black uses {L} {R}.',
+    white: 'White', black: 'Black', you: 'You', aiName: 'AI',
+    kickN: 'Kick {n}/10', sudden: 'Sudden death',
+    rolesW: 'WHITE SHOOTS · BLACK SAVES', rolesB: 'BLACK SHOOTS · WHITE SAVES', youShoot: 'YOU SHOOT', youSave: 'YOU SAVE',
+    goal: 'GOAL!', saved: 'SAVED!',
+    introDuo: 'White shoots first. 5 kicks each, then sudden death.',
+    introSolo: 'You are White and shoot first. 5 kicks each, then sudden death.',
+    quitSO: 'End match', rematch: 'Rematch', next1: 'Play the semi-final', next2: 'Play the final', cupAgain: 'Play the cup again',
+    share: 'Share result', shareFail: 'Copy this and send it:',
+    shWin: 'I beat the {lv} AI {s} on penalties in TWINSIGHT. Your turn:',
+    shLose: 'I lost {s} to the {lv} AI on penalties in TWINSIGHT. Can you beat it?',
+    shCup: 'I won the TWINSIGHT shootout cup! 🏆 Your turn:',
+    shRound: 'I made it through the {r} of the TWINSIGHT shootout cup ({s}). Your turn:',
+    shOut: 'I went out in the {r} of the TWINSIGHT shootout cup. Can you go further?',
+    sh2: '{w} beat {l} {s} on penalties in TWINSIGHT. Play:'
   },
   ar: {
     canvas: 'ساحة اللعب: عين في المنتصف بحلقتين، وضوء وظل يقتربان منها',
@@ -527,7 +649,29 @@ const STR = {
     noRooms: 'اللعب على جهازين غير متاح لحسابك هنا.', joinFail: 'تعذّر الدخول إلى الغرفة. حاولوا مرة أخرى.',
     hostLost: 'انقطع الاتصال بالمضيف. انتظروا عودته أو غادروا الغرفة.',
     pPaused: 'شريكك أوقف اللعب مؤقتًا.', pLeft: 'شريكك خرج من الغرفة. يمكنه العودة بنفس الرمز.',
-    youPaused: 'أوقفت اللعب مؤقتًا.', hiddenPause: 'توقف اللعب لأن الصفحة اختفت.'
+    youPaused: 'أوقفت اللعب مؤقتًا.', hiddenPause: 'توقف اللعب لأن الصفحة اختفت.',
+    canvasSO: 'ساحة اللعب: ضربات ترجيح. الكرة تتحرك أعلى العين والحارس يحمي خط المرمى داخلها',
+    so: 'ضربات ترجيح', soSub: 'ركلات جزاء · لاعب أو اثنان',
+    soIntro: 'ركلات جزاء على العين. المسدِّد يحرّك الكرة على الحافة العليا، والحارس يحرّك القفازين على خط المرمى. عندما ينتهي العدّ تنطلق الكرة مباشرة نحو المرمى. 5 ركلات لكل فريق، ثم الموت المفاجئ.',
+    soKeys: 'الأبيض (يسار): {A} {D} أو النصف الأيسر من الشاشة. الأسود (يمين): {L} {R} أو النصف الأيمن. ضد الكمبيوتر أنت الأبيض وتستطيع استخدام أيٍّ منهما.',
+    so2: 'لاعبان', so2Sub: 'كيبورد واحد أو شاشة واحدة',
+    soVs: 'أو العب ضد الكمبيوتر', soLevel: 'مستوى الكمبيوتر', d0: 'هاوٍ', d1: 'محترف', d2: 'أسطورة',
+    soAI: 'العب ضد الكمبيوتر', soAISub: 'مباراة واحدة بهذا المستوى', soCup: 'الكأس', soCupSub: 'هاوٍ ثم محترف ثم أسطورة',
+    soHow: 'ركلات جزاء على العين. المسدِّد يحرّك الكرة على الحافة العليا، والحارس يحرّك القفازين على خط المرمى، والكرة تنطلق عندما ينتهي العدّ. انتظر، اخدع الحارس باتجاه، ثم اذهب للاتجاه الآخر في آخر لحظة. الأبيض يستخدم {A} {D}، والأسود {L} {R}.',
+    white: 'الأبيض', black: 'الأسود', you: 'أنت', aiName: 'الكمبيوتر',
+    kickN: 'الركلة {n} من 10', sudden: 'الموت المفاجئ',
+    rolesW: 'الأبيض يسدد · الأسود يصدّ', rolesB: 'الأسود يسدد · الأبيض يصدّ', youShoot: 'أنت تسدد', youSave: 'أنت الحارس',
+    goal: 'جووول!', saved: 'صدّها!',
+    introDuo: 'الأبيض يسدد أولًا. 5 ركلات لكل فريق، ثم الموت المفاجئ.',
+    introSolo: 'أنت الأبيض وتسدد أولًا. 5 ركلات لكل فريق، ثم الموت المفاجئ.',
+    quitSO: 'إنهاء المباراة', rematch: 'مباراة جديدة', next1: 'العب نصف النهائي', next2: 'العب النهائي', cupAgain: 'العب الكأس من جديد',
+    share: 'شارك النتيجة', shareFail: 'انسخ هذا وأرسله:',
+    shWin: 'فزت على الكمبيوتر ({lv}) بنتيجة {s} في ضربات الترجيح في TWINSIGHT. جرّب أنت:',
+    shLose: 'خسرت {s} أمام الكمبيوتر ({lv}) في ضربات الترجيح في TWINSIGHT. هل تستطيع الفوز؟',
+    shCup: 'فزت بكأس ضربات الترجيح في TWINSIGHT! 🏆 جرّب أنت:',
+    shRound: 'تأهلت من {r} في كأس ضربات الترجيح في TWINSIGHT ({s}). جرّب أنت:',
+    shOut: 'خرجت من {r} في كأس ضربات الترجيح في TWINSIGHT. هل تصل أبعد؟',
+    sh2: 'فاز {w} على {l} بنتيجة {s} في ضربات الترجيح في TWINSIGHT. العبوا:'
   }
 };
 let LANG = 'en';
@@ -567,7 +711,12 @@ const ACH = [
   ['l8', 'ECLIPSE', 'Reach stage 8', 'وصلتم إلى المرحلة 8'],
   ['k1', '1K', '1,000 points in one run', '1000 نقطة في جولة واحدة'],
   ['k5', '5K', '5,000 points in one run', '5000 نقطة في جولة واحدة'],
-  ['distance', 'LONG DISTANCE', 'Clear a stage with a partner on another device', 'أنهيتم مرحلة مع شريك على جهاز آخر']
+  ['distance', 'LONG DISTANCE', 'Clear a stage with a partner on another device', 'أنهيتم مرحلة مع شريك على جهاز آخر'],
+  ['wall', 'BRICK WALL', 'Save 3 penalties in a row', 'صددت 3 ركلات متتالية'],
+  ['hattrick', 'HAT-TRICK', 'Score 3 penalties in a row', 'سجلت 3 ركلات متتالية'],
+  ['panenka', 'PANENKA', 'Score a penalty without moving the ball', 'سجلت ركلة دون أن تحرّك الكرة'],
+  ['cleansheet', 'CLEAN SHEET', 'Win a shootout without conceding', 'فزت بضربات الترجيح دون أن تستقبل هدفًا'],
+  ['cup', 'CHAMPION', 'Win the shootout cup', 'فزت بكأس ضربات الترجيح']
 ];
 const achName = id => (ACH.find(a => a[0] === id) || [, id])[1];
 const TYPES = ['light', 'shadow', 'prism', 'shift'];
@@ -686,7 +835,33 @@ const Snd = {
   thunk() { this.tone(190, 0.22, 'sine', 0.16, 85); },
   hit() { this.noise(0.4, 0.22, 900); this.tone(110, 0.4, 'sawtooth', 0.04, 55); },
   level() { [523.25, 659.25, 783.99, 1046.5, 1318.5].forEach((f, i) => this.tone(f, 0.26, 'sine', 0.08, null, i * 0.08)); },
-  over() { [392, 329.6, 261.6, 196].forEach((f, i) => this.tone(f, 0.45, 'triangle', 0.07, null, i * 0.16)); }
+  over() { [392, 329.6, 261.6, 196].forEach((f, i) => this.tone(f, 0.45, 'triangle', 0.07, null, i * 0.16)); },
+  // Shootout: a referee's whistle (trilled by a fast square LFO), the kick, and a crowd made of swelling filtered noise.
+  whistle() {
+    const ac = this.ac; if (!ac || !this.audible) return;
+    const t0 = ac.currentTime, d = 0.42, o = ac.createOscillator(), lfo = ac.createOscillator(), lg = ac.createGain(), g = ac.createGain();
+    o.type = 'sine'; o.frequency.setValueAtTime(2700, t0);
+    lfo.type = 'square'; lfo.frequency.setValueAtTime(28, t0); lg.gain.setValueAtTime(110, t0);
+    lfo.connect(lg); lg.connect(o.frequency);
+    g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.055, t0 + 0.02);
+    g.gain.setValueAtTime(0.055, t0 + d - 0.06); g.gain.exponentialRampToValueAtTime(0.0001, t0 + d);
+    o.connect(g); g.connect(ac.destination);
+    o.start(t0); lfo.start(t0); o.stop(t0 + d + 0.02); lfo.stop(t0 + d + 0.02);
+  },
+  crowd(d, v, freq = 700, attack = 0.15) {
+    const ac = this.ac; if (!ac || !this.audible) return;
+    const n = Math.floor(ac.sampleRate * d), buf = ac.createBuffer(1, n, ac.sampleRate), ch = buf.getChannelData(0);
+    for (let i = 0; i < n; i++) ch[i] = Math.random() * 2 - 1;
+    const t0 = ac.currentTime, s = ac.createBufferSource(), f = ac.createBiquadFilter(), g = ac.createGain();
+    s.buffer = buf; f.type = 'bandpass'; f.frequency.setValueAtTime(freq, t0); f.Q.value = 0.8;
+    g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(v, t0 + attack); g.gain.exponentialRampToValueAtTime(0.0001, t0 + d);
+    s.connect(f); f.connect(g); g.connect(ac.destination); s.start(t0); s.stop(t0 + d);
+  },
+  kick() { this.tone(160, 0.14, 'sine', 0.24, 55); this.noise(0.04, 0.3, 2600); },
+  tick() { this.tone(1250, 0.05, 'square', 0.025); },
+  glove() { this.noise(0.08, 0.4, 900); this.tone(220, 0.14, 'sine', 0.14, 110); },
+  cheer() { this.crowd(1.7, 0.28, 900, 0.1); this.crowd(1.3, 0.1, 2400, 0.06); [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => this.tone(f, 0.28, 'triangle', 0.05, null, 0.05 + i * 0.07)); },
+  ooh() { this.crowd(1.1, 0.18, 420, 0.25); this.tone(300, 0.7, 'sine', 0.03, 200, 0.05); }
 };
 const vib = ms => { try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} };
 
@@ -698,7 +873,8 @@ const S = {
   cfg: cfg(1), lt: 0, t: 0, banner: 0, clean: true,
   fx: [], inv: 0, shake: 0, pulse: 0, beam: 0, emI: 0, emP: 0,
   openT: 1, blinkT: 0, splitK: 0, splitAng: Math.PI / 2,
-  runAch: [], lvBonus: null, pauseNote: '', contUsed: false, contLevel: 0, busy: false
+  runAch: [], lvBonus: null, pauseNote: '', contUsed: false, contLevel: 0, busy: false,
+  game: 'eye', pausedFrom: 'play'
 };
 let ACHV = {};
 
@@ -806,16 +982,18 @@ cv.addEventListener('pointercancel', endPtr);
 cv.addEventListener('lostpointercapture', endPtr);
 cv.addEventListener('contextmenu', e => e.preventDefault());
 
+// 'play' is the eye game, 'shoot' the shootout: the two modes where the controls are live.
+const live = () => S.mode === 'play' || S.mode === 'shoot';
 addEventListener('keydown', e => {
   if (e.target && e.target.tagName === 'INPUT') return;
-  if (KEYMAP[e.code]) { if (S.mode === 'play') e.preventDefault(); IN.keys.add(e.code); }
-  if (e.code === 'KeyP' && S.mode === 'play') act('pause');
+  if (KEYMAP[e.code]) { if (live()) e.preventDefault(); IN.keys.add(e.code); }
+  if (e.code === 'KeyP' && live()) act('pause');
   Snd.init();
 });
-addEventListener('keyup', e => { if (KEYMAP[e.code]) { IN.keys.delete(e.code); if (S.mode === 'play') e.preventDefault(); } });
+addEventListener('keyup', e => { if (KEYMAP[e.code]) { IN.keys.delete(e.code); if (live()) e.preventDefault(); } });
 addEventListener('blur', () => { IN.keys.clear(); IN.ptrs.clear(); });
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden && S.mode === 'play' && Net.role !== 'guest') pause(Net.role ? 'hiddenPause' : '', true);
+  if (document.hidden && live() && Net.role !== 'guest') pause(Net.role ? 'hiddenPause' : '', true);
 });
 async function readKeyboardLayout() {
   try {
@@ -894,6 +1072,7 @@ function updateFx(dt) {
   S.emI = Math.max(0, S.emI - dt * 4);
   S.emP = Math.max(0, S.emP - dt * 4);
   S.blinkT = Math.max(0, S.blinkT - dt);
+  SO.glove = Math.max(0, SO.glove - dt * 2.5);
   for (const o of S.objs) if (o.flipT) o.flipT = Math.max(0, o.flipT - dt);
 }
 
@@ -943,7 +1122,8 @@ function spawn() {
   S.spawnN++;
 }
 function newRun(solo) {
-  Object.assign(S, { solo: !!solo && !Net.role, score: 0, lives: 3, combo: 0, mult: 1, runAch: [], fx: [], contUsed: false, contLevel: 0 });
+  Object.assign(S, { game: 'eye', solo: !!solo && !Net.role, score: 0, lives: 3, combo: 0, mult: 1, runAch: [], fx: [], contUsed: false, contLevel: 0 });
+  cv.setAttribute('aria-label', t('canvas'));
   beginLevel(1);
 }
 function beginLevel(L) {
@@ -975,19 +1155,19 @@ function gameOver() {
   showOver(S.score, S.level);
 }
 function pause(note, quiet) {
-  if (S.mode !== 'play') return;
-  S.mode = 'pause'; S.pauseNote = note || '';
+  if (!live()) return;
+  S.pausedFrom = S.mode; S.mode = 'pause'; S.pauseNote = note || '';
   IN.ptrs.clear();
   if (!quiet) CG.gameplay(false);
   showPause(S.pauseNote);
 }
 function resume() {
   if (S.mode !== 'pause') return;
-  S.mode = 'play'; showScreen(null); blurActive();
+  S.mode = S.pausedFrom === 'shoot' ? 'shoot' : 'play'; showScreen(null); blurActive();
   CG.gameplay(true);
 }
 function blurActive() { if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); }
-function setBusy(on) { for (const id of ['btnNext', 'btnCont', 'btnAgain', 'btnMenu']) document.getElementById(id).disabled = on; }
+function setBusy(on) { for (const id of ['btnNext', 'btnCont', 'btnAgain', 'btnMenu', 'btnSOAgain', 'btnSOMenu', 'btnShare']) document.getElementById(id).disabled = on; }
 async function nextStage() {
   if (S.mode !== 'levelup' || S.busy) return;
   // A midgame ad may play at a stage transition, but never right after a rewarded continue in the same stage.
@@ -1031,6 +1211,199 @@ function aiStep(dt) {
   if (S.cfg.drift) S.ap = angNorm(S.ap + driftAt(1) * dt);
 }
 
+/* ---------- Shootout ---------- */
+// The eye is the goal. The shooter slides the ball along an arc above it, the keeper slides the gloves along
+// the iris line (the goal line). When the countdown ends the ball flies straight at the centre, and it is saved
+// if the gloves cover its line as it crosses. S.ai is White's offset from the top of the eye (left player, iris
+// controls) and S.ap is Black's (right player, pupil controls). White shoots first; against the AI you are White.
+const SO_ARC = 62 * DEG, SO_KLIM = 46 * DEG, SO_KW = 21 * DEG, SO_TOL = 4 * DEG, SO_POST = 76 * DEG;
+const SO_T = { intro: 2.1, ready: 1.0, aim: 3.0, result: 1.6 };
+const SO_BALL = 5.5; // ball speed in eye-widths per second
+// AI levels. As keeper: reaction delay, how far it leads the shooter's motion, speed, and the chance it gambles
+// on a late feint. As shooter: speed, chance of a decoy step, and the window (seconds before the kick) for its real move.
+const SO_DIFF = [
+  { delay: 0.36, lead: 0, kSpeed: 4.0, guess: 0.12, sSpeed: 3.4, feint: 0.2, fT: [0.3, 0.6] },
+  { delay: 0.29, lead: 0.08, kSpeed: 4.4, guess: 0.2, sSpeed: 4.2, feint: 0.45, fT: [0.2, 0.42] },
+  { delay: 0.25, lead: 0.1, kSpeed: 4.6, guess: 0.22, sSpeed: 4.4, feint: 0.55, fT: [0.15, 0.34] }
+];
+const SO_DIFF_EN = ['AMATEUR', 'PRO', 'LEGEND'];
+const SO_ROUNDS = [['QUARTER-FINAL', 'ربع النهائي', 'quarter-final'], ['SEMI-FINAL', 'نصف النهائي', 'semi-final'], ['FINAL', 'النهائي', 'final']];
+const SO = { kind: 'duo', round: 0, diff: 1, kick: 0, res: { W: [], B: [] }, st: null, phase: 'ready', pt: 0, tick: 3, ball: null, out: '', moved: 0, kickOff: 0, glove: 0, winner: '' };
+const soShooter = () => (SO.kick % 2 ? 'B' : 'W');
+const soOther = side => (side === 'W' ? 'B' : 'W');
+const soOff = side => (side === 'W' ? S.ai : S.ap);
+const soGoals = side => SO.res[side].reduce((n, v) => n + v, 0);
+const soPref = () => Math.max(0, Math.min(2, store.get('soDiff', 1) | 0));
+const soClamp = (v, m) => Math.max(-m, Math.min(m, v));
+const soName = side => (S.solo ? t(side === 'W' ? 'you' : 'aiName') : t(side === 'W' ? 'white' : 'black'));
+
+function soStart(kind) {
+  if (Net.role || S.busy) return;
+  SO.kind = kind;
+  if (kind === 'cup') SO.round = 0;
+  soMatch();
+}
+function soMatch() {
+  SO.diff = SO.kind === 'cup' ? SO.round : soPref();
+  Object.assign(SO, { kick: 0, res: { W: [], B: [] }, st: { W: [0, 0], B: [0, 0] }, winner: '', ball: null, out: '', glove: 0, moved: 0, phase: 'intro', pt: 0 });
+  Object.assign(S, { game: 'so', solo: SO.kind !== 'duo', mode: 'shoot', runAch: [], fx: [], objs: [], openT: 0, inv: 0, shake: 0, pulse: 0, ai: 0, ap: 0, aiD: 0, apD: 0 });
+  if (S.splitK % 2) S.splitK++; // White on the left, Black on the right
+  IN.ptrs.clear();
+  cv.setAttribute('aria-label', t('canvasSO'));
+  showScreen(null); blurActive();
+  CG.gameplay(true);
+}
+function soKick() {
+  Object.assign(SO, { phase: 'ready', pt: 0, ball: null, out: '', moved: 0 });
+  S.ai = S.ap = S.aiD = S.apD = 0;
+}
+function soStep(dt) {
+  SO.pt += dt;
+  const ph = SO.phase, sh = soShooter();
+  if (ph === 'intro') { if (SO.pt >= SO_T.intro) soKick(); return; }
+  if (ph === 'ready') {
+    if (SO.pt >= SO_T.ready) { Object.assign(SO, { phase: 'aim', pt: 0, tick: 3 }); Snd.whistle(); aiSOPlan(); }
+    return;
+  }
+  if (ph === 'aim' || ph === 'flight') {
+    const before = soOff(sh);
+    applyInput(dt);
+    if (S.solo) aiSOStep(dt);
+    if (sh === 'W') { S.ai = soClamp(S.ai, SO_ARC); S.ap = soClamp(S.ap, SO_KLIM); }
+    else { S.ap = soClamp(S.ap, SO_ARC); S.ai = soClamp(S.ai, SO_KLIM); }
+    if (ph === 'aim') SO.moved += Math.abs(soOff(sh) - before);
+  }
+  if (ph === 'aim') {
+    const n = Math.ceil(SO_T.aim - SO.pt);
+    if (n < SO.tick && n >= 1) { SO.tick = n; Snd.tick(); }
+    if (SO.pt >= SO_T.aim) soShoot();
+  } else if (ph === 'flight') {
+    const b = SO.ball, prev = b.d;
+    b.d -= b.v * dt; b.rot += dt * 16;
+    if (prev > DI && b.d <= DI) {
+      const ka = -Math.PI / 2 + soOff(soOther(sh));
+      if (angDist(b.a, ka) <= SO_KW + SO_TOL) { soSave(ka); return; }
+    }
+    if (b.d < DI) b.v = Math.max(2.2, b.v - dt * 24); // it slows as it hits the net
+    if (b.d <= DC) soGoal();
+  } else if (ph === 'result') {
+    const b = SO.ball;
+    if (b && SO.out === 'save') { b.d += b.v * dt; b.v *= Math.pow(0.2, dt); b.a += b.va * dt; b.rot += b.va * dt * 3; b.al = Math.max(0, 1 - SO.pt / 0.9); }
+    if (SO.pt >= SO_T.result) soNext();
+  }
+}
+function soShoot() {
+  const off = soOff(soShooter());
+  SO.kickOff = off;
+  SO.ball = { a: -Math.PI / 2 + off, d: soLane() / EW, v: SO_BALL, rot: 0, va: 0, al: 1 };
+  Object.assign(SO, { phase: 'flight', pt: 0 });
+  const [x, y] = at(SO.ball.a, soLane()); ring(x, y, 24);
+  Snd.kick(); vib(15);
+}
+function soSave(ka) {
+  const b = SO.ball, [x, y] = at(b.a, RI);
+  burst(x, y, 12, 90); ring(x, y, 34);
+  SO.glove = 1; S.shake = 0.15;
+  b.d = DI; b.v = 1.5; b.va = (angNorm(b.a - ka) >= 0 ? 1 : -1) * 1.4;
+  Snd.glove(); Snd.ooh(); vib(35);
+  soRecord(false);
+}
+function soGoal() {
+  const b = SO.ball; b.d = DC; b.v = 0;
+  S.inv = 0.2; S.shake = 0.4; S.pulse = 1;
+  burst(cx, cy, 18, 150);
+  for (let i = 0; i < 3; i++) S.fx.push({ k: 'wave', life: 0.7 + i * 0.2, max: 0.7 + i * 0.2 });
+  Snd.cheer(); vib([40, 60, 40]);
+  soRecord(true);
+}
+function soRecord(goal) {
+  const sh = soShooter(), kp = soOther(sh), mine = side => !S.solo || side === 'W';
+  SO.res[sh].push(goal ? 1 : 0);
+  Object.assign(SO, { phase: 'result', pt: 0, out: goal ? 'goal' : 'save' });
+  if (goal) { SO.st[sh][0]++; SO.st[kp][1] = 0; } else { SO.st[sh][0] = 0; SO.st[kp][1]++; }
+  if (goal && mine(sh)) { if (SO.st[sh][0] >= 3) unlock('hattrick'); if (SO.moved < 0.12) unlock('panenka'); }
+  if (!goal && mine(kp) && SO.st[kp][1] >= 3) unlock('wall');
+}
+// 5 kicks each, stopping as soon as one side can no longer catch up; then sudden death by pairs.
+function soDecided() {
+  const nW = SO.res.W.length, nB = SO.res.B.length, gW = soGoals('W'), gB = soGoals('B');
+  if (nW <= 5 && nB <= 5) {
+    if (gW + 5 - nW < gB) return 'B';
+    if (gB + 5 - nB < gW) return 'W';
+    return '';
+  }
+  return nW === nB && gW !== gB ? (gW > gB ? 'W' : 'B') : '';
+}
+function soNext() {
+  const w = soDecided();
+  if (w) soEnd(w); else { SO.kick++; soKick(); }
+}
+function soEnd(w) {
+  SO.winner = w;
+  S.mode = 'soEnd';
+  CG.gameplay(false);
+  const mine = !S.solo || w === 'W';
+  if (mine && soGoals(soOther(w)) === 0) unlock('cleansheet');
+  if (SO.kind === 'cup' && w === 'W' && SO.round === 2) unlock('cup');
+  if (S.solo && w === 'W' && SO.diff === 2) CG.happy();
+  if (mine) Snd.level(); else Snd.over();
+  renderSOEnd(); showScreen('scrSOEnd');
+}
+async function soAgain() {
+  if (S.mode !== 'soEnd' || S.busy) return;
+  // A midgame ad may play between two matches.
+  if (CG.ads) { S.busy = true; setBusy(true); await CG.ad('midgame'); S.busy = false; setBusy(false); }
+  if (S.mode !== 'soEnd') return;
+  if (SO.kind === 'cup') SO.round = SO.winner === 'W' && SO.round < 2 ? SO.round + 1 : 0;
+  soMatch();
+}
+
+// AI side of the shootout (Black, S.ap).
+const AIK = { h: [], guess: false, gdir: 0, plan: null };
+function aiSOPlan() {
+  const d = SO_DIFF[SO.diff], R = Math.random;
+  Object.assign(AIK, { h: [], guess: false, gdir: 0, plan: null });
+  if (!S.solo) return;
+  if (soShooter() === 'W') AIK.guess = R() < d.guess;
+  else AIK.plan = { still: R() < 0.06, fT: d.fT[0] + R() * (d.fT[1] - d.fT[0]), decoy: R() < d.feint ? 0.12 + R() * 0.16 : 0, w: 0, wNext: 0, dir: 0 };
+}
+function aiSeen(time) {
+  let v = AIK.h.length ? AIK.h[0][1] : 0;
+  for (const e of AIK.h) { if (e[0] <= time) v = e[1]; else break; }
+  return v;
+}
+function aiSOStep(dt) {
+  const d = SO_DIFF[SO.diff];
+  if (soShooter() === 'W') {
+    // Keeper: sees the shooter late, leads its motion, may gamble on a late feint, then dives at the ball.
+    AIK.h.push([S.t, S.ai]);
+    while (AIK.h.length > 2 && AIK.h[1][0] < S.t - 1) AIK.h.shift();
+    const seen = aiSeen(S.t - d.delay), vel = (seen - aiSeen(S.t - d.delay - 0.06)) / 0.06;
+    let tg = seen + vel * d.lead;
+    if (SO.phase === 'flight' && SO.pt >= d.delay) tg = SO.kickOff;
+    else if (AIK.guess && (SO.phase === 'flight' || SO_T.aim - SO.pt < 0.45)) {
+      if (!AIK.gdir) AIK.gdir = -Math.sign(vel) || (Math.random() < 0.5 ? -1 : 1);
+      tg = seen + AIK.gdir * 0.7;
+    }
+    S.ap = approach(S.ap, soClamp(tg, SO_KLIM), d.kSpeed * dt);
+    return;
+  }
+  // Shooter: wanders, then makes its real move late and away from the keeper, sometimes after a decoy step.
+  const p = AIK.plan;
+  if (!p || p.still || SO.phase !== 'aim') return;
+  const tl = SO_T.aim - SO.pt, s = S.ap;
+  let dir;
+  if (tl > p.fT + p.decoy) {
+    if (S.t >= p.wNext) { p.w = Math.random() < 0.35 ? 0 : (Math.random() < 0.5 ? -1 : 1); p.wNext = S.t + 0.25 + Math.random() * 0.5; }
+    if (Math.abs(s) > SO_ARC * 0.6 && Math.sign(s) === p.w) p.w = -p.w;
+    dir = p.w;
+  } else {
+    if (!p.dir) { p.dir = s - S.ai >= 0 ? 1 : -1; if (SO_ARC - p.dir * s < 0.45) p.dir = -p.dir; }
+    dir = tl > p.fT ? -p.dir : p.dir;
+  }
+  S.ap = soClamp(S.ap + dir * d.sSpeed * dt, SO_ARC);
+}
+
 /* ---------- Simulation ---------- */
 function aiTarget(r, cur) {
   let best = null;
@@ -1067,6 +1440,7 @@ function step(dt, now) {
     if (S.mode === 'play' || S.mode === 'levelup' || S.mode === 'lobby') applyInput(dt);
     if (Net.role === 'host' && Net.rAng != null) { if (Net.myPart === 'iris') S.ap = Net.rAng; else S.ai = Net.rAng; }
   }
+  if (S.mode === 'shoot') soStep(dt);
   if (S.mode === 'play') {
     S.lt += dt;
     applyDrift(dt);
@@ -1085,7 +1459,8 @@ function animate(dt) {
   const k = Math.min(1, dt * 22);
   S.aiD = ownI ? S.ai : angNorm(S.aiD + angNorm(S.ai - S.aiD) * k);
   S.apD = ownP ? S.ap : angNorm(S.apD + angNorm(S.ap - S.apD) * k);
-  const wantOpen = S.mode === 'over' ? 0 : (S.mode === 'play' && S.banner > 0.6) ? 0 : 1;
+  const wantOpen = S.mode === 'over' ? 0 : (S.mode === 'play' && S.banner > 0.6) ? 0
+    : (S.game === 'so' && SO.phase === 'intro' && SO.pt < SO_T.intro - 0.75) ? 0 : 1;
   S.openT += Math.sign(wantOpen - S.openT) * Math.min(Math.abs(wantOpen - S.openT), dt * (wantOpen ? 2.4 : 1.6));
   const target = Math.PI / 2 + S.splitK * Math.PI + (S.mode === 'menu' && !reduced ? Math.sin(S.t * 0.35) * 0.1 : 0);
   S.splitAng = reduced ? target : S.splitAng + (target - S.splitAng) * Math.min(1, dt * 4.5);
@@ -1170,12 +1545,14 @@ function drawEye(open) {
     ctx.beginPath(); ctx.arc(cx, cy, RC * (1 + 0.8 * S.pulse), 0, TAU); ctx.fill();
     ctx.restore();
   }
-  if (open < 0.2) {
-    ctx.globalAlpha = 1 - open / 0.2; ctx.lineWidth = LW;
-    ctx.beginPath();
-    for (const i of [-0.6, -0.3, 0, 0.3, 0.6]) { const x0 = cx + i * IEW; ctx.moveTo(x0, cy + 5 * SZ); ctx.lineTo(x0 + i * 10 * SZ, cy + 15 * SZ); }
-    ctx.stroke(); ctx.globalAlpha = 1;
-  }
+  drawLashes(open);
+}
+function drawLashes(open) {
+  if (open >= 0.2) return;
+  ctx.globalAlpha = 1 - open / 0.2; ctx.lineWidth = LW;
+  ctx.beginPath();
+  for (const i of [-0.6, -0.3, 0, 0.3, 0.6]) { const x0 = cx + i * IEW; ctx.moveTo(x0, cy + 5 * SZ); ctx.lineTo(x0 + i * 10 * SZ, cy + 15 * SZ); }
+  ctx.stroke(); ctx.globalAlpha = 1;
 }
 function drawLight(x, y, a) {
   const tx = Math.cos(a), ty = Math.sin(a);
@@ -1280,6 +1657,159 @@ function drawText() {
     setLS('0px'); ctx.globalAlpha = 1;
   }
 }
+/* Shootout drawing. Everything is white in difference mode like the rest, so shapes are kept from overlapping. */
+const soBR = () => Math.max(7, EW * 0.055);
+const soLane = () => RB - soBR() - 3 * SZ;
+function drawBall(x, y, r, rot) {
+  const rim = Math.max(1.3, r * 0.15), pr = r * 0.42;
+  ctx.lineWidth = rim;
+  ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.stroke();
+  ctx.beginPath();
+  for (let i = 0; i < 5; i++) { const a = rot + i * TAU / 5, qx = x + Math.cos(a) * pr, qy = y + Math.sin(a) * pr; if (i) ctx.lineTo(qx, qy); else ctx.moveTo(qx, qy); }
+  ctx.closePath(); ctx.fill();
+  ctx.lineWidth = Math.max(1, r * 0.11); ctx.lineCap = 'butt';
+  ctx.beginPath();
+  for (let i = 0; i < 5; i++) {
+    const a = rot + i * TAU / 5, c = Math.cos(a), s = Math.sin(a);
+    ctx.moveTo(x + c * pr * 1.15, y + s * pr * 1.15); ctx.lineTo(x + c * (r - rim * 0.9), y + s * (r - rim * 0.9));
+  }
+  ctx.stroke(); ctx.lineCap = 'round';
+}
+function drawSO(open) {
+  const top = -Math.PI / 2, sh = soShooter(), ph = SO.phase;
+  const sOff = sh === 'W' ? S.aiD : S.apD, kOff = sh === 'W' ? S.apD : S.aiD;
+  const BR = soBR(), LR = soLane(), onLane = !SO.ball, ba = top + sOff;
+  // The shooter's lane above the eye, with a mark at each end. It breaks around the ball.
+  ctx.globalAlpha = 0.45; ctx.lineCap = 'round'; ctx.lineWidth = 1.6 * SZ; ctx.setLineDash([0.01, 7 * SZ]);
+  const skip = (BR + 8 * SZ) / LR, lane = (a1, a2) => { if (a2 > a1) { ctx.beginPath(); ctx.arc(cx, cy, LR, a1, a2); ctx.stroke(); } };
+  if (onLane) { lane(top - SO_ARC, ba - skip); lane(ba + skip, top + SO_ARC); } else lane(top - SO_ARC, top + SO_ARC);
+  ctx.setLineDash([]); ctx.lineWidth = 1.4;
+  ctx.beginPath();
+  for (const s of [-1, 1]) { const a = top + s * (SO_ARC + skip); const [x1, y1] = at(a, LR - 6 * SZ), [x2, y2] = at(a, LR + 6 * SZ); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); }
+  ctx.stroke(); ctx.globalAlpha = 1;
+  // The eye is the goal frame.
+  ctx.lineJoin = 'round'; ctx.lineWidth = LW;
+  almond(cx, cy, EW, EH); ctx.stroke();
+  const ieh = Math.max(0.6, IEH * open);
+  almond(cx, cy, IEW, ieh); ctx.stroke();
+  if (open > 0.02) {
+    ctx.save(); almond(cx, cy, IEW, ieh); ctx.clip();
+    // Net: radial strings and dashed rings, which bulge on a goal.
+    const bulge = 1 + 0.12 * S.pulse;
+    ctx.globalAlpha = 0.3; ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let i = 0; i < 24; i++) { const a = i * 15 * DEG, [x1, y1] = at(a, RC * 1.6), [x2, y2] = at(a, RI - WI * 1.4); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); }
+    ctx.stroke();
+    ctx.setLineDash([2.5, 3.5]);
+    for (const r of [RP * 0.55, RP, (RP + RI) / 2]) { ctx.beginPath(); ctx.arc(cx, cy, r * bulge, 0, TAU); ctx.stroke(); }
+    ctx.setLineDash([]); ctx.globalAlpha = 1;
+    // Goal line between the posts, broken where the gloves are; then the posts.
+    const ka = top + kOff, gw = SO_KW + 0.05;
+    ctx.globalAlpha = 0.55; ctx.lineWidth = 1.3; ctx.setLineDash([4, 5]);
+    const line = (a1, a2) => { if (a2 > a1) { ctx.beginPath(); ctx.arc(cx, cy, RI, a1, a2); ctx.stroke(); } };
+    line(top - SO_POST + 0.04, ka - gw); line(ka + gw, top + SO_POST - 0.04);
+    ctx.setLineDash([]); ctx.globalAlpha = 1;
+    ctx.lineWidth = Math.max(2, WI * 0.5);
+    ctx.beginPath();
+    for (const s of [-1, 1]) { const a = top + s * SO_POST, [x1, y1] = at(a, RI - 7 * SZ), [x2, y2] = at(a, RI + 7 * SZ); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); }
+    ctx.stroke();
+    // Gloves: two thick arcs with a small gap between them.
+    const gwid = WI * 1.9 * (1 + 0.4 * SO.glove), cap = gwid / 2 / RI, gap = 2.2 * DEG;
+    ctx.lineWidth = gwid;
+    ctx.beginPath(); ctx.arc(cx, cy, RI, ka - SO_KW + cap, ka - gap - cap); ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx, cy, RI, ka + gap + cap, ka + SO_KW - cap); ctx.stroke();
+    // Centre spot, out of the way of the countdown and of a ball in the net.
+    if (ph !== 'aim' && SO.out !== 'goal') { ctx.beginPath(); ctx.arc(cx, cy, RC * 0.55, 0, TAU); ctx.fill(); }
+    ctx.restore();
+  }
+  drawLashes(open);
+  // Ball: on the lane before the kick, then in flight, in the net or bouncing off the gloves.
+  let bx, by, br, rot, al;
+  if (onLane) {
+    [bx, by] = at(ba, LR); br = BR; rot = sOff * LR / BR;
+    al = ph === 'intro' ? Math.max(0, Math.min(1, (SO.pt - 1.3) / 0.4)) : ph === 'ready' ? Math.min(1, SO.pt / 0.3) : 1;
+    if (ph === 'aim') {
+      const left = Math.max(0, 1 - SO.pt / SO_T.aim);
+      ctx.globalAlpha = 0.45; ctx.lineWidth = 1.4; ctx.setLineDash([2, 5]);
+      const [x1, y1] = at(ba, LR - BR - 10 * SZ), [x2, y2] = at(ba, RI + WI * 1.6);
+      ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke(); ctx.setLineDash([]);
+      ctx.globalAlpha = 1; ctx.lineWidth = 2 * SZ;
+      ctx.beginPath(); ctx.arc(bx, by, BR + 5 * SZ, -Math.PI / 2, -Math.PI / 2 + left * TAU); ctx.stroke();
+    }
+  } else {
+    const b = SO.ball;
+    [bx, by] = at(b.a, b.d * EW);
+    br = BR * (0.6 + 0.4 * Math.max(0, Math.min(1, (b.d - DC) / (LR / EW - DC))));
+    rot = b.rot; al = b.al;
+    const r1 = b.d * EW + br * 1.7, r2 = Math.min(LR, b.d * EW + br * 6);
+    if (ph === 'flight' && r2 > r1 + 2) {
+      ctx.globalAlpha = 0.35; ctx.lineWidth = br * 0.9;
+      const [x1, y1] = at(b.a, r1), [x2, y2] = at(b.a, r2);
+      ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+  }
+  if (al > 0) { ctx.globalAlpha = al; drawBall(bx, by, br, rot); ctx.globalAlpha = 1; }
+}
+function fitFont(text, weight, size, family, maxW) {
+  ctx.font = `${weight} ${size}px ${family}`;
+  const w = ctx.measureText(text).width;
+  if (w > maxW) ctx.font = `${weight} ${Math.max(12, Math.floor(size * maxW / w))}px ${family}`;
+}
+function drawSOText() {
+  if (S.mode !== 'shoot' && S.mode !== 'pause') return;
+  const ar = LANG === 'ar', ph = SO.phase, maxW = Math.min(W - 40, EW * 2.4);
+  ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+  if (ph === 'intro') {
+    // Match banner over the closed eye, like the stage banner of the eye game.
+    const cup = SO.kind === 'cup', lv = SO_DIFF_EN[SO.diff];
+    const cap = cup ? `SHOOTOUT CUP · VS ${lv}` : 'SHOOTOUT';
+    const big = cup ? SO_ROUNDS[SO.round][0] : SO.kind === 'ai' ? `VS ${lv}` : 'PENALTIES';
+    const arLine = cup ? `${SO_ROUNDS[SO.round][1]} · ضد ${STR.ar['d' + SO.diff]}` : SO.kind === 'ai' ? `ضد الكمبيوتر · ${STR.ar['d' + SO.diff]}` : 'ضربات الترجيح';
+    ctx.globalAlpha = Math.max(0, Math.min(1, SO.pt / 0.35, (SO_T.intro - SO.pt) / 0.4));
+    ctx.direction = 'ltr';
+    setLS('0.32em'); fitFont(cap, 600, px(10, 11), F_DISP, maxW);
+    ctx.fillText(cap, cx, cy - EH * 0.62);
+    setLS('0.04em'); fitFont(big, 800, Math.round(Math.max(26, Math.min(EW * 0.27, 48))), F_DISP, maxW);
+    ctx.fillText(big, cx, cy - EH * 0.2);
+    setLS('0px');
+    const lh = px(19, 18);
+    let y = cy + EH + px(26, 24);
+    if (ar) { ctx.direction = 'rtl'; ctx.font = `600 ${px(14, 13)}px ${F_BODY}`; ctx.fillText(arLine, cx, y); y += lh + 2; }
+    ctx.direction = ar ? 'rtl' : 'ltr';
+    ctx.font = `400 ${px(13, 13)}px ${F_BODY}`;
+    wrapLines(t(S.solo ? 'introSolo' : 'introDuo'), Math.min(EW * 2.1, W - 48)).forEach((l, i) => ctx.fillText(l, cx, y + i * lh));
+    ctx.globalAlpha = 1;
+    return;
+  }
+  if (ph === 'ready' || ph === 'aim') {
+    const sh = soShooter(), key = S.solo ? (sh === 'W' ? 'youShoot' : 'youSave') : (sh === 'W' ? 'rolesW' : 'rolesB');
+    ctx.globalAlpha = ph === 'ready' ? Math.min(1, SO.pt / 0.25) : 1;
+    if (ar) { ctx.direction = 'rtl'; setLS('0px'); fitFont(t(key), 600, px(15, 14), F_BODY, maxW); }
+    else { ctx.direction = 'ltr'; setLS('0.22em'); fitFont(t(key), 600, px(11, 11), F_DISP, maxW); }
+    ctx.fillText(t(key), cx, cy + EH + px(30, 26));
+    setLS('0px'); ctx.globalAlpha = 1;
+  }
+  if (ph === 'aim') {
+    // Countdown in the middle of the net: each number shrinks and fades through its second.
+    const left = SO_T.aim - SO.pt, n = Math.max(1, Math.ceil(left)), f = Math.max(0, Math.min(1, n - left));
+    const sz = Math.round(RP * (1.25 + 0.3 * (1 - f)));
+    ctx.direction = 'ltr'; ctx.globalAlpha = 0.9 - 0.5 * f; ctx.textBaseline = 'middle';
+    ctx.font = `800 ${sz}px ${F_DISP}`;
+    ctx.fillText(String(n), cx, cy + sz * 0.04);
+    ctx.textBaseline = 'alphabetic'; ctx.globalAlpha = 1;
+  }
+  if (ph === 'result') {
+    const k = Math.min(1, SO.pt / 0.18), fade = Math.max(0, Math.min(1, (SO_T.result - SO.pt) / 0.35));
+    const word = t(SO.out === 'goal' ? 'goal' : 'saved'), base = Math.round(Math.max(28, Math.min(EW * 0.3, 56)));
+    const size = Math.round(base * (0.7 + 0.3 * k));
+    ctx.globalAlpha = k * fade;
+    ctx.direction = ar ? 'rtl' : 'ltr'; setLS(ar ? '0px' : '0.04em');
+    fitFont(word, ar ? 700 : 800, size, ar ? F_BODY : F_DISP, maxW);
+    ctx.fillText(word, cx, cy + EH + base + 4 * SZ);
+    setLS('0px'); ctx.globalAlpha = 1;
+  }
+}
 function draw() {
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   if (S.shake > 0 && !reduced) ctx.translate((Math.random() - 0.5) * S.shake * 18, (Math.random() - 0.5) * S.shake * 18);
@@ -1287,13 +1817,16 @@ function draw() {
   ctx.globalCompositeOperation = 'difference';
   ctx.fillStyle = '#fff'; ctx.strokeStyle = '#fff';
   const open = eyeOpen();
-  drawBezel();
-  drawMarkers();
-  drawBeam(open);
-  drawEye(open);
-  drawObjs();
-  drawFx();
-  drawText();
+  if (S.game === 'so') { drawSO(open); drawFx(); drawSOText(); }
+  else {
+    drawBezel();
+    drawMarkers();
+    drawBeam(open);
+    drawEye(open);
+    drawObjs();
+    drawFx();
+    drawText();
+  }
   if (S.inv > 0) {
     ctx.globalAlpha = reduced ? Math.min(0.25, S.inv) : Math.min(1, S.inv / 0.1);
     ctx.fillRect(-30, -30, W + 60, H + 60); ctx.globalAlpha = 1;
@@ -1311,20 +1844,56 @@ function put(id, v, prop = 'textContent') {
 }
 const DOT_ON = '<svg viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="currentColor"/></svg>';
 const DOT_OFF = '<svg viewBox="0 0 12 12"><circle cx="6" cy="6" r="4.2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>';
+const DOT_X = '<svg viewBox="0 0 12 12"><path d="M3 3l6 6M9 3l-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+const DOT_PEND = DOT_OFF.replace('<svg', '<svg class="pend"');
+// Kick markers for one side: taken kicks, then the ones still to come; in sudden death the last five.
+function soDots(side) {
+  const r = SO.res[side], other = SO.res[soOther(side)];
+  const pend = r.length < 5 ? 5 - r.length : (side === 'W' ? r.length <= other.length : r.length < other.length) && !soDecided() ? 1 : 0;
+  return r.concat(Array(pend).fill(null)).slice(-5).map(v => (v == null ? DOT_PEND : v ? DOT_ON : DOT_X)).join('');
+}
+function updateSOHud() {
+  const nk = [LANG, S.solo].join('|');
+  if (hudCache.soNames !== nk) {
+    hudCache.soNames = nk;
+    const dir = LANG === 'ar' ? 'rtl' : 'ltr';
+    $('#soNameW').textContent = soName('W'); $('#soNameB').textContent = soName('B');
+    for (const id of ['soNameW', 'soNameB', 'soInfo']) document.getElementById(id).dir = dir;
+  }
+  const gW = soGoals('W'), gB = soGoals('B');
+  put('soScore', `${gW} – ${gB}`);
+  put('soInfo', SO.kick < 10 ? t('kickN', { n: SO.kick + 1 }) : t('sudden'));
+  const dk = SO.res.W.join('') + '|' + SO.res.B.join('') + '|' + (soDecided() ? 1 : 0) + nk;
+  if (hudCache.soDots !== dk) {
+    hudCache.soDots = dk;
+    $('#soDotsW').innerHTML = soDots('W'); $('#soDotsB').innerHTML = soDots('B');
+    $('#soScore').setAttribute('aria-label', `${soName('W')} ${gW}, ${soName('B')} ${gB}`);
+  }
+}
 function updateHud() {
-  const inGame = ['play', 'levelup', 'pause', 'over'].includes(S.mode);
+  const so = S.game === 'so';
+  const inGame = ['play', 'levelup', 'pause', 'over', 'shoot', 'soEnd'].includes(S.mode);
   put('hud', !inGame, 'hidden');
-  put('pads', S.mode !== 'play', 'hidden');
-  const single = oneRing(), padKey = [single, myRing(), KEYS.A, KEYS.D].join('|');
+  put('pads', !live(), 'hidden');
+  if (hudCache.so !== so) { hudCache.so = so; $('#hud').classList.toggle('so', so); $('#pads').classList.toggle('so', so); }
+  const single = oneRing(), padKey = [single, myRing(), KEYS.A, KEYS.D, so && soShooter()].join('|');
   if (hudCache.pads !== padKey) {
     hudCache.pads = padKey;
     $('#pads').classList.toggle('solo', single);
-    $('#lblL').textContent = single ? `You · ${myRing() === 'iris' ? 'Iris' : 'Pupil'}` : 'Iris';
+    if (so) {
+      const w = soShooter() === 'W';
+      $('#lblL').textContent = `${single ? 'You' : 'White'} · ${w ? 'Shoot' : 'Save'}`;
+      $('#lblR').textContent = `Black · ${w ? 'Save' : 'Shoot'}`;
+    } else {
+      $('#lblL').textContent = single ? `You · ${myRing() === 'iris' ? 'Iris' : 'Pupil'}` : 'Iris';
+      $('#lblR').textContent = 'Pupil';
+    }
     $('#k1').textContent = single ? `${KEYS.A} ←` : KEYS.A;
     $('#k2').textContent = KEYS.D;
     $('#k4').textContent = single ? `${KEYS.D} →` : '→';
   }
   if (!inGame) return;
+  if (so) { updateSOHud(); return; }
   put('hScore', String(S.score));
   put('hMult', '×' + S.mult);
   $('#hMult').classList.toggle('hot', S.mult > 1);
@@ -1344,12 +1913,14 @@ function updateHud() {
 }
 
 /* ---------- Screens ---------- */
-const SCREENS = ['scrMenu', 'scrHow', 'scrAch', 'scrLevel', 'scrOver', 'scrPause', 'scrOnline'];
+const SCREENS = ['scrMenu', 'scrHow', 'scrAch', 'scrLevel', 'scrOver', 'scrPause', 'scrOnline', 'scrSO', 'scrSOEnd'];
 function showScreen(id) {
   for (const s of SCREENS) document.getElementById(s).hidden = s !== id;
   if (id === 'scrMenu') { $('#bestVal').textContent = store.get('best', 0); renderAchCount(); measureMenu(); }
   if (id === 'scrAch') renderAchList();
+  if (id === 'scrSO') renderSODiff();
 }
+function renderSODiff() { const d = soPref(); $$('#soDiff button').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.d === d))); }
 function tally(el, rows) {
   el.textContent = '';
   for (const [k, v, cls] of rows) {
@@ -1400,7 +1971,78 @@ function renderOver(score, level, best, isBest) {
 function showPause(noteKey) {
   $('#psNote').textContent = noteKey ? t(noteKey) : '';
   $('#psNote').hidden = !noteKey;
+  $('#btnQuit').textContent = t(S.game === 'so' ? 'quitSO' : 'quit');
   showScreen('scrPause');
+}
+function renderSOEnd() {
+  const w = SO.winner, gW = soGoals('W'), gB = soGoals('B'), r = SO_ROUNDS[SO.round], lv = SO_DIFF_EN[SO.diff];
+  let cap, title, sub, next;
+  if (SO.kind === 'cup') {
+    cap = `SHOOTOUT CUP · ${r[0]}`;
+    if (w !== 'W') { title = 'ELIMINATED'; sub = `خرجت من ${r[1]}`; next = 'cupAgain'; }
+    else if (SO.round === 2) { title = 'CHAMPION'; sub = 'بطل الكأس!'; next = 'cupAgain'; }
+    else { title = `${r[0]} WON`; sub = `تأهلت من ${r[1]}`; next = SO.round === 0 ? 'next1' : 'next2'; }
+  } else if (S.solo) {
+    cap = `SHOOTOUT · VS ${lv}`; title = w === 'W' ? 'YOU WIN' : 'YOU LOSE'; sub = w === 'W' ? 'فزت!' : 'خسرت'; next = 'rematch';
+  } else {
+    cap = 'SHOOTOUT'; title = w === 'W' ? 'WHITE WINS' : 'BLACK WINS'; sub = w === 'W' ? 'فاز الأبيض' : 'فاز الأسود'; next = 'rematch';
+  }
+  $('#seCap').textContent = cap; $('#seTitle').textContent = title; $('#seAr').textContent = sub;
+  $('#seCup').hidden = !(SO.kind === 'cup' && w === 'W' && SO.round === 2);
+  $('#seScore').textContent = `${gW} – ${gB}`;
+  const sum = $('#seSum'); sum.textContent = '';
+  for (const side of ['W', 'B']) {
+    const name = document.createElement('span'), dots = document.createElement('span'), n = document.createElement('b');
+    name.className = 'so-lbl'; name.textContent = soName(side); name.dir = LANG === 'ar' ? 'rtl' : 'ltr';
+    dots.className = 'sdots'; dots.innerHTML = SO.res[side].map(v => (v ? DOT_ON : DOT_X)).join('');
+    n.textContent = soGoals(side);
+    sum.append(name, dots, n);
+  }
+  const box = $('#seAch'); box.textContent = '';
+  for (const id of S.runAch) { const c = document.createElement('span'); c.className = 'chip'; c.textContent = achName(id); box.appendChild(c); }
+  box.hidden = !S.runAch.length;
+  $('#btnSOAgain').textContent = t(next);
+  // No outside links on CrazyGames, so no share button there.
+  $('#btnShare').hidden = TARGET.startsWith('cg');
+  $('#seMsg').hidden = true;
+}
+
+/* ---------- Sharing a shootout result (web and Android app) ---------- */
+const SHARE_URL = 'https://zeusmess.github.io/Cenima/';
+function shareText() {
+  const w = SO.winner, gW = soGoals('W'), gB = soGoals('B'), ar = LANG === 'ar';
+  const lv = t('d' + SO.diff), rn = SO_ROUNDS[SO.round][ar ? 1 : 2];
+  if (SO.kind === 'duo') {
+    const win = w === 'W';
+    return t('sh2', { w: t(win ? 'white' : 'black'), l: t(win ? 'black' : 'white'), s: win ? `${gW}–${gB}` : `${gB}–${gW}` });
+  }
+  const s = `${gW}–${gB}`;
+  if (SO.kind === 'cup') {
+    if (w !== 'W') return t('shOut', { r: rn });
+    return SO.round === 2 ? t('shCup') : t('shRound', { r: rn, s });
+  }
+  return t(w === 'W' ? 'shWin' : 'shLose', { lv, s });
+}
+async function copyText(s) {
+  try { if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(s); return true; } } catch (e) {}
+  try {
+    const ta = document.createElement('textarea');
+    ta.value = s; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;top:-1000px;left:0;opacity:0';
+    document.body.appendChild(ta); ta.select();
+    const ok = document.execCommand('copy'); ta.remove();
+    return !!ok;
+  } catch (e) { return false; }
+}
+async function shareResult() {
+  if (S.busy) return;
+  const text = shareText(), full = text + ' ' + SHARE_URL, app = window.TwinsightAndroid;
+  if (app && typeof app.share === 'function') { try { app.share(full); return; } catch (e) {} }
+  if (navigator.share) {
+    try { await navigator.share({ title: 'TWINSIGHT', text, url: SHARE_URL }); return; }
+    catch (e) { if (e && e.name === 'AbortError') return; }
+  }
+  if (await copyText(full)) { toast('Copied', 'RESULT + LINK'); return; }
+  const m = $('#seMsg'); m.textContent = t('shareFail') + ' ' + full; m.hidden = false;
 }
 function soundLabels() {
   const on = Snd.on && !CG.muted;
@@ -1420,10 +2062,11 @@ function applyLang() {
   $$('[data-th]').forEach(el => { el.innerHTML = th(el.dataset.th); });
   $$('[data-ta]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.ta)); });
   $('#btnLang').lang = ar ? 'en' : 'ar';
-  cv.setAttribute('aria-label', t('canvas'));
+  cv.setAttribute('aria-label', t(S.game === 'so' ? 'canvasSO' : 'canvas'));
   soundLabels(); renderAchCount();
   hudCache.lives = null; hudCache.pads = null;
   if (!$('#scrAch').hidden) renderAchList();
+  if (!$('#scrSOEnd').hidden) renderSOEnd();
   if (!$('#scrOnline').hidden) olView();
   if (!$('#scrLevel').hidden && S.lvBonus) showLevel(S.lvBonus);
   if (!$('#scrPause').hidden) showPause(S.pauseNote);
@@ -1601,6 +2244,10 @@ function act(name) {
   }
   if (name === 'solo') newRun(true);
   else if (name === 'duo') newRun(false);
+  else if (name === 'so2') soStart('duo');
+  else if (name === 'soAI') soStart('ai');
+  else if (name === 'soCup') soStart('cup');
+  else if (name === 'soAgain') soAgain();
   else if (name === 'again') { if (!S.busy) newRun(S.solo); }
   else if (name === 'start') { if (Net.role === 'host' && Net.partner) newRun(false); }
   else if (name === 'next') nextStage();
@@ -1611,12 +2258,21 @@ function toMenu() {
   if (S.busy) return;
   if (Net.nr) leaveRoom();
   CG.gameplay(false);
-  S.mode = 'menu'; S.objs = []; S.openT = 1;
+  S.mode = 'menu'; S.game = 'eye'; S.objs = []; S.openT = 1; SO.ball = null;
+  cv.setAttribute('aria-label', t('canvas'));
   showScreen('scrMenu');
 }
 
 $('#btnSolo').addEventListener('click', () => act('solo'));
 $('#btnDuo').addEventListener('click', () => act('duo'));
+$('#btnSO').addEventListener('click', () => { Snd.init(); showScreen('scrSO'); });
+$('#btnSO2').addEventListener('click', () => act('so2'));
+$('#btnSOAI').addEventListener('click', () => act('soAI'));
+$('#btnSOCup').addEventListener('click', () => act('soCup'));
+$('#btnSOAgain').addEventListener('click', () => act('soAgain'));
+$('#btnSOMenu').addEventListener('click', toMenu);
+$('#btnShare').addEventListener('click', shareResult);
+$$('#soDiff button').forEach(b => b.addEventListener('click', () => { store.set('soDiff', +b.dataset.d); renderSODiff(); }));
 $('#btnHow').addEventListener('click', () => showScreen('scrHow'));
 $('#btnAch').addEventListener('click', () => showScreen('scrAch'));
 $('#btnLang').addEventListener('click', toggleLang);
@@ -1631,9 +2287,9 @@ $('#btnQuit').addEventListener('click', toMenu);
 $('#btnPause').addEventListener('click', () => act('pause'));
 $('#btnSoundMenu').addEventListener('click', toggleSound);
 $('#btnSoundPause').addEventListener('click', toggleSound);
-$$('.seg button').forEach(b => b.addEventListener('click', () => {
+$$('#scrOnline .seg button').forEach(b => b.addEventListener('click', () => {
   Net.myPart = b.dataset.part;
-  $$('.seg button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  $$('#scrOnline .seg button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
 }));
 $('#btnCreate').addEventListener('click', () => {
   let code = ''; for (let i = 0; i < 4; i++) code += CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)];
@@ -1653,14 +2309,14 @@ $('#btnOlBack').addEventListener('click', () => { if (Net.nr) { leaveRoom(); S.o
 // Back button: returns true when the game handled it, false to let the app close.
 window.__twinsightBack = () => {
   if (S.busy) return true;
-  if (S.mode === 'play') { act('pause'); return true; }
+  if (live()) { act('pause'); return true; }
   if (S.mode === 'pause') { act('resume'); return true; }
-  if (!$('#scrHow').hidden || !$('#scrAch').hidden) { showScreen('scrMenu'); return true; }
+  if (!$('#scrHow').hidden || !$('#scrAch').hidden || !$('#scrSO').hidden) { showScreen('scrMenu'); return true; }
   if (!$('#scrOnline').hidden) { $('#btnOlBack').click(); return true; }
   if (S.mode !== 'menu') { toMenu(); return true; }
   return false;
 };
-window.__twinsightPause = () => { if (S.mode === 'play' && Net.role !== 'guest') pause(''); };
+window.__twinsightPause = () => { if (live() && Net.role !== 'guest') pause(''); };
 
 /* ---------- Loop & boot ---------- */
 let last = performance.now();
@@ -1702,7 +2358,7 @@ async function boot(data) {
 }
 const hot = window.claude && window.claude.hot;
 if (hot && typeof hot.snapshot === 'function') {
-  hot.snapshot(() => ({ run: (!Net.role && ['play', 'pause', 'levelup'].includes(S.mode)) ? { level: S.level, score: S.score, lives: S.lives, solo: S.solo } : null }));
+  hot.snapshot(() => ({ run: (!Net.role && S.game === 'eye' && ['play', 'pause', 'levelup'].includes(S.mode)) ? { level: S.level, score: S.score, lives: S.lives, solo: S.solo } : null }));
 }
 if (hot && typeof hot.ready === 'function') hot.ready(boot); else boot((hot && hot.data) || {});
 })();

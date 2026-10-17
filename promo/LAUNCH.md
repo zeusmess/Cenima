@@ -48,8 +48,9 @@
 - النص مقروء في مقاسات الإطار بتاعهم، زي 821×462 و800×450 و1216×684.
 - مفيش روابط خارجية. الخطوط جوه الحزمة نفسها، والمسارات نسبية.
 - إشارات بداية ووقف اللعب للـ SDK.
+- وضع ضربات الترجيح فيه نفس إشارات بداية ووقف اللعب، ومفيهوش زرار مشاركة في نسخ CrazyGames، لأنهم بيمنعوا الروابط الخارجية.
 - نسخة Full Launch فيها:
-  - إعلان بين المراحل بس.
+  - إعلان بين المراحل، وبين مباريات ضربات الترجيح، بس.
   - زرار «Continue» بإعلان مكافأة، مرة واحدة في الجولة.
   - احترام كتم الصوت اللي بيفرضه الموقع.
   - حفظ التقدّم عن طريق نظامهم.
@@ -65,8 +66,10 @@
 - **كابشن 1:** لعبة لاتنين على كيبورد واحد 👀 واحد بيلف القزحية والتاني البؤبؤ، والنور مش هيدخل غير لو اتفقتوا. جرّبها مع صاحبك وقولي وصلتوا لمرحلة كام 🔥
 - **كابشن 2:** تحدي: إنت وصاحبك تعدّوا المرحلة 5 من غير ما تخسروا ولا روح؟ 😅 اللينك في البايو
 - **كابشن 3:** عملت لعبة كلها أبيض وأسود… وكل حاجة بتعدّي الخط اللي في النص لونها بيتقلب ⚫⚪ تلعبها لوحدك ولا مع صاحبك؟
+- **كابشن 4 (ضربات الترجيح):** ضربات ترجيح بيني وبين صاحبي على كيبورد واحد ⚽ واحد يشوط والتاني حارس، والكورة بتطلع بعد العدّ… مين فيكم هيكسب؟ 🔥
+- **كابشن 5 (الكأس):** حد قدر ياخد الكأس ويكسب الكمبيوتر على مستوى «أسطورة»؟ 🏆 أنا لسه بحاول 😅
 
-**هاشتاجات:** #ألعاب #جيمز #تحدي #لعبة_جديدة #مصر #gaming #indiegame #webgame #2player
+**هاشتاجات:** #ألعاب #جيمز #تحدي #لعبة_جديدة #مصر #كورة #ضربات_ترجيح #gaming #indiegame #webgame #2player #penalty
 
 ### خطة أسبوعين
 
@@ -78,13 +81,14 @@
 | 5 | Reddit (r/WebGames و r/IndieGaming) | البوست الإنجليزي اللي تحت |
 | 7 | ستوري وواتساب | لقطة شاشة لأعلى سكور مع اللينك |
 | 10 | تيك توك | فيديو لمرحلة صعبة، زي SHIFT أو ECLIPSE (كابشن 3) |
+| 12 | تيك توك وريلز | تسجيل شاشة لمباراة ضربات ترجيح حماسية (كابشن 4)، وبعدها تحدي الكأس (كابشن 5) |
 | 14 | كل الأماكن | اسأل الناس عن أعلى مرحلة وصلوا لها، ورد على التعليقات |
 
 ### بوست Reddit (إنجليزي)
 
 **Title:** I made TWINSIGHT, a black-and-white co-op game where two players turn the rings of one eye
 
-**Body:** Each player turns one ring of the eye. Light only gets in when both gaps line up, and one closed ring is enough to stop a shadow. You can share one keyboard (A/D and the arrow keys) or one touch screen, or play solo with an AI partner. Eight stages, then it's endless. I'd love feedback on the difficulty curve. [link]
+**Body:** Each player turns one ring of the eye. Light only gets in when both gaps line up, and one closed ring is enough to stop a shadow. You can share one keyboard (A/D and the arrow keys) or one touch screen, or play solo with an AI partner. Eight stages, then it's endless. There's also a penalty shootout on the same eye: one player slides the ball, the other slides the keeper's gloves, and the ball flies when the countdown ends. Play a friend, the AI, or a three-round cup. I'd love feedback on the difficulty curve. [link]
 
 ---
 
@@ -92,21 +96,24 @@
 
 **Title:** TWINSIGHT
 
-**Short description:** A black-and-white co-op game for one or two players: turn the rings of one eye so light gets in and shadows stay out.
+**Short description:** A black-and-white game for one or two players: turn the rings of one eye so light gets in and shadows stay out, or take a penalty shootout on it.
 
 **Description:**
 TWINSIGHT is a minimalist co-op game played on a screen split into black and white. In the middle sits an eye with two rings, and each ring has a gap. One player turns the outer ring (the iris), the other turns the inner ring (the pupil).
 
 Light only reaches the centre when it passes through both gaps, so you have to line them up together. Shadows are the opposite: one closed ring in their way is enough to stop them. When the gaps meet, a beam shows where light can get in.
 
-Play with a friend on one keyboard or one touch screen, or play solo with an AI partner. Clear 8 stages, from DAWN to ECLIPSE, with new twists along the way: shadows, rare prisms, light that turns into shadow halfway in, drifting rings and narrower gaps. After that the game is endless. Build combos up to a ×5 multiplier and unlock 14 achievements.
+Play with a friend on one keyboard or one touch screen, or play solo with an AI partner. Clear 8 stages, from DAWN to ECLIPSE, with new twists along the way: shadows, rare prisms, light that turns into shadow halfway in, drifting rings and narrower gaps. After that the game is endless. Build combos up to a ×5 multiplier.
 
-Available in English and Arabic.
+SHOOTOUT turns the eye into a goal for a penalty shootout. The shooter slides the ball along the top, the keeper slides the gloves along the goal line, and the ball flies in when the countdown ends: wait, fake one way, go the other at the last moment. Five kicks each, then sudden death. Play a friend on one device, the AI at three levels (Amateur, Pro, Legend), or win a three-round cup.
+
+19 achievements across both modes. Available in English and Arabic.
 
 **Controls:**
 - 2 players: Iris (left player) A / D · Pupil (right player) ← / →
 - 1 player: A / D or ← / → turns the iris; the AI turns the pupil
-- Touch: hold the left or right part of your half of the screen to turn, or drag sideways
+- Shootout: White (left) A / D · Black (right) ← / →; against the AI you are White and can use either
+- Touch: hold the left or right part of your half of the screen, or drag sideways
 - P: pause
 
-**Tags:** 2 player, co-op, local multiplayer, one keyboard, minimalist, black and white, reflex, casual, arcade
+**Tags:** 2 player, co-op, local multiplayer, one keyboard, football, soccer, penalty, minimalist, black and white, reflex, casual, arcade

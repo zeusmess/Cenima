@@ -28,8 +28,8 @@ DIST = ROOT / "dist"
 KEYSTORE = APP / "twinsight-release.keystore"
 PASSFILE = APP / "twinsight-release.password"
 ALIAS = "twinsight"
-VERSION_CODE = 1
-VERSION_NAME = "1.0.0"
+VERSION_CODE = 2
+VERSION_NAME = "1.1.0"
 MIN_SDK = 24
 TARGET_SDK = 36
 
@@ -103,7 +103,9 @@ def main():
         "--ks-pass", "env:TWINSIGHT_KS_PASS", "--key-pass", "env:TWINSIGHT_KS_PASS",
         "--v4-signing-enabled", "false", "--out", out, aligned, env=env)
     run(bt / "apksigner", "verify", out)
-    print(f"{out.relative_to(ROOT)}: {out.stat().st_size / 1024:.0f} KB")
+    # dist/twinsight.apk is the permanent download link: always the latest version.
+    shutil.copy2(out, DIST / "twinsight.apk")
+    print(f"{out.relative_to(ROOT)}: {out.stat().st_size / 1024:.0f} KB (also dist/twinsight.apk)")
 
 
 if __name__ == "__main__":
