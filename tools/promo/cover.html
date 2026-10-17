@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Twinsight cover</title>
+<link rel="stylesheet" href="../../game/fonts/fonts.css">
+<style>
+  html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+  canvas { display: block; width: 100vw; height: 100vh; }
+  /* Preloads the title face so the canvas can use it. */
+  .warm { position: absolute; opacity: 0; font: 800 20px "Unbounded"; }
+</style>
+</head>
+<body>
+<span class="warm">TWINSIGHT</span>
+<canvas id="cv"></canvas>
+<script>
+// Cover art for the store listing: the game's split world, the eye with both gaps lined up,
+// light streaming in through the beam and shadows breaking on the rings, and the title.
+const cv = document.getElementById('cv'), ctx = cv.getContext('2d');
+const TAU = Math.PI * 2, DEG = Math.PI / 180;
+
+function almond(x, y, ew, eh) {
+  const a = Math.min(eh * 0.62, ew * 0.45);
+  ctx.beginPath();
+  ctx.moveTo(x - ew, y);
+  ctx.bezierCurveTo(x - ew + a, y - a, x - ew * 0.42, y - eh, x, y - eh);
+  ctx.bezierCurveTo(x + ew * 0.42, y - eh, x + ew - a, y - a, x + ew, y);
+  ctx.bezierCurveTo(x + ew - a, y + a, x + ew * 0.42, y + eh, x, y + eh);
+  ctx.bezierCurveTo(x - ew * 0.42, y + eh, x - ew + a, y + a, x - ew, y);
+  ctx.closePath();
+}
+
+function render() {
+  const W = innerWidth, H = innerHeight, DPR = devicePixelRatio || 1;
+  cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  const portrait = H > W * 1.2, square = !portrait && H > W * 0.8;
+  const titleSize = Math.min(W * 0.115, H * 0.2);
+  const cx = W / 2;
+  const cy = portrait ? H * 0.56 : square ? H * 0.43 : H * 0.42;
+  const EW = portrait ? W * 0.44 : square ? W * 0.34 : H * 0.36;
+  const EH = EW * 0.7, IEW = EW * 0.75, IEH = EW * 0.51, RB = EW * 1.12;
+  const RI = EW * 0.4, RP = EW * 0.22, RC = EW * 0.085, PR = Math.max(4, EW * 0.04);
+  const at = (a, r) => [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
+
+  // Split world, tilted a little like the menu.
+  ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H);
+  const sa = Math.PI / 2 + 0.07, dx = Math.cos(sa), dy = Math.sin(sa), nx = -dy, ny = dx, L = (W + H) * 2;
+  ctx.fillStyle = '#fff'; ctx.beginPath();
+  ctx.moveTo(cx + dx * L, cy + dy * L); ctx.lineTo(cx - dx * L, cy - dy * L);
+  ctx.lineTo(cx - dx * L + nx * L, cy - dy * L + ny * L); ctx.lineTo(cx + dx * L + nx * L, cy + dy * L + ny * L);
+  ctx.closePath(); ctx.fill();
+
+  ctx.globalCompositeOperation = 'difference';
+  ctx.fillStyle = '#fff'; ctx.strokeStyle = '#fff'; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+
+  // Bezel ticks.
+  ctx.globalAlpha = 0.55; ctx.lineWidth = Math.max(1.2, EW / 140); ctx.beginPath();
+  for (let i = 0; i < 72; i++) {
+    const a = i * 5 * DEG, len = (i % 6 === 0 ? 0.07 : 0.03) * EW;
+    ctx.moveTo(...at(a, RB)); ctx.lineTo(...at(a, RB + len));
+  }
+  ctx.stroke(); ctx.globalAlpha = 1;
+
+  // Both gaps lined up toward the upper left, so the beam opens there.
+  const gapA = (portrait ? -146 : -122) * DEG, gi = 34 * DEG, gp = 30 * DEG;
+  ctx.globalAlpha = 0.22; ctx.beginPath();
+  ctx.arc(cx, cy, RB - 3, gapA - gp, gapA + gp); ctx.arc(cx, cy, RP + EW * 0.05, gapA + gp, gapA - gp, true);
+  ctx.closePath(); ctx.fill(); ctx.globalAlpha = 1;
+
+  // Eye.
+  ctx.lineWidth = Math.max(1.5, EW / 95);
+  almond(cx, cy, EW, EH); ctx.stroke();
+  almond(cx, cy, IEW, IEH); ctx.stroke();
+  const ring = (r, w, g) => { ctx.lineWidth = w; const cap = (w / 2) / r; ctx.beginPath(); ctx.arc(cx, cy, r, gapA + g + cap, gapA - g - cap + TAU); ctx.stroke(); };
+  ring(RI, EW * 0.06, gi);
+  ring(RP, EW * 0.05, gp);
+  ctx.beginPath(); ctx.arc(cx, cy, RC * 1.5, 0, TAU); ctx.fill();
+
+  // Light streaming in through the beam, with tails.
+  const light = (a, d, s = 1) => {
+    const [x, y] = at(a, d * EW), tx = Math.cos(a), ty = Math.sin(a), r = PR * s;
+    ctx.globalAlpha = 0.45; ctx.lineWidth = r * 0.8;
+    ctx.beginPath(); ctx.moveTo(x + tx * r * 1.7, y + ty * r * 1.7); ctx.lineTo(x + tx * r * 7, y + ty * r * 7); ctx.stroke();
+    ctx.globalAlpha = 1; ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.fill();
+  };
+  light(gapA + 0.03, 0.62, 1.05);
+  light(gapA - 0.05, 1.32, 1.1);
+  light(gapA + 0.08, 2.05, 1);
+  light(gapA - 0.12, 2.9, 0.95);
+
+  // Shadows: one breaking on the iris, one still coming.
+  const shadow = (a, d, rot, s = 1) => {
+    const [x, y] = at(a, d * EW), k = PR * 1.5 * s;
+    ctx.lineWidth = Math.max(2, PR * 0.55 * s); ctx.beginPath();
+    for (const q of [0, 1]) {
+      const b = rot + Math.PI / 4 + q * Math.PI / 2;
+      ctx.moveTo(x - Math.cos(b) * k, y - Math.sin(b) * k); ctx.lineTo(x + Math.cos(b) * k, y + Math.sin(b) * k);
+    }
+    ctx.stroke();
+  };
+  shadow(28 * DEG, 0.47, 0.3, 1);
+  for (let i = 0; i < 9; i++) {
+    const a = 28 * DEG + (i - 4) * 0.16, r = RI + EW * (0.07 + (i % 3) * 0.035);
+    ctx.globalAlpha = 0.85 - (i % 3) * 0.2; ctx.beginPath(); ctx.arc(...at(a, r), PR * 0.42, 0, TAU); ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+  shadow(152 * DEG, 1.7, 1.1, 1.1);
+  shadow(78 * DEG, 2.4, 0.6, 0.95);
+
+  // Prism.
+  const [px, py] = portrait ? [W * 0.84, H * 0.3] : square ? [W * 0.87, H * 0.13] : [W * 0.76, H * 0.16];
+  ctx.beginPath();
+  for (let i = 0; i < 8; i++) {
+    const r = (i % 2 ? 0.65 : 2.1) * PR, a = 0.3 + i * Math.PI / 4;
+    const qx = px + Math.cos(a) * r, qy = py + Math.sin(a) * r;
+    if (i) ctx.lineTo(qx, qy); else ctx.moveTo(qx, qy);
+  }
+  ctx.closePath(); ctx.fill();
+
+  // Title, the only words allowed on a cover.
+  ctx.globalAlpha = 1; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+  let size = titleSize;
+  ctx.font = `800 ${size}px "Unbounded"`;
+  const maxW = W * 0.9;
+  const w = ctx.measureText('TWINSIGHT').width;
+  if (w > maxW) { size *= maxW / w; ctx.font = `800 ${size}px "Unbounded"`; }
+  const ty = portrait ? H * 0.135 + size * 0.5 : square ? H * 0.94 : H * 0.92;
+  ctx.fillText('TWINSIGHT', cx, ty);
+  ctx.globalCompositeOperation = 'source-over';
+  document.body.dataset.ready = '1';
+}
+document.fonts.load('800 40px "Unbounded"').then(render, render);
+</script>
+</body>
+</html>

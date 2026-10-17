@@ -7,3 +7,8 @@ work/
 output/
 *.mp4
 .env
+
+# Twinsight: unpacked CrazyGames builds (the zips are kept)
+dist/crazygames-*/
+# Twinsight promo videos are deliverables
+!promo/*.mp4

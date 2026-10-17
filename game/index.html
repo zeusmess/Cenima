@@ -1,10 +1,11 @@
 <!doctype html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Twinsight</title>
 <meta name="claude:viewport-fit-sides" content="cover">
+<meta name="twinsight-target" content="web">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700&family=Unbounded:wght@400;600;800&display=swap">
@@ -22,19 +23,20 @@
 [hidden]{display:none!important}
 *{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0;background:var(--black);color:var(--white);font-family:var(--font-body);overflow:hidden;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--black);color:var(--white);font-family:var(--font-body);overflow:hidden;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
 #app{position:relative;height:100%;overflow:hidden;isolation:isolate;user-select:none;-webkit-user-select:none}
 #cv{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
 .blend{mix-blend-mode:difference;color:var(--white)}
-.cap{font-family:var(--font-display);font-size:10px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;direction:ltr}
-kbd{font-family:var(--font-display);font-size:10px;font-weight:600;border:1.5px solid currentColor;border-radius:6px;padding:2px 6px;direction:ltr;display:inline-block;line-height:1.3;min-width:22px;text-align:center}
+.cap{font-family:var(--font-display);font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;direction:ltr}
+kbd{font-family:var(--font-display);font-size:11px;font-weight:600;border:1.5px solid currentColor;border-radius:6px;padding:2px 6px;direction:ltr;display:inline-block;line-height:1.3;min-width:22px;text-align:center}
+.is-en .ar-only{display:none!important}
 
 /* HUD */
 .hud{position:absolute;top:0;left:0;right:0;z-index:3;direction:ltr;display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:12px;padding-block:16px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));pointer-events:none}
 .hud>*{pointer-events:auto}
 .h-score{justify-self:start;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
 .h-score b{font-family:var(--font-display);font-weight:600;font-size:30px;line-height:1;font-variant-numeric:tabular-nums}
-.mult{font-family:var(--font-display);font-size:10px;font-weight:600;letter-spacing:.08em;border:1.5px solid currentColor;border-radius:999px;padding:3px 9px;opacity:.45}
+.mult{font-family:var(--font-display);font-size:11px;font-weight:600;letter-spacing:.08em;border:1.5px solid currentColor;border-radius:999px;padding:3px 9px;opacity:.45}
 .mult.hot{opacity:1}
 .h-stage{display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center}
 .h-stage b{font-family:var(--font-display);font-weight:800;font-size:15px;letter-spacing:.14em;line-height:1.1}
@@ -66,13 +68,10 @@ kbd{font-family:var(--font-display);font-size:10px;font-weight:600;border:1.5px 
 .menu{justify-content:space-between;pointer-events:none;padding-block:26px 22px}
 .menu>*{pointer-events:auto}
 .brand{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
-.logo{font-family:var(--font-display);font-weight:800;font-size:clamp(38px,11.2vw,104px);line-height:.95;letter-spacing:-.02em;margin:0;direction:ltr}
+.logo{font-family:var(--font-display);font-weight:800;font-size:clamp(36px,min(11.2vw,15vh),104px);line-height:.95;letter-spacing:-.02em;margin:0;direction:ltr}
 .tag{max-width:36ch;font-size:15px;line-height:1.8;margin:0;text-wrap:balance}
 .menu-foot{width:100%;max-width:460px;display:flex;flex-direction:column;gap:14px}
-.duo{direction:ltr;display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.who{border:1.5px solid currentColor;border-radius:18px;padding:10px 12px;display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;font-size:12px;line-height:1.6;min-width:0}
-.who b{font-family:var(--font-display);font-weight:800;font-size:13px;letter-spacing:.16em}
-.who span{direction:rtl}
+.modes{direction:ltr;display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .best{direction:ltr;text-align:center;margin:0;display:flex;justify-content:center;align-items:baseline;gap:10px}
 .best b{font-family:var(--font-display);font-weight:600;font-size:14px;font-variant-numeric:tabular-nums}
 
@@ -83,7 +82,11 @@ kbd{font-family:var(--font-display);font-size:10px;font-weight:600;border:1.5px 
 .btn.ghost{border-color:transparent}
 .btn:disabled{opacity:.35;cursor:default;transform:none}
 .btn .n{font-family:var(--font-display);font-size:11px;font-weight:600;direction:ltr}
-.btn .en{font-family:var(--font-display);font-size:11px;font-weight:600;letter-spacing:.22em;direction:ltr}
+.btn.mode{background:var(--white);color:var(--black);border-color:var(--white);flex-direction:column;gap:4px;min-height:68px;border-radius:24px;padding:10px 12px}
+.btn.mode b{font-family:var(--font-display);font-weight:800;font-size:15px;letter-spacing:.12em;line-height:1.2}
+.is-ar .btn.mode b{font-family:var(--font-body);font-weight:700;font-size:17px;letter-spacing:0}
+.btn.mode span{font-size:12px;font-weight:400;line-height:1.3}
+.btn svg.vid{width:18px;height:18px;flex:none}
 .btn:focus-visible,.icon-btn:focus-visible,.seg button:focus-visible,input:focus-visible{outline:2px solid var(--white);outline-offset:3px}
 .row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .col{display:flex;flex-direction:column;gap:10px;width:100%}
@@ -100,8 +103,9 @@ kbd{font-family:var(--font-display);font-size:10px;font-weight:600;border:1.5px 
 p{margin:0;line-height:1.8}
 .muted{color:var(--grey);font-size:14px}
 .tally{display:grid;grid-template-columns:1fr auto;gap:8px 24px;margin:0;width:100%;max-width:300px;font-size:14px}
-.tally dt{color:var(--grey);text-align:right}
-.tally dd{margin:0;font-family:var(--font-display);font-weight:600;font-size:13px;direction:ltr;text-align:left;font-variant-numeric:tabular-nums}
+.tally dt{color:var(--grey);text-align:start}
+.tally dd{margin:0;font-family:var(--font-display);font-weight:600;font-size:13px;direction:ltr;text-align:right;font-variant-numeric:tabular-nums}
+.is-ar .tally dd{text-align:left}
 .tally .sum{border-top:1px solid var(--hair);padding-top:8px}
 .final{font-family:var(--font-display);font-weight:800;font-size:60px;line-height:1;direction:ltr;font-variant-numeric:tabular-nums}
 .newbest{font-size:13px;display:flex;gap:8px;align-items:baseline}
@@ -111,8 +115,10 @@ p{margin:0;line-height:1.8}
 .next b{font-family:var(--font-display);font-weight:800;font-size:18px;letter-spacing:.1em;direction:ltr}
 .next p{color:var(--grey);font-size:14px;max-width:36ch}
 .duo2{direction:ltr;display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.duo2>div{direction:rtl;border:1.5px solid var(--hair);border-radius:18px;padding:12px 14px;display:flex;flex-direction:column;gap:3px}
-.duo2 b{font-family:var(--font-display);font-weight:800;font-size:15px;letter-spacing:.14em;direction:ltr;text-align:right}
+.duo2>div{border:1.5px solid var(--hair);border-radius:18px;padding:12px 14px;display:flex;flex-direction:column;gap:3px}
+.is-ar .duo2>div{direction:rtl}
+.duo2 b{font-family:var(--font-display);font-weight:800;font-size:15px;letter-spacing:.14em;direction:ltr}
+.is-ar .duo2 b{text-align:right}
 .duo2 span{font-size:12px;color:var(--grey)}
 .duo2 p{font-size:13px;line-height:1.75;margin-top:4px}
 .legend{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
@@ -123,7 +129,8 @@ p{margin:0;line-height:1.8}
 .achs{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
 .achs li{border:1.5px solid var(--white);border-radius:18px;padding:12px;display:grid;grid-template-columns:28px 1fr;gap:4px 10px;align-items:start}
 .achs svg{width:28px;height:28px;grid-row:span 2}
-.achs b{font-family:var(--font-display);font-weight:600;font-size:11px;letter-spacing:.12em;direction:ltr;text-align:right;line-height:1.5}
+.achs b{font-family:var(--font-display);font-weight:600;font-size:11px;letter-spacing:.12em;direction:ltr;text-align:left;line-height:1.5}
+.is-ar .achs b{text-align:right}
 .achs span{font-size:12px;color:var(--grey);line-height:1.6}
 .achs li.off{border-color:var(--hair);border-style:dashed}
 .achs li.off b,.achs li.off svg{color:var(--hair)}
@@ -156,6 +163,24 @@ p{margin:0;line-height:1.8}
   .icon-btn{width:36px;height:36px}
   .tag{font-size:14px}
 }
+/* Short landscape frames such as the 16:9 portal iframes */
+@media (max-height:560px){
+  .menu{padding-block:14px 12px}
+  .brand{gap:6px}
+  .tag{display:none}
+  .menu-foot{gap:10px}
+  .btn.mode{min-height:56px;border-radius:20px;padding:8px 12px}
+  .row .btn{min-height:40px;padding:8px 14px;font-size:14px}
+  .row .icon-btn{width:40px;height:40px}
+  .hud{padding-block:10px}
+  .h-score b{font-size:22px}
+  .h-stage{gap:3px}
+  .toast{top:70px}
+  .pads{padding-block:8px 10px;gap:6px}
+  .z i{width:38px;height:38px}
+  .card{padding:20px 20px;gap:14px}
+  .final{font-size:46px}
+}
 @media (prefers-reduced-motion: reduce){
   .toast{animation:none}
   .btn,.bar i{transition:none}
@@ -163,8 +188,8 @@ p{margin:0;line-height:1.8}
 </style>
 </head>
 <body>
-<div id="app" dir="rtl">
-  <canvas id="cv" aria-label="ساحة اللعب: عين في المنتصف بحلقتين، وضوء وظل يقتربان منها"></canvas>
+<div id="app" class="is-en">
+  <canvas id="cv"></canvas>
 
   <header class="hud blend" id="hud" hidden>
     <div class="h-score">
@@ -175,43 +200,43 @@ p{margin:0;line-height:1.8}
     <div class="h-stage">
       <span class="cap" id="hNum">Stage 01</span>
       <b id="hName">DAWN</b>
-      <span class="ar" id="hAr">الفجر</span>
+      <span class="ar ar-only" id="hAr">الفجر</span>
       <div class="bar" aria-hidden="true"><i id="hBar"></i></div>
     </div>
     <div class="h-side">
       <div class="lives" id="hLives"></div>
-      <button class="icon-btn" id="btnPause" aria-label="إيقاف مؤقت"><svg viewBox="0 0 20 20" fill="currentColor"><rect x="5" y="4" width="3.2" height="12" rx="1"/><rect x="11.8" y="4" width="3.2" height="12" rx="1"/></svg></button>
+      <button class="icon-btn" id="btnPause" data-ta="pause"><svg viewBox="0 0 20 20" fill="currentColor"><rect x="5" y="4" width="3.2" height="12" rx="1"/><rect x="11.8" y="4" width="3.2" height="12" rx="1"/></svg></button>
     </div>
   </header>
 
   <div class="pads blend" id="pads" hidden>
     <div class="pad-labels"><span class="cap" id="lblL">Iris</span><span class="cap" id="lblR">Pupil</span></div>
     <div class="pad-row">
-      <span class="z" id="z1"><i><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 10a5.5 5.5 0 1 1-1.6-3.9"/><path d="M14.3 2.8v3.6h-3.6"/></svg></i><kbd id="k1">A</kbd></span>
-      <span class="z" id="z2"><i><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 10a5.5 5.5 0 1 0 1.6-3.9"/><path d="M5.7 2.8v3.6h3.6"/></svg></i><kbd>D</kbd></span>
-      <span class="z" id="z3"><i><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 10a5.5 5.5 0 1 1-1.6-3.9"/><path d="M14.3 2.8v3.6h-3.6"/></svg></i><kbd>←</kbd></span>
-      <span class="z" id="z4"><i><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 10a5.5 5.5 0 1 0 1.6-3.9"/><path d="M5.7 2.8v3.6h3.6"/></svg></i><kbd id="k4">→</kbd></span>
+      <span class="z" id="z1"><i><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 10a5.5 5.5 0 1 0 1.6-3.9"/><path d="M5.7 2.8v3.6h3.6"/></svg></i><kbd id="k1">A</kbd></span>
+      <span class="z" id="z2"><i><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 10a5.5 5.5 0 1 1-1.6-3.9"/><path d="M14.3 2.8v3.6h-3.6"/></svg></i><kbd id="k2">D</kbd></span>
+      <span class="z" id="z3"><i><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 10a5.5 5.5 0 1 0 1.6-3.9"/><path d="M5.7 2.8v3.6h3.6"/></svg></i><kbd id="k3">←</kbd></span>
+      <span class="z" id="z4"><i><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 10a5.5 5.5 0 1 1-1.6-3.9"/><path d="M14.3 2.8v3.6h-3.6"/></svg></i><kbd id="k4">→</kbd></span>
     </div>
   </div>
 
   <!-- Menu -->
   <section class="screen menu blend" id="scrMenu">
     <div class="brand">
-      <span class="cap">A game for two · لعبة لاثنين</span>
+      <span class="cap" data-t="eyebrow"></span>
       <h1 class="logo">TWINSIGHT</h1>
-      <p class="tag">عقلان وعين واحدة. واحد يدير القزحية والثاني يدير البؤبؤ، والضوء لا يدخل إلا إذا اتفقتما.</p>
+      <p class="tag" data-t="tag"></p>
     </div>
     <div class="menu-foot">
-      <div class="duo">
-        <div class="who"><b>IRIS</b><span>القزحية · اللاعب على اليسار</span><kbd>A · D</kbd></div>
-        <div class="who"><b>PUPIL</b><span>البؤبؤ · اللاعب على اليمين</span><kbd>← · →</kbd></div>
+      <div class="modes">
+        <button class="btn mode" id="btnSolo"><b data-t="solo"></b><span data-t="soloSub"></span></button>
+        <button class="btn mode" id="btnDuo"><b data-t="duo"></b><span data-t="duoSub"></span></button>
       </div>
-      <button class="btn primary big" id="btnPlay">ابدأ اللعب <span class="en">PLAY</span></button>
       <div class="row">
-        <button class="btn" id="btnOnline" hidden>على جهازين</button>
-        <button class="btn" id="btnAch">الإنجازات <span class="n" id="achCount">0/14</span></button>
-        <button class="btn" id="btnHow">طريقة اللعب</button>
-        <button class="icon-btn" id="btnSoundMenu" aria-label="الصوت"></button>
+        <button class="btn" id="btnOnline" hidden data-t="online"></button>
+        <button class="btn" id="btnAch"><span data-t="ach"></span><span class="n" id="achCount">0/14</span></button>
+        <button class="btn" id="btnHow" data-t="how"></button>
+        <button class="btn" id="btnLang" data-t="lang" data-ta="langAria"></button>
+        <button class="icon-btn" id="btnSoundMenu"></button>
       </div>
       <p class="best"><span class="cap">Best</span><b id="bestVal">0</b></p>
     </div>
@@ -220,47 +245,48 @@ p{margin:0;line-height:1.8}
   <!-- How to play -->
   <section class="screen sheet" id="scrHow" hidden>
     <div class="card">
-      <div class="head"><h2>HOW TO PLAY</h2><p class="ar-title">طريقة اللعب</p></div>
-      <p>في وسط الشاشة عين فيها حلقتان، ولكل حلقة فتحة. كل لاعب يدير حلقة واحدة.</p>
+      <div class="head"><h2>HOW TO PLAY</h2><p class="ar-title ar-only">طريقة اللعب</p></div>
+      <p data-t="howIntro"></p>
       <div class="duo2">
-        <div><b>IRIS</b><span>القزحية · الحلقة الخارجية</span><p>اللاعب على اليسار: <kbd>A</kbd> و<kbd>D</kbd>، أو اللمس في النصف الأيسر من الشاشة.</p></div>
-        <div><b>PUPIL</b><span>البؤبؤ · الحلقة الداخلية</span><p>اللاعب على اليمين: <kbd>←</kbd> و<kbd>→</kbd>، أو اللمس في النصف الأيمن.</p></div>
+        <div><b>IRIS</b><span data-t="irisSub"></span><p data-th="irisHow"></p></div>
+        <div><b>PUPIL</b><span data-t="pupilSub"></span><p data-th="pupilHow"></p></div>
       </div>
-      <p class="muted">على اللمس: اضغط مطولًا على يسار نصفك لتدور الحلقة عكس عقارب الساعة، وعلى يمينه لتدور معها. أو اسحب إصبعك يمينًا ويسارًا.</p>
+      <p data-th="soloHow"></p>
+      <p class="muted" data-t="touchHow"></p>
       <ul class="legend">
-        <li><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="6" fill="currentColor"/><path d="M20 10V3" stroke="currentColor" stroke-width="4" stroke-linecap="round" opacity=".45"/></svg><div><b>الضوء · 10</b><span>يجب أن يعبر من الفتحتين ليصل إلى المركز. إذا اصطدم بحلقة تخسرون حياة.</span></div></li>
-        <li><svg viewBox="0 0 40 40"><path d="M12 12l16 16M28 12L12 28" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/></svg><div><b>الظل · 5 أو 10</b><span>تكفي حلقة واحدة مغلقة في طريقه. إذا صدّه البؤبؤ في آخر لحظة تأخذون 10. إذا وصل إلى المركز تخسرون حياة.</span></div></li>
-        <li><svg viewBox="0 0 40 40"><path d="M20 8L23 17L32 20L23 23L20 32L17 23L8 20L17 17Z" fill="currentColor"/></svg><div><b>المنشور · 50</b><span>من المرحلة 3. نادر وسريع، يُلتقط مثل الضوء، وفواته بلا عقاب.</span></div></li>
-        <li><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="3.4 3.4"/><circle cx="20" cy="20" r="4.5" fill="currentColor"/></svg><div><b>الضوء المتحوّل</b><span>من المرحلة 4. إطاره متقطع، وينقلب ظلًا في منتصف الطريق.</span></div></li>
+        <li><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="6" fill="currentColor"/><path d="M20 10V3" stroke="currentColor" stroke-width="4" stroke-linecap="round" opacity=".45"/></svg><div><b data-t="lightT"></b><span data-t="lightD"></span></div></li>
+        <li><svg viewBox="0 0 40 40"><path d="M12 12l16 16M28 12L12 28" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/></svg><div><b data-t="shadowT"></b><span data-t="shadowD"></span></div></li>
+        <li><svg viewBox="0 0 40 40"><path d="M20 8L23 17L32 20L23 23L20 32L17 23L8 20L17 17Z" fill="currentColor"/></svg><div><b data-t="prismT"></b><span data-t="prismD"></span></div></li>
+        <li><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="3.4 3.4"/><circle cx="20" cy="20" r="4.5" fill="currentColor"/></svg><div><b data-t="shiftT"></b><span data-t="shiftD"></span></div></li>
       </ul>
-      <p class="muted">عندما تتطابق الفتحتان يظهر شعاع: وجّهوه نحو الضوء وبعيدًا عن الظل. كل 5 نجاحات متتالية ترفع المضاعف حتى ×5. معكم 3 أرواح، وكل مرحلة تنهونها تعيد لكم واحدة.</p>
-      <button class="btn primary" data-back>فهمت</button>
+      <p class="muted" data-t="howFoot"></p>
+      <button class="btn primary" data-back data-t="gotIt"></button>
     </div>
   </section>
 
   <!-- Achievements -->
   <section class="screen sheet" id="scrAch" hidden>
     <div class="card wide">
-      <div class="head"><h2>ACHIEVEMENTS</h2><p class="ar-title">الإنجازات</p></div>
+      <div class="head"><h2>ACHIEVEMENTS</h2><p class="ar-title ar-only">الإنجازات</p></div>
       <p class="muted" id="achSummary"></p>
       <ul class="achs" id="achList"></ul>
-      <button class="btn" data-back>رجوع</button>
+      <button class="btn" data-back data-t="back"></button>
     </div>
   </section>
 
-  <!-- Level complete -->
+  <!-- Stage complete -->
   <section class="screen sheet" id="scrLevel" hidden>
     <div class="card center">
       <span class="cap" id="lvCap">Stage 01 clear</span>
-      <div class="head center"><h2 id="lvTitle">IN SYNC</h2><p class="ar-title" id="lvAr">اكتملت المرحلة 1</p></div>
+      <div class="head center"><h2 id="lvTitle">IN SYNC</h2><p class="ar-title ar-only" id="lvAr"></p></div>
       <dl class="tally" id="lvTally"></dl>
       <div class="next">
         <span class="cap">Next</span>
         <b id="lvNext"></b>
-        <span class="muted" id="lvNextAr"></span>
+        <span class="muted ar-only" id="lvNextAr"></span>
         <p id="lvIntro"></p>
       </div>
-      <button class="btn primary big" id="btnNext">ابدأ المرحلة 2</button>
+      <button class="btn primary big" id="btnNext"></button>
     </div>
   </section>
 
@@ -268,14 +294,19 @@ p{margin:0;line-height:1.8}
   <section class="screen sheet" id="scrOver" hidden>
     <div class="card center">
       <span class="cap">Game over</span>
-      <div class="head center"><h2>EYES CLOSED</h2><p class="ar-title">انغلقت العين</p></div>
+      <div class="head center"><h2>EYES CLOSED</h2><p class="ar-title ar-only">انغلقت العين</p></div>
       <div class="final" id="ovScore">0</div>
-      <p class="newbest" id="ovBest" hidden><span class="cap">New best</span><span>رقم قياسي جديد</span></p>
+      <p class="newbest" id="ovBest" hidden><span class="cap">New best</span><span class="ar-only">رقم قياسي جديد</span></p>
       <dl class="tally" id="ovTally"></dl>
       <div class="chips" id="ovAch"></div>
-      <div class="row">
-        <button class="btn primary" id="btnAgain">العب مرة أخرى</button>
-        <button class="btn" id="btnMenu">القائمة</button>
+      <div class="col">
+        <div class="row">
+          <button class="btn primary" id="btnCont" hidden><svg class="vid" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="2.5" y="4.5" width="15" height="11" rx="2.5"/><path d="M8.5 7.6v4.8l4-2.4z" fill="currentColor"/></svg><span data-t="cont"></span></button>
+          <button class="btn primary" id="btnAgain" data-t="again"></button>
+        </div>
+        <p class="muted" id="ovContNote" hidden data-t="contSub"></p>
+        <p class="muted" id="ovMsg" hidden></p>
+        <button class="btn ghost" id="btnMenu" data-t="menu"></button>
       </div>
     </div>
   </section>
@@ -283,51 +314,51 @@ p{margin:0;line-height:1.8}
   <!-- Pause -->
   <section class="screen sheet" id="scrPause" hidden>
     <div class="card center">
-      <div class="head center"><h2>PAUSED</h2><p class="ar-title">إيقاف مؤقت</p></div>
+      <div class="head center"><h2>PAUSED</h2><p class="ar-title ar-only">إيقاف مؤقت</p></div>
       <p class="muted" id="psNote" hidden></p>
       <div class="col">
-        <button class="btn primary big" id="btnResume">استمرار</button>
+        <button class="btn primary big" id="btnResume" data-t="resume"></button>
         <button class="btn" id="btnSoundPause"></button>
-        <button class="btn ghost" id="btnQuit">إنهاء الجولة</button>
+        <button class="btn ghost" id="btnQuit" data-t="quit"></button>
       </div>
     </div>
   </section>
 
-  <!-- Online -->
+  <!-- Online (only inside Claude, where the room capability exists) -->
   <section class="screen sheet" id="scrOnline" hidden>
     <div class="card">
-      <div class="head"><h2>TWO DEVICES</h2><p class="ar-title">على جهازين</p></div>
-      <p class="muted">كل لاعب يفتح نفس الرابط على جهازه. واحد ينشئ غرفة، والثاني يكتب رمزها.</p>
+      <div class="head"><h2>TWO DEVICES</h2><p class="ar-title ar-only">على جهازين</p></div>
+      <p class="muted" data-t="olIntro"></p>
       <div id="olStart" class="col">
         <div class="pick">
-          <span>دورك أنت</span>
-          <div class="seg" role="group" aria-label="دورك">
+          <span data-t="yourRole"></span>
+          <div class="seg" role="group" data-ta="yourRole">
             <button type="button" data-part="iris" aria-pressed="true">IRIS</button>
             <button type="button" data-part="pupil" aria-pressed="false">PUPIL</button>
           </div>
         </div>
-        <button class="btn primary big" id="btnCreate">أنشئ غرفة</button>
-        <div class="or">أو انضم لغرفة</div>
+        <button class="btn primary big" id="btnCreate" data-t="create"></button>
+        <div class="or" data-t="orJoin"></div>
         <form class="join" id="joinForm" autocomplete="off">
-          <input id="joinCode" maxlength="4" placeholder="ABCD" aria-label="رمز الغرفة" spellcheck="false">
-          <button class="btn" type="submit">انضم</button>
+          <input id="joinCode" maxlength="4" placeholder="ABCD" data-ta="roomCode" spellcheck="false">
+          <button class="btn" type="submit" data-t="join"></button>
         </form>
       </div>
       <div id="olRoom" class="col center" hidden>
         <span class="cap">Room code</span>
         <div class="code" id="olCode">----</div>
-        <div class="status"><i class="dot" id="olDot"></i><span id="olStatus">بانتظار شريكك…</span></div>
+        <div class="status"><i class="dot" id="olDot"></i><span id="olStatus"></span></div>
         <p class="muted" id="olRole"></p>
-        <button class="btn" id="btnSwap">بدّلوا الأدوار</button>
-        <button class="btn primary big" id="btnOlStart" disabled>ابدأ</button>
+        <button class="btn" id="btnSwap" data-t="swap"></button>
+        <button class="btn primary big" id="btnOlStart" disabled data-t="start"></button>
       </div>
       <p class="err" id="olErr" hidden></p>
-      <button class="btn ghost" id="btnOlBack">رجوع</button>
+      <button class="btn ghost" id="btnOlBack"></button>
     </div>
   </section>
 
   <div class="toast blend" id="toast" role="status" aria-live="polite" hidden>
-    <span class="cap">Unlocked</span>
+    <span class="cap" id="toastCap">Unlocked</span>
     <b id="toastName"></b>
   </div>
 </div>
@@ -335,9 +366,6 @@ p{margin:0;line-height:1.8}
 <script>
 (() => {
 'use strict';
-document.documentElement.lang = 'ar';
-document.documentElement.dir = 'rtl';
-
 const $ = s => document.querySelector(s);
 const $$ = s => Array.from(document.querySelectorAll(s));
 const TAU = Math.PI * 2, DEG = Math.PI / 180;
@@ -345,40 +373,190 @@ const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const F_DISP = '"Unbounded", "Alexandria", system-ui, sans-serif';
 const F_BODY = '"Alexandria", system-ui, sans-serif';
 const pad2 = n => String(n).padStart(2, '0');
+const TARGET = (document.querySelector('meta[name="twinsight-target"]') || {}).content || 'web';
 
-const store = {
-  get(k, d) { try { const v = localStorage.getItem('twinsight.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
-  set(k, v) { try { localStorage.setItem('twinsight.' + k, JSON.stringify(v)); } catch (e) {} }
+/* ---------- CrazyGames SDK (its script is only added to the CrazyGames builds) ---------- */
+const CG = {
+  sdk: null, playing: false, muted: false, adMuted: false,
+  full: TARGET === 'cg-full',
+  async init() {
+    const s = window.CrazyGames && window.CrazyGames.SDK;
+    if (!s) return;
+    try {
+      await Promise.race([s.init(), new Promise((_, no) => setTimeout(() => no(new Error('timeout')), 4000))]);
+      if (s.environment === 'crazygames' || s.environment === 'local') this.sdk = s;
+    } catch (e) {}
+    if (!this.sdk) return;
+    try {
+      const st = this.sdk.game.settings;
+      this.muted = !!(st && st.muteAudio);
+      this.sdk.game.addSettingsChangeListener(ns => { this.muted = !!(ns && ns.muteAudio); soundLabels(); });
+    } catch (e) {}
+  },
+  locale() { try { const i = this.sdk && this.sdk.user.systemInfo; return (i && i.locale) || ''; } catch (e) { return ''; } },
+  gameplay(on) {
+    if (!this.sdk || this.playing === on) return;
+    this.playing = on;
+    try { if (on) this.sdk.game.gameplayStart(); else this.sdk.game.gameplayStop(); } catch (e) {}
+  },
+  happy() { if (this.sdk) { try { this.sdk.game.happytime(); } catch (e) {} } },
+  get ads() { return !!(this.sdk && this.full); },
+  ad(type) {
+    return new Promise(resolve => {
+      if (!this.ads) { resolve(false); return; }
+      let done = false;
+      const end = ok => { if (done) return; done = true; this.adMuted = false; resolve(ok); };
+      try {
+        this.sdk.ad.requestAd(type, { adStarted: () => { this.adMuted = true; }, adFinished: () => end(true), adError: () => end(false) });
+      } catch (e) { end(false); }
+    });
+  }
 };
 
-/* ---------- Content ---------- */
+const store = {
+  backend() { return CG.sdk && CG.full ? CG.sdk.data : null; },
+  get(k, d) {
+    const key = 'twinsight.' + k;
+    let v = null;
+    try { const b = this.backend(); v = b ? b.getItem(key) : localStorage.getItem(key); }
+    catch (e) { try { v = localStorage.getItem(key); } catch (e2) {} }
+    if (v == null) return d;
+    try { return JSON.parse(v); } catch (e) { return d; }
+  },
+  set(k, v) {
+    const key = 'twinsight.' + k, s = JSON.stringify(v);
+    try { const b = this.backend(); if (b) b.setItem(key, s); else localStorage.setItem(key, s); }
+    catch (e) { try { localStorage.setItem(key, s); } catch (e2) {} }
+  }
+};
+
+/* ---------- Words ---------- */
+const STR = {
+  en: {
+    canvas: 'Game area: an eye with two rings in the middle, with light and shadows moving toward it',
+    eyebrow: 'One eye · Two minds',
+    tag: 'Two rings, one eye. Light only gets in when both gaps line up.',
+    solo: '1 PLAYER', soloSub: 'You and an AI partner',
+    duo: '2 PLAYERS', duoSub: 'One keyboard or one screen',
+    online: 'Two devices', ach: 'Achievements', how: 'How to play', lang: 'عربي', langAria: 'التبديل إلى العربية',
+    soundOn: 'Mute sound', soundOff: 'Turn sound on', soundState: 'Sound: {s}', on: 'on', off: 'off',
+    pause: 'Pause', lives: 'Lives left: {n} of 3',
+    howIntro: 'An eye with two rings sits in the middle. Each ring has a gap, and each player turns one ring.',
+    irisSub: 'Outer ring', pupilSub: 'Inner ring',
+    irisHow: 'Left player: {A} and {D}, or touch the left half of the screen.',
+    pupilHow: 'Right player: {L} and {R}, or touch the right half of the screen.',
+    soloHow: 'Playing alone? Choose 1 PLAYER. You turn the iris with {A} {D} or {L} {R}, and an AI partner turns the pupil.',
+    touchHow: 'On touch screens, hold the left part of your half to turn counter-clockwise and the right part to turn clockwise, or drag sideways.',
+    lightT: 'Light · 10', lightD: 'It has to pass through both gaps to reach the centre. If a ring blocks it, you lose a life.',
+    shadowT: 'Shadow · 5 or 10', shadowD: 'One closed ring in its way is enough. If the pupil stops it at the last moment you get 10. If it reaches the centre, you lose a life.',
+    prismT: 'Prism · 50', prismD: 'From stage 3. Rare and fast. Catch it like light; missing it costs nothing.',
+    shiftT: 'Shifting light', shiftD: 'From stage 4. It has a dashed outline and turns into a shadow halfway in.',
+    howFoot: 'When the two gaps line up, a beam appears: aim it at the light and away from shadows. Every 5 successes in a row raise the multiplier, up to ×5. You have 3 lives, and each stage you clear gives one back.',
+    gotIt: 'Got it', back: 'Back',
+    achNone: 'Nothing unlocked yet. The first light that reaches the centre unlocks one.',
+    achSome: 'Unlocked {n} of {t}.',
+    lvSub: 'Stage {n} complete', bonus: 'Stage bonus', perfect: 'No lives lost', extra: 'Extra life', total: 'Total',
+    startStage: 'Start stage {n}',
+    reached: 'Reached', bestL: 'Best', noAch: 'No new achievements this run.',
+    again: 'Play again', menu: 'Menu', cont: 'Continue',
+    contSub: 'Continue: watch a short ad to get 1 life back and keep your score.',
+    contFail: 'No ad is available right now. Try again later.',
+    resume: 'Resume', quit: 'End run',
+    restored: 'Back after an update. Press Resume when you are ready.',
+    olIntro: 'Each player opens the same link on their own device. One creates a room, the other types its code.',
+    yourRole: 'Your role', create: 'Create room', orJoin: 'or join a room', join: 'Join', roomCode: 'Room code',
+    waiting: 'Waiting for your partner… share the code', here: 'Your partner is here',
+    searching: 'Looking for the room…', connected: 'Connected to the host',
+    swap: 'Swap roles', start: 'Start', leave: 'Leave room',
+    roleLine: 'You: {me} · Partner: {other}',
+    codeErr: 'The code is 4 letters or numbers, as shown on your partner’s screen.',
+    noRooms: 'Two-device play isn’t available for your account here.', joinFail: 'Couldn’t join the room. Try again.',
+    hostLost: 'Lost the connection to the host. Wait for them to come back, or leave the room.',
+    pPaused: 'Your partner paused the game.', pLeft: 'Your partner left the room. They can rejoin with the same code.',
+    youPaused: 'You paused the game.', hiddenPause: 'The game paused because the page was hidden.'
+  },
+  ar: {
+    canvas: 'ساحة اللعب: عين في المنتصف بحلقتين، وضوء وظل يقتربان منها',
+    eyebrow: 'عين واحدة · عقلان',
+    tag: 'حلقتان وعين واحدة. الضوء لا يدخل إلا إذا تطابقت الفتحتان.',
+    solo: 'لاعب واحد', soloSub: 'أنت وشريك آلي',
+    duo: 'لاعبان', duoSub: 'كيبورد واحد أو شاشة واحدة',
+    online: 'على جهازين', ach: 'الإنجازات', how: 'طريقة اللعب', lang: 'English', langAria: 'Switch to English',
+    soundOn: 'إطفاء الصوت', soundOff: 'تشغيل الصوت', soundState: 'الصوت: {s}', on: 'يعمل', off: 'مطفأ',
+    pause: 'إيقاف مؤقت', lives: 'الأرواح المتبقية: {n} من 3',
+    howIntro: 'في وسط الشاشة عين فيها حلقتان، ولكل حلقة فتحة. كل لاعب يدير حلقة واحدة.',
+    irisSub: 'القزحية · الحلقة الخارجية', pupilSub: 'البؤبؤ · الحلقة الداخلية',
+    irisHow: 'اللاعب على اليسار: {A} و{D}، أو اللمس في النصف الأيسر من الشاشة.',
+    pupilHow: 'اللاعب على اليمين: {L} و{R}، أو اللمس في النصف الأيمن.',
+    soloHow: 'تلعب وحدك؟ اختر «لاعب واحد». تدير القزحية بـ{A} {D} أو {L} {R}، وشريك آلي يدير البؤبؤ.',
+    touchHow: 'على شاشات اللمس: اضغط مطولًا على يسار نصفك لتدور الحلقة عكس عقارب الساعة، وعلى يمينه لتدور معها. أو اسحب إصبعك يمينًا ويسارًا.',
+    lightT: 'الضوء · 10', lightD: 'يجب أن يعبر من الفتحتين ليصل إلى المركز. إذا اصطدم بحلقة تخسرون حياة.',
+    shadowT: 'الظل · 5 أو 10', shadowD: 'تكفي حلقة واحدة مغلقة في طريقه. إذا صدّه البؤبؤ في آخر لحظة تأخذون 10. إذا وصل إلى المركز تخسرون حياة.',
+    prismT: 'المنشور · 50', prismD: 'من المرحلة 3. نادر وسريع، يُلتقط مثل الضوء، وفواته بلا عقاب.',
+    shiftT: 'الضوء المتحوّل', shiftD: 'من المرحلة 4. إطاره متقطع، وينقلب ظلًا في منتصف الطريق.',
+    howFoot: 'عندما تتطابق الفتحتان يظهر شعاع: وجّهوه نحو الضوء وبعيدًا عن الظل. كل 5 نجاحات متتالية ترفع المضاعف حتى ×5. معكم 3 أرواح، وكل مرحلة تنهونها تعيد لكم واحدة.',
+    gotIt: 'فهمت', back: 'رجوع',
+    achNone: 'لم تفتحوا أي إنجاز بعد. أول ضوء يصل إلى المركز يفتح الأول.',
+    achSome: 'فتحتم {n} من {t}.',
+    lvSub: 'اكتملت المرحلة {n}', bonus: 'مكافأة المرحلة', perfect: 'بلا أي خسارة', extra: 'حياة إضافية', total: 'المجموع',
+    startStage: 'ابدأ المرحلة {n}',
+    reached: 'وصلتم إلى', bestL: 'أفضل نتيجة', noAch: 'لا إنجازات جديدة هذه الجولة.',
+    again: 'العب مرة أخرى', menu: 'القائمة', cont: 'كمّل',
+    contSub: 'كمّل: شاهد إعلانًا قصيرًا لتستعيد حياة وتحتفظ بنقاطك.',
+    contFail: 'لا يوجد إعلان متاح الآن. جرّبوا لاحقًا.',
+    resume: 'استمرار', quit: 'إنهاء الجولة',
+    restored: 'عدنا بعد التحديث. اضغطوا استمرار عندما تكونون جاهزين.',
+    olIntro: 'كل لاعب يفتح نفس الرابط على جهازه. واحد ينشئ غرفة، والثاني يكتب رمزها.',
+    yourRole: 'دورك أنت', create: 'أنشئ غرفة', orJoin: 'أو انضم لغرفة', join: 'انضم', roomCode: 'رمز الغرفة',
+    waiting: 'بانتظار شريكك… أعطه الرمز', here: 'شريكك هنا',
+    searching: 'نبحث عن الغرفة…', connected: 'متصل بالمضيف',
+    swap: 'بدّلوا الأدوار', start: 'ابدأ', leave: 'غادر الغرفة',
+    roleLine: 'دورك: {me} — شريكك: {other}',
+    codeErr: 'الرمز 4 حروف أو أرقام، كما يظهر عند شريكك.',
+    noRooms: 'اللعب على جهازين غير متاح لحسابك هنا.', joinFail: 'تعذّر الدخول إلى الغرفة. حاولوا مرة أخرى.',
+    hostLost: 'انقطع الاتصال بالمضيف. انتظروا عودته أو غادروا الغرفة.',
+    pPaused: 'شريكك أوقف اللعب مؤقتًا.', pLeft: 'شريكك خرج من الغرفة. يمكنه العودة بنفس الرمز.',
+    youPaused: 'أوقفت اللعب مؤقتًا.', hiddenPause: 'توقف اللعب لأن الصفحة اختفت.'
+  }
+};
+let LANG = 'en';
+const KEYS = { A: 'A', D: 'D' };
+function t(key, vars) {
+  let s = (STR[LANG] && STR[LANG][key]) ?? STR.en[key] ?? key;
+  if (vars) s = s.replace(/\{(\w+)\}/g, (m, k) => (vars[k] != null ? vars[k] : m));
+  return s;
+}
+const kb = s => `<kbd>${s}</kbd>`;
+const th = key => t(key, { A: kb(KEYS.A), D: kb(KEYS.D), L: kb('←'), R: kb('→') });
+
 const STAGES = [
-  ['DAWN', 'الفجر', 'الضوء يعبر من فتحة القزحية ثم فتحة البؤبؤ. طابقوا الفتحتين في اتجاهه.'],
-  ['SHADE', 'الظل', 'ظهر الظل. تكفي حلقة واحدة مغلقة في طريقه لتصدّه.'],
-  ['PRISM', 'المنشور', 'المنشور نادر وسريع ويساوي 50 نقطة. فواته لا يكلّف شيئًا.'],
-  ['SHIFT', 'التحوّل', 'الضوء ذو الإطار المتقطع ينقلب ظلًا في منتصف الطريق.'],
-  ['DRIFT', 'الانجراف', 'الحلقتان تنجرفان وحدهما الآن. صحّحوا الاتجاه باستمرار.'],
-  ['NARROW', 'الضيق', 'الفتحات أضيق. الدقة أهم من السرعة.'],
-  ['RUSH', 'الاندفاع', 'أسرع وأكثف. اتفقوا على من يفتح ومن يغلق.'],
-  ['ECLIPSE', 'الكسوف', 'من هنا بلا نهاية. كم مرحلة ستصمدون؟']
+  ['DAWN', 'الفجر', 'Light passes through the iris gap, then the pupil gap. Line both gaps up with it.', 'الضوء يعبر من فتحة القزحية ثم فتحة البؤبؤ. طابقوا الفتحتين في اتجاهه.'],
+  ['SHADE', 'الظل', 'Shadows arrive. One closed ring in their way is enough to stop them.', 'ظهر الظل. تكفي حلقة واحدة مغلقة في طريقه لتصدّه.'],
+  ['PRISM', 'المنشور', 'Prisms are rare, fast and worth 50. Missing one costs nothing.', 'المنشور نادر وسريع ويساوي 50 نقطة. فواته لا يكلّف شيئًا.'],
+  ['SHIFT', 'التحوّل', 'Light with a dashed outline turns into a shadow halfway in.', 'الضوء ذو الإطار المتقطع ينقلب ظلًا في منتصف الطريق.'],
+  ['DRIFT', 'الانجراف', 'The rings now drift on their own. Keep correcting.', 'الحلقتان تنجرفان وحدهما الآن. صحّحوا الاتجاه باستمرار.'],
+  ['NARROW', 'الضيق', 'The gaps get narrower. Precision beats speed.', 'الفتحات أضيق. الدقة أهم من السرعة.'],
+  ['RUSH', 'الاندفاع', 'Faster and denser. Agree on who opens and who closes.', 'أسرع وأكثف. اتفقوا على من يفتح ومن يغلق.'],
+  ['ECLIPSE', 'الكسوف', 'Endless from here. How far can you go?', 'من هنا بلا نهاية. كم مرحلة ستصمدون؟']
 ];
 const stage = L => STAGES[Math.min(L, STAGES.length) - 1];
+const stageIntro = L => stage(L)[LANG === 'ar' ? 3 : 2];
 
 const ACH = [
-  ['first', 'FIRST LIGHT', 'أول ضوء يصل إلى المركز'],
-  ['shut', 'SHUT OUT', 'أول ظل تصدّونه'],
-  ['save', 'LAST SECOND', 'البؤبؤ يصدّ ظلًا عبر من القزحية'],
-  ['prism', 'PRISM', 'التقطتم منشورًا'],
-  ['fooled', 'NOT FOOLED', 'صددتم ضوءًا متحوّلًا'],
-  ['c10', 'IN SYNC', '10 نجاحات متتالية'],
-  ['c25', 'ONE MIND', '25 نجاحًا متتاليًا'],
-  ['x5', 'MAX ×5', 'وصلتم إلى المضاعف ×5'],
-  ['spotless', 'SPOTLESS', 'مرحلة كاملة دون خسارة أي حياة'],
-  ['l4', 'HALFWAY', 'وصلتم إلى المرحلة 4'],
-  ['l8', 'ECLIPSE', 'وصلتم إلى المرحلة 8'],
-  ['k1', '1K', '1000 نقطة في جولة واحدة'],
-  ['k5', '5K', '5000 نقطة في جولة واحدة'],
-  ['distance', 'LONG DISTANCE', 'أنهيتم مرحلة مع شريك على جهاز آخر']
+  ['first', 'FIRST LIGHT', 'First light reaches the centre', 'أول ضوء يصل إلى المركز'],
+  ['shut', 'SHUT OUT', 'Block your first shadow', 'أول ظل تصدّونه'],
+  ['save', 'LAST SECOND', 'The pupil stops a shadow that got past the iris', 'البؤبؤ يصدّ ظلًا عبر من القزحية'],
+  ['prism', 'PRISM', 'Catch a prism', 'التقطتم منشورًا'],
+  ['fooled', 'NOT FOOLED', 'Block a shifting light', 'صددتم ضوءًا متحوّلًا'],
+  ['c10', 'IN SYNC', '10 successes in a row', '10 نجاحات متتالية'],
+  ['c25', 'ONE MIND', '25 successes in a row', '25 نجاحًا متتاليًا'],
+  ['x5', 'MAX ×5', 'Reach the ×5 multiplier', 'وصلتم إلى المضاعف ×5'],
+  ['spotless', 'SPOTLESS', 'Clear a stage without losing a life', 'مرحلة كاملة دون خسارة أي حياة'],
+  ['l4', 'HALFWAY', 'Reach stage 4', 'وصلتم إلى المرحلة 4'],
+  ['l8', 'ECLIPSE', 'Reach stage 8', 'وصلتم إلى المرحلة 8'],
+  ['k1', '1K', '1,000 points in one run', '1000 نقطة في جولة واحدة'],
+  ['k5', '5K', '5,000 points in one run', '5000 نقطة في جولة واحدة'],
+  ['distance', 'LONG DISTANCE', 'Clear a stage with a partner on another device', 'أنهيتم مرحلة مع شريك على جهاز آخر']
 ];
 const achName = id => (ACH.find(a => a[0] === id) || [, id])[1];
 const TYPES = ['light', 'shadow', 'prism', 'shift'];
@@ -467,22 +645,23 @@ function gapIntersect(a1, g1, a2, g2) {
 
 /* ---------- Sound ---------- */
 const Snd = {
-  ac: null, on: store.get('sound', true),
+  ac: null, on: true,
+  get audible() { return this.on && !CG.muted && !CG.adMuted; },
   init() {
     if (!this.on) return;
     if (!this.ac) { try { const A = window.AudioContext || window.webkitAudioContext; if (A) this.ac = new A(); } catch (e) {} }
-    if (this.ac && this.ac.state === 'suspended') this.ac.resume().catch(() => {});
+    if (this.ac && this.ac.state !== 'running') this.ac.resume().catch(() => {});
   },
   tone(f, d, type = 'sine', v = 0.1, end = null, delay = 0) {
-    const ac = this.ac; if (!ac || !this.on) return;
-    const t = ac.currentTime + delay, o = ac.createOscillator(), g = ac.createGain();
-    o.type = type; o.frequency.setValueAtTime(f, t);
-    if (end) o.frequency.exponentialRampToValueAtTime(end, t + d);
-    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(v, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + d);
-    o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t + d + 0.03);
+    const ac = this.ac; if (!ac || !this.audible) return;
+    const t0 = ac.currentTime + delay, o = ac.createOscillator(), g = ac.createGain();
+    o.type = type; o.frequency.setValueAtTime(f, t0);
+    if (end) o.frequency.exponentialRampToValueAtTime(end, t0 + d);
+    g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(v, t0 + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t0 + d);
+    o.connect(g); g.connect(ac.destination); o.start(t0); o.stop(t0 + d + 0.03);
   },
   noise(d, v, freq = 1600) {
-    const ac = this.ac; if (!ac || !this.on) return;
+    const ac = this.ac; if (!ac || !this.audible) return;
     const n = Math.floor(ac.sampleRate * d), buf = ac.createBuffer(1, n, ac.sampleRate), ch = buf.getChannelData(0);
     for (let i = 0; i < n; i++) ch[i] = (Math.random() * 2 - 1) * (1 - i / n);
     const s = ac.createBufferSource(), f = ac.createBiquadFilter(), g = ac.createGain();
@@ -502,46 +681,47 @@ const vib = ms => { try { navigator.vibrate && navigator.vibrate(ms); } catch (e
 
 /* ---------- State ---------- */
 const S = {
-  mode: 'menu', level: 1, score: 0, lives: 3, combo: 0, mult: 1, prog: 0,
+  mode: 'menu', solo: false, level: 1, score: 0, lives: 3, combo: 0, mult: 1, prog: 0,
   objs: [], oid: 0, spawnT: 0.8, spawnN: 0, lastA: -Math.PI / 2,
   ai: -Math.PI / 2, ap: -Math.PI / 2, aiD: -Math.PI / 2, apD: -Math.PI / 2,
   cfg: cfg(1), lt: 0, t: 0, banner: 0, clean: true,
   fx: [], inv: 0, shake: 0, pulse: 0, beam: 0, emI: 0, emP: 0,
   openT: 1, blinkT: 0, splitK: 0, splitAng: Math.PI / 2,
-  runAch: [], lvBonus: null, pauseNote: ''
+  runAch: [], lvBonus: null, pauseNote: '', contUsed: false, contLevel: 0, busy: false
 };
+let ACHV = {};
 
-/* ---------- Achievements ---------- */
-let ACHV = store.get('ach', {});
-if (typeof ACHV !== 'object' || !ACHV) ACHV = {};
+/* ---------- Achievements & toasts ---------- */
 const toastQ = []; let toastBusy = false;
+function toast(cap, text) { toastQ.push([cap, text]); runToast(); }
 function unlock(id) {
   if (ACHV[id]) return;
   ACHV[id] = Date.now(); store.set('ach', ACHV);
   S.runAch.push(id);
-  toastQ.push(id); runToast();
+  toast('Unlocked', achName(id));
   renderAchCount();
 }
 function runToast() {
   if (toastBusy || !toastQ.length) return;
   toastBusy = true;
-  $('#toastName').textContent = achName(toastQ.shift());
-  const t = $('#toast'); t.hidden = false;
-  setTimeout(() => { t.hidden = true; toastBusy = false; setTimeout(runToast, 200); }, 2600);
+  const [cap, text] = toastQ.shift();
+  $('#toastCap').textContent = cap; $('#toastName').textContent = text;
+  const el = $('#toast'); el.hidden = false;
+  setTimeout(() => { el.hidden = true; toastBusy = false; setTimeout(runToast, 200); }, 2600);
 }
 function renderAchCount() { $('#achCount').textContent = ACH.filter(a => ACHV[a[0]]).length + '/' + ACH.length; }
 const ACH_ON = '<svg viewBox="0 0 28 28" aria-hidden="true"><path d="M20.4 6.2A10.5 10.5 0 1 1 7.6 6.2" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="14" cy="14" r="4" fill="currentColor"/></svg>';
 const ACH_OFF = '<svg viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="10.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="2.6 3.2"/></svg>';
 function renderAchList() {
   const n = ACH.filter(a => ACHV[a[0]]).length;
-  $('#achSummary').textContent = n === 0 ? 'لم تفتحوا أي إنجاز بعد. أول ضوء يصل إلى المركز يفتح الأول.' : `فتحتم ${n} من ${ACH.length}.`;
+  $('#achSummary').textContent = n === 0 ? t('achNone') : t('achSome', { n, t: ACH.length });
   const ul = $('#achList'); ul.textContent = '';
-  for (const [id, name, desc] of ACH) {
+  for (const [id, name, en, ar] of ACH) {
     const li = document.createElement('li');
     li.className = ACHV[id] ? 'on' : 'off';
     li.innerHTML = (ACHV[id] ? ACH_ON : ACH_OFF) + '<b></b><span></span>';
     li.querySelector('b').textContent = name;
-    li.querySelector('span').textContent = desc;
+    li.querySelector('span').textContent = LANG === 'ar' ? ar : en;
     ul.appendChild(li);
   }
 }
@@ -556,14 +736,16 @@ function checkStats() {
   if (S.level >= 8) unlock('l8');
 }
 
-/* ---------- Online (room capability) ---------- */
+/* ---------- Online (room capability, only inside Claude) ---------- */
 const Net = {
   room: null, nr: null, role: null, myPart: 'iris', code: '',
   partner: null, partnerPeer: null, rAng: null, lastNx: null, lastPz: null,
   evs: [], evSeq: 0, lastSend: 0,
   st: null, stAt: 0, evSeen: -1, lastM: null, hostSeenAt: 0, hadHost: false, sentA: null
 };
-const owns = ring => !Net.role || Net.myPart === ring;
+const oneRing = () => !!Net.role || S.solo;
+const myRing = () => (Net.role ? Net.myPart : 'iris');
+const owns = ring => (oneRing() ? myRing() === ring : true);
 
 /* ---------- Input ---------- */
 const ROT = 4.6;
@@ -577,17 +759,18 @@ function turn(ring, delta, mark = true) {
 function applyInput(dt) {
   for (const k of IN.keys) {
     const m = KEYMAP[k]; if (!m) continue;
-    turn(Net.role ? Net.myPart : m[0], m[1] * ROT * dt);
+    turn(oneRing() ? myRing() : m[0], m[1] * ROT * dt);
   }
   for (const p of IN.ptrs.values()) if (!p.drag) turn(p.ring, p.dir * ROT * dt);
 }
+function driftAt(i) { return S.cfg.drift * Math.sin(S.lt * 0.55 + i * 2.4); }
 function applyDrift(dt) {
   if (S.mode !== 'play' || !S.cfg.drift) return;
-  turn('iris', S.cfg.drift * Math.sin(S.lt * 0.55) * dt, false);
-  turn('pupil', S.cfg.drift * Math.sin(S.lt * 0.55 + 2.4) * dt, false);
+  turn('iris', driftAt(0) * dt, false);
+  turn('pupil', driftAt(1) * dt, false);
 }
 function zoneFor(x) {
-  if (Net.role) return { ring: Net.myPart, dir: x < W / 2 ? -1 : 1 };
+  if (oneRing()) return { ring: myRing(), dir: x < W / 2 ? -1 : 1 };
   const left = x < W / 2;
   return { ring: left ? 'iris' : 'pupil', dir: (x - (left ? 0 : W / 2)) < W / 4 ? -1 : 1 };
 }
@@ -615,14 +798,22 @@ cv.addEventListener('contextmenu', e => e.preventDefault());
 addEventListener('keydown', e => {
   if (e.target && e.target.tagName === 'INPUT') return;
   if (KEYMAP[e.code]) { if (S.mode === 'play') e.preventDefault(); IN.keys.add(e.code); }
-  if ((e.code === 'Escape' || e.code === 'KeyP') && S.mode === 'play') act('pause');
+  if (e.code === 'KeyP' && S.mode === 'play') act('pause');
   Snd.init();
 });
 addEventListener('keyup', e => { if (KEYMAP[e.code]) { IN.keys.delete(e.code); if (S.mode === 'play') e.preventDefault(); } });
 addEventListener('blur', () => { IN.keys.clear(); IN.ptrs.clear(); });
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden && S.mode === 'play' && Net.role !== 'guest') pause(Net.role ? 'توقف اللعب لأن الصفحة اختفت.' : '');
+  if (document.hidden && S.mode === 'play' && Net.role !== 'guest') pause(Net.role ? 'hiddenPause' : '', true);
 });
+async function readKeyboardLayout() {
+  try {
+    if (!navigator.keyboard || !navigator.keyboard.getLayoutMap) return;
+    const m = await navigator.keyboard.getLayoutMap();
+    const a = m.get('KeyA'), d = m.get('KeyD');
+    if (a && d) { KEYS.A = a.toUpperCase(); KEYS.D = d.toUpperCase(); applyLang(); }
+  } catch (e) {}
+}
 
 /* ---------- Effects ---------- */
 function burst(x, y, n, spd) {
@@ -726,30 +917,33 @@ function crossings(o, prev) {
 }
 function spawn() {
   const c = S.cfg, r = Math.random();
-  let t = 'light';
+  let type = 'light';
   if (S.spawnN >= 2) {
-    if (r < c.shadow) t = 'shadow';
-    else if (r < c.shadow + c.shift) t = 'shift';
-    else if (r < c.shadow + c.shift + c.prism) t = 'prism';
+    if (r < c.shadow) type = 'shadow';
+    else if (r < c.shadow + c.shift) type = 'shift';
+    else if (r < c.shadow + c.shift + c.prism) type = 'prism';
   }
   const jump = Math.min(c.jump, 4.0 * c.interval * 0.85);
   let a;
   if (S.level === 1 && S.spawnN === 0) a = -Math.PI / 2;
-  else if (t === 'shadow') a = Math.random() < 0.5 ? S.lastA + (Math.random() * 2 - 1) * (c.gi + 0.35) : Math.random() * TAU;
-  else { a = S.lastA + (Math.random() * 2 - 1) * jump; if (t !== 'shift') S.lastA = angNorm(a); }
-  S.objs.push({ id: ++S.oid, t, a: angNorm(a), d: D0, f: 0 });
+  else if (type === 'shadow') a = Math.random() < 0.5 ? S.lastA + (Math.random() * 2 - 1) * (c.gi + 0.35) : Math.random() * TAU;
+  else { a = S.lastA + (Math.random() * 2 - 1) * jump; if (type !== 'shift') S.lastA = angNorm(a); }
+  S.objs.push({ id: ++S.oid, t: type, a: angNorm(a), d: D0, f: 0 });
   S.spawnN++;
 }
-function newRun() {
-  Object.assign(S, { score: 0, lives: 3, combo: 0, mult: 1, runAch: [], fx: [] });
+function newRun(solo) {
+  Object.assign(S, { solo: !!solo && !Net.role, score: 0, lives: 3, combo: 0, mult: 1, runAch: [], fx: [], contUsed: false, contLevel: 0 });
   beginLevel(1);
 }
 function beginLevel(L) {
   Object.assign(S, { level: L, cfg: cfg(L), prog: 0, objs: [], spawnT: 2.2, spawnN: 0, clean: true, banner: 2.8, mode: 'play', lvBonus: null, lt: 0, openT: 0 });
   if (L === 1) { S.ai = S.ap = S.lastA = -Math.PI / 2; }
   IN.ptrs.clear();
+  AI.t = 0;
   checkStats();
+  if (L === 8) CG.happy();
   showScreen(null); blurActive();
+  CG.gameplay(true);
 }
 function completeLevel() {
   const L = S.level, bonus = 100 * L, perfect = S.clean ? 200 : 0, regain = S.lives < 3;
@@ -759,25 +953,72 @@ function completeLevel() {
   S.lvBonus = { L, bonus, perfect, regain: regain ? 1 : 0, score: S.score };
   for (const o of S.objs) { const [x, y] = objXY(o); burst(x, y, 3, 40); }
   S.objs = []; S.mode = 'levelup'; S.splitK++;
+  CG.gameplay(false);
   checkStats();
   showLevel(S.lvBonus);
 }
 function gameOver() {
   fx('O', 0, 0, 0);
   S.mode = 'over'; S.objs = [];
+  CG.gameplay(false);
   showOver(S.score, S.level);
 }
-function pause(note) {
+function pause(note, quiet) {
   if (S.mode !== 'play') return;
   S.mode = 'pause'; S.pauseNote = note || '';
   IN.ptrs.clear();
+  if (!quiet) CG.gameplay(false);
   showPause(S.pauseNote);
 }
 function resume() {
   if (S.mode !== 'pause') return;
   S.mode = 'play'; showScreen(null); blurActive();
+  CG.gameplay(true);
 }
 function blurActive() { if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); }
+function setBusy(on) { for (const id of ['btnNext', 'btnCont', 'btnAgain', 'btnMenu']) document.getElementById(id).disabled = on; }
+async function nextStage() {
+  if (S.mode !== 'levelup' || S.busy) return;
+  // A midgame ad may play at a stage transition, but never right after a rewarded continue in the same stage.
+  if (CG.ads && S.contLevel !== S.level) { S.busy = true; setBusy(true); await CG.ad('midgame'); S.busy = false; setBusy(false); }
+  if (S.mode === 'levelup') beginLevel(S.level + 1);
+}
+async function continueRun() {
+  if (S.mode !== 'over' || S.contUsed || !CG.ads || S.busy) return;
+  S.busy = true; setBusy(true);
+  const ok = await CG.ad('rewarded');
+  S.busy = false; setBusy(false);
+  if (!ok) {
+    $('#btnCont').hidden = true; $('#ovContNote').hidden = true;
+    $('#ovMsg').textContent = t('contFail'); $('#ovMsg').hidden = false;
+    return;
+  }
+  S.contUsed = true; S.contLevel = S.level;
+  Object.assign(S, { lives: 1, objs: [], mode: 'play', banner: 0, openT: 0, spawnT: 1.6, combo: 0, mult: 1 });
+  showScreen(null); blurActive();
+  CG.gameplay(true);
+  toast('Reward', '+1 LIFE');
+}
+
+/* ---------- AI partner (solo mode turns the pupil) ---------- */
+const AI = { t: 0, target: null };
+function aiPickPupil() {
+  let best = null;
+  for (const o of S.objs) {
+    if (o.d <= DP) continue;
+    // A shadow outside the iris gap will be stopped by the iris anyway.
+    if (!isLight(o) && o.d > DI && angDist(o.a, S.ai) > S.cfg.gi) continue;
+    if (!best || o.d < best.d) best = o;
+  }
+  if (!best) return null;
+  return isLight(best) ? best.a + (Math.random() - 0.5) * 0.08 : best.a + Math.PI;
+}
+function aiStep(dt) {
+  AI.t -= dt;
+  if (AI.t <= 0) { AI.t = 0.12; AI.target = aiPickPupil(); }
+  if (AI.target != null) S.ap = approach(S.ap, AI.target, ROT * 0.8 * dt);
+  if (S.cfg.drift) S.ap = angNorm(S.ap + driftAt(1) * dt);
+}
 
 /* ---------- Simulation ---------- */
 function aiTarget(r, cur) {
@@ -789,10 +1030,10 @@ function aiTarget(r, cur) {
 function attract(dt) {
   S.spawnT -= dt;
   if (S.spawnT <= 0) {
-    const t = Math.random() < 0.7 ? 'light' : 'shadow';
-    const a = t === 'light' ? S.lastA + (Math.random() * 2 - 1) * 1.4 : Math.random() * TAU;
-    if (t === 'light') S.lastA = angNorm(a);
-    S.objs.push({ id: ++S.oid, t, a: angNorm(a), d: D0, f: 0 });
+    const type = Math.random() < 0.7 ? 'light' : 'shadow';
+    const a = type === 'light' ? S.lastA + (Math.random() * 2 - 1) * 1.4 : Math.random() * TAU;
+    if (type === 'light') S.lastA = angNorm(a);
+    S.objs.push({ id: ++S.oid, t: type, a: angNorm(a), d: D0, f: 0 });
     S.spawnT = 1.2 + Math.random() * 0.5;
   }
   S.ai = approach(S.ai, aiTarget(DI, S.ai), 3.2 * dt);
@@ -812,12 +1053,13 @@ function step(dt, now) {
   if (Net.role === 'host') hostNet(now);
   if (S.mode === 'menu') attract(dt);
   else {
-    applyInput(dt);
+    if (S.mode === 'play' || S.mode === 'levelup' || S.mode === 'lobby') applyInput(dt);
     if (Net.role === 'host' && Net.rAng != null) { if (Net.myPart === 'iris') S.ap = Net.rAng; else S.ai = Net.rAng; }
   }
   if (S.mode === 'play') {
     S.lt += dt;
     applyDrift(dt);
+    if (S.solo) aiStep(dt);
     S.banner = Math.max(0, S.banner - dt);
     S.spawnT -= dt;
     if (S.spawnT <= 0) { spawn(); S.spawnT += S.cfg.interval * (0.85 + Math.random() * 0.3); }
@@ -848,6 +1090,7 @@ function eyeOpen() {
 }
 
 /* ---------- Drawing ---------- */
+const px = (base, min) => Math.round(Math.max(min, base * SZ));
 function setLS(v) { if ('letterSpacing' in ctx) ctx.letterSpacing = v; }
 function drawSplit() {
   ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
@@ -875,11 +1118,11 @@ function drawMarkers() {
     const [x, y] = at(o.a, RB - 10 * SZ), s = 4 * SZ;
     ctx.globalAlpha = 0.2 + 0.8 * al;
     if (isLight(o)) {
-      const ix = -Math.cos(o.a), iy = -Math.sin(o.a), px = -iy, py = ix;
+      const ix = -Math.cos(o.a), iy = -Math.sin(o.a), qx = -iy, qy = ix;
       ctx.beginPath();
       ctx.moveTo(x + ix * s * 1.3, y + iy * s * 1.3);
-      ctx.lineTo(x - ix * s + px * s, y - iy * s + py * s);
-      ctx.lineTo(x - ix * s - px * s, y - iy * s - py * s);
+      ctx.lineTo(x - ix * s + qx * s, y - iy * s + qy * s);
+      ctx.lineTo(x - ix * s - qx * s, y - iy * s - qy * s);
       ctx.closePath();
       if (o.t === 'shift') { ctx.lineWidth = 1.3; ctx.stroke(); } else ctx.fill();
     } else {
@@ -944,8 +1187,8 @@ function drawPrism(x, y, rot) {
   ctx.beginPath();
   for (let i = 0; i < 8; i++) {
     const r = (i % 2 ? 0.6 : 1.9) * PRAD, a = rot + i * Math.PI / 4;
-    const px = x + Math.cos(a) * r, py = y + Math.sin(a) * r;
-    i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+    const qx = x + Math.cos(a) * r, qy = y + Math.sin(a) * r;
+    if (i) ctx.lineTo(qx, qy); else ctx.moveTo(qx, qy);
   }
   ctx.closePath(); ctx.fill();
   ctx.globalAlpha = 0.5; ctx.lineWidth = 1.2;
@@ -984,7 +1227,7 @@ function drawFx() {
     } else if (p.k === 'txt') {
       ctx.globalAlpha = Math.min(1, (1 - q) * 1.8);
       ctx.direction = 'ltr'; ctx.textAlign = 'center';
-      ctx.font = `${p.big ? 800 : 600} ${Math.round((p.big ? 15 : 12) * SZ)}px ${F_DISP}`;
+      ctx.font = `${p.big ? 800 : 600} ${p.big ? px(15, 14) : px(12, 12)}px ${F_DISP}`;
       const ox = (p.x - cx) * 0.08 * q, oy = (p.y - cy) * 0.08 * q;
       ctx.fillText(p.s, p.x + ox, p.y + oy + 4);
     }
@@ -994,8 +1237,8 @@ function drawFx() {
 function wrapLines(text, maxW) {
   const words = text.split(' '), lines = []; let line = '';
   for (const w of words) {
-    const t = line ? line + ' ' + w : w;
-    if (ctx.measureText(t).width > maxW && line) { lines.push(line); line = w; } else line = t;
+    const s = line ? line + ' ' + w : w;
+    if (ctx.measureText(s).width > maxW && line) { lines.push(line); line = w; } else line = s;
   }
   if (line) lines.push(line);
   return lines;
@@ -1006,19 +1249,21 @@ function drawText() {
     const b = S.banner, al = Math.max(0, Math.min(1, b / 0.5, (2.8 - b) / 0.35));
     const st = stage(S.level);
     ctx.globalAlpha = al; ctx.direction = 'ltr';
-    setLS('0.32em'); ctx.font = `600 ${Math.round(10 * SZ + 1)}px ${F_DISP}`;
+    setLS('0.32em'); ctx.font = `600 ${px(10, 11)}px ${F_DISP}`;
     ctx.fillText(`STAGE ${pad2(S.level)}`, cx, cy - EH * 0.62);
-    setLS('0.04em'); ctx.font = `800 ${Math.round(Math.min(EW * 0.27, 48))}px ${F_DISP}`;
+    setLS('0.04em'); ctx.font = `800 ${Math.round(Math.max(26, Math.min(EW * 0.27, 48)))}px ${F_DISP}`;
     ctx.fillText(st[0], cx, cy - EH * 0.2);
-    setLS('0px'); ctx.direction = 'rtl';
-    ctx.font = `600 ${Math.round(13 * SZ + 1)}px ${F_BODY}`;
-    ctx.fillText(st[1], cx, cy + EH + 26 * SZ);
-    ctx.font = `400 ${Math.round(11 * SZ + 2)}px ${F_BODY}`;
-    wrapLines(st[2], Math.min(EW * 1.9, W - 48)).forEach((l, i) => ctx.fillText(l, cx, cy + EH + (48 + i * 19) * SZ));
+    setLS('0px');
+    const lh = px(19, 18);
+    let y = cy + EH + px(26, 24);
+    if (LANG === 'ar') { ctx.direction = 'rtl'; ctx.font = `600 ${px(14, 13)}px ${F_BODY}`; ctx.fillText(st[1], cx, y); y += lh + 2; }
+    ctx.direction = LANG === 'ar' ? 'rtl' : 'ltr';
+    ctx.font = `400 ${px(13, 13)}px ${F_BODY}`;
+    wrapLines(stageIntro(S.level), Math.min(EW * 2.1, W - 48)).forEach((l, i) => ctx.fillText(l, cx, y + i * lh));
     ctx.globalAlpha = 1;
   } else if (S.mode === 'play' && S.combo >= 2) {
     ctx.direction = 'ltr'; setLS('0.22em');
-    ctx.font = `600 ${Math.round(9 * SZ + 2)}px ${F_DISP}`;
+    ctx.font = `600 ${px(10, 11)}px ${F_DISP}`;
     ctx.globalAlpha = S.mult > 1 ? 1 : 0.55;
     ctx.fillText(`COMBO ${S.combo}` + (S.mult > 1 ? `   ×${S.mult}` : ''), cx, cy + EH + 28 * SZ);
     setLS('0px'); ctx.globalAlpha = 1;
@@ -1059,13 +1304,14 @@ function updateHud() {
   const inGame = ['play', 'levelup', 'pause', 'over'].includes(S.mode);
   put('hud', !inGame, 'hidden');
   put('pads', S.mode !== 'play', 'hidden');
-  const solo = !!Net.role;
-  if (hudCache.solo !== solo + Net.myPart) {
-    hudCache.solo = solo + Net.myPart;
-    $('#pads').classList.toggle('solo', solo);
-    $('#lblL').textContent = solo ? `You · ${Net.myPart === 'iris' ? 'Iris' : 'Pupil'}` : 'Iris';
-    $('#k1').textContent = solo ? 'A ←' : 'A';
-    $('#k4').textContent = solo ? 'D →' : '→';
+  const single = oneRing(), padKey = [single, myRing(), KEYS.A, KEYS.D].join('|');
+  if (hudCache.pads !== padKey) {
+    hudCache.pads = padKey;
+    $('#pads').classList.toggle('solo', single);
+    $('#lblL').textContent = single ? `You · ${myRing() === 'iris' ? 'Iris' : 'Pupil'}` : 'Iris';
+    $('#k1').textContent = single ? `${KEYS.A} ←` : KEYS.A;
+    $('#k2').textContent = KEYS.D;
+    $('#k4').textContent = single ? `${KEYS.D} →` : '→';
   }
   if (!inGame) return;
   put('hScore', String(S.score));
@@ -1076,12 +1322,13 @@ function updateHud() {
   put('hName', st[0]);
   put('hAr', st[1]);
   put('hBar', Math.min(100, S.prog / S.cfg.target * 100).toFixed(1) + '%', 'width');
-  if (hudCache.lives !== S.lives) {
-    hudCache.lives = S.lives;
+  const livesKey = S.lives + LANG;
+  if (hudCache.lives !== livesKey) {
+    hudCache.lives = livesKey;
     let h = '';
     for (let i = 0; i < 3; i++) h += i < S.lives ? DOT_ON : DOT_OFF;
     $('#hLives').innerHTML = h;
-    $('#hLives').setAttribute('aria-label', `الأرواح المتبقية: ${Math.max(0, S.lives)} من 3`);
+    $('#hLives').setAttribute('aria-label', t('lives', { n: Math.max(0, S.lives) }));
   }
 }
 
@@ -1102,73 +1349,102 @@ function tally(el, rows) {
   }
 }
 function showLevel(lb) {
+  S.lvBonus = lb;
   const L = lb.L, nx = stage(L + 1);
   $('#lvCap').textContent = `Stage ${pad2(L)} clear`;
   $('#lvTitle').textContent = lb.perfect ? 'SPOTLESS' : ['IN SYNC', 'CLEAR SIGHT', 'WELL SEEN'][L % 3];
-  $('#lvAr').textContent = `اكتملت المرحلة ${L}`;
-  const rows = [['مكافأة المرحلة', '+' + lb.bonus]];
-  if (lb.perfect) rows.push(['بلا أي خسارة', '+' + lb.perfect]);
-  if (lb.regain) rows.push(['حياة إضافية', '+1']);
-  rows.push(['المجموع', String(lb.score), 'sum']);
+  $('#lvAr').textContent = t('lvSub', { n: L });
+  const rows = [[t('bonus'), '+' + lb.bonus]];
+  if (lb.perfect) rows.push([t('perfect'), '+' + lb.perfect]);
+  if (lb.regain) rows.push([t('extra'), '+1']);
+  rows.push([t('total'), String(lb.score), 'sum']);
   tally($('#lvTally'), rows);
   $('#lvNext').textContent = `${pad2(L + 1)} · ${nx[0]}`;
   $('#lvNextAr').textContent = nx[1];
-  $('#lvIntro').textContent = nx[2];
-  $('#btnNext').textContent = `ابدأ المرحلة ${L + 1}`;
+  $('#lvIntro').textContent = stageIntro(L + 1);
+  $('#btnNext').textContent = t('startStage', { n: L + 1 });
   showScreen('scrLevel');
 }
+let lastOver = null;
 function showOver(score, level) {
+  lastOver = [score, level];
   const best = store.get('best', 0), isBest = score > best;
-  if (isBest) store.set('best', score);
+  if (isBest) { store.set('best', score); if (best > 0) CG.happy(); }
+  renderOver(score, level, Math.max(best, score), isBest && score > 0);
+  showScreen('scrOver');
+}
+function renderOver(score, level, best, isBest) {
   $('#ovScore').textContent = score;
-  $('#ovBest').hidden = !(isBest && score > 0);
-  tally($('#ovTally'), [['وصلتم إلى', `STAGE ${pad2(level)}`], ['أفضل نتيجة', String(Math.max(best, score))]]);
+  $('#ovBest').hidden = !isBest;
+  tally($('#ovTally'), [[t('reached'), `STAGE ${pad2(level)}`], [t('bestL'), String(best)]]);
   const box = $('#ovAch'); box.textContent = '';
   if (S.runAch.length) {
     for (const id of S.runAch) { const c = document.createElement('span'); c.className = 'chip'; c.textContent = achName(id); box.appendChild(c); }
   } else {
-    const p = document.createElement('span'); p.className = 'muted'; p.textContent = 'لا إنجازات جديدة هذه الجولة.'; box.appendChild(p);
+    const p = document.createElement('span'); p.className = 'muted'; p.textContent = t('noAch'); box.appendChild(p);
   }
-  showScreen('scrOver');
+  const canCont = CG.ads && !S.contUsed && !Net.role;
+  $('#btnCont').hidden = !canCont; $('#ovContNote').hidden = !canCont; $('#ovMsg').hidden = true;
 }
-function showPause(note) {
-  $('#psNote').textContent = note || '';
-  $('#psNote').hidden = !note;
+function showPause(noteKey) {
+  $('#psNote').textContent = noteKey ? t(noteKey) : '';
+  $('#psNote').hidden = !noteKey;
   showScreen('scrPause');
 }
 function soundLabels() {
-  $('#btnSoundPause').textContent = Snd.on ? 'الصوت: يعمل' : 'الصوت: مطفأ';
-  $('#btnSoundMenu').innerHTML = Snd.on
+  const on = Snd.on && !CG.muted;
+  $('#btnSoundPause').textContent = t('soundState', { s: t(on ? 'on' : 'off') });
+  $('#btnSoundMenu').innerHTML = on
     ? '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8v4h3l4 3V5L6 8z"/><path d="M13.5 7.5a3.5 3.5 0 0 1 0 5M15.5 5.5a6.4 6.4 0 0 1 0 9"/></svg>'
     : '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8v4h3l4 3V5L6 8z"/><path d="M13.5 8l4 4M17.5 8l-4 4"/></svg>';
-  $('#btnSoundMenu').setAttribute('aria-label', Snd.on ? 'إطفاء الصوت' : 'تشغيل الصوت');
+  $('#btnSoundMenu').setAttribute('aria-label', t(on ? 'soundOn' : 'soundOff'));
 }
 function toggleSound() { Snd.on = !Snd.on; store.set('sound', Snd.on); if (Snd.on) Snd.init(); soundLabels(); }
+function applyLang() {
+  const ar = LANG === 'ar', app = $('#app');
+  document.documentElement.lang = LANG; document.documentElement.dir = ar ? 'rtl' : 'ltr';
+  app.dir = ar ? 'rtl' : 'ltr';
+  app.classList.toggle('is-ar', ar); app.classList.toggle('is-en', !ar);
+  $$('[data-t]').forEach(el => { el.textContent = t(el.dataset.t); });
+  $$('[data-th]').forEach(el => { el.innerHTML = th(el.dataset.th); });
+  $$('[data-ta]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.ta)); });
+  $('#btnLang').lang = ar ? 'en' : 'ar';
+  cv.setAttribute('aria-label', t('canvas'));
+  soundLabels(); renderAchCount();
+  hudCache.lives = null; hudCache.pads = null;
+  if (!$('#scrAch').hidden) renderAchList();
+  if (!$('#scrOnline').hidden) olView();
+  if (!$('#scrLevel').hidden && S.lvBonus) showLevel(S.lvBonus);
+  if (!$('#scrPause').hidden) showPause(S.pauseNote);
+  if (!$('#scrOver').hidden && lastOver) renderOver(lastOver[0], lastOver[1], store.get('best', 0), !$('#ovBest').hidden);
+  measureMenu();
+}
+function toggleLang() { LANG = LANG === 'ar' ? 'en' : 'ar'; store.set('lang', LANG); applyLang(); }
 
 /* ---------- Online ---------- */
 const CODE_CHARS = 'abcdefghjkmnpqrstuvwxyz23456789';
-const partName = p => p === 'iris' ? 'IRIS · القزحية' : 'PUPIL · البؤبؤ';
-function olError(msg) { const e = $('#olErr'); e.textContent = msg || ''; e.hidden = !msg; }
+const partName = p => (LANG === 'ar' ? (p === 'iris' ? 'IRIS · القزحية' : 'PUPIL · البؤبؤ') : p.toUpperCase());
+function olError(key) { const e = $('#olErr'); e.textContent = key ? t(key) : ''; e.hidden = !key; }
 function olView() {
   const inRoom = !!Net.nr;
   $('#olStart').hidden = inRoom; $('#olRoom').hidden = !inRoom;
-  $('#btnOlBack').textContent = inRoom ? 'غادر الغرفة' : 'رجوع';
+  $('#btnOlBack').textContent = t(inRoom ? 'leave' : 'back');
   if (!inRoom) return;
   $('#olCode').textContent = Net.code.toUpperCase();
   const other = Net.myPart === 'iris' ? 'pupil' : 'iris';
   let ok;
   if (Net.role === 'host') {
     ok = !!Net.partner;
-    $('#olStatus').textContent = ok ? 'شريكك هنا' : 'بانتظار شريكك… أعطه الرمز';
+    $('#olStatus').textContent = t(ok ? 'here' : 'waiting');
     $('#btnSwap').hidden = false;
   } else {
     ok = Net.hadHost && !!findHost();
-    $('#olStatus').textContent = ok ? 'متصل بالمضيف' : 'نبحث عن الغرفة…';
+    $('#olStatus').textContent = t(ok ? 'connected' : 'searching');
     $('#btnSwap').hidden = true;
   }
   $('#olDot').classList.toggle('ok', ok);
   $('#btnOlStart').disabled = !ok;
-  $('#olRole').textContent = `دورك: ${partName(Net.myPart)} — شريكك: ${partName(other)}`;
+  $('#olRole').textContent = t('roleLine', { me: partName(Net.myPart), other: partName(other) });
 }
 function openOnline() { olError(''); olView(); showScreen('scrOnline'); }
 async function joinRoom(code, role) {
@@ -1178,12 +1454,12 @@ async function joinRoom(code, role) {
     const nr = await Net.room.join('twinsight-' + code);
     Object.assign(Net, { nr, role, code, partner: null, partnerPeer: null, rAng: null, lastNx: null, lastPz: null,
       evs: [], evSeq: 0, st: null, evSeen: -1, lastM: null, hadHost: false, hostSeenAt: performance.now(), sentA: null });
-    S.objs = []; S.mode = 'lobby'; S.ai = S.ap = -Math.PI / 2;
+    S.objs = []; S.mode = 'lobby'; S.solo = false; S.ai = S.ap = -Math.PI / 2;
     if (role === 'host') nr.presence({ app: 'twinsight', r: 'host', hp: Net.myPart, st: packState() }).catch(() => {});
     else nr.presence({ app: 'twinsight', r: 'guest', ang: -1.571, nx: 0, pz: 0 }).catch(() => {});
     olView();
   } catch (e) {
-    olError(e && e.code === 'not_permitted' ? 'اللعب على جهازين غير متاح لحسابك هنا.' : 'تعذّر الدخول إلى الغرفة. حاولوا مرة أخرى.');
+    olError(e && e.code === 'not_permitted' ? 'noRooms' : 'joinFail');
   }
 }
 function leaveRoom() {
@@ -1216,8 +1492,8 @@ function hostNet(now) {
     const pr = p.presence;
     if (typeof pr.ang === 'number' && isFinite(pr.ang)) Net.rAng = angNorm(pr.ang);
     if (typeof pr.nx === 'number') { if (Net.lastNx != null && pr.nx !== Net.lastNx) remoteNext(); Net.lastNx = pr.nx; }
-    if (typeof pr.pz === 'number') { if (Net.lastPz != null && pr.pz !== Net.lastPz) pause('شريكك أوقف اللعب مؤقتًا.'); Net.lastPz = pr.pz; }
-  } else if (had) pause('شريكك خرج من الغرفة. يمكنه العودة بنفس الرمز.');
+    if (typeof pr.pz === 'number') { if (Net.lastPz != null && pr.pz !== Net.lastPz) pause('pPaused'); Net.lastPz = pr.pz; }
+  } else if (had) pause('pLeft');
   if (had !== !!p && S.mode === 'lobby') olView();
   if (now - Net.lastSend > 66) {
     Net.lastSend = now;
@@ -1225,7 +1501,7 @@ function hostNet(now) {
   }
 }
 function remoteNext() {
-  if (S.mode === 'lobby' || S.mode === 'over') newRun();
+  if (S.mode === 'lobby' || S.mode === 'over') newRun(false);
   else if (S.mode === 'levelup') beginLevel(S.level + 1);
   else if (S.mode === 'pause') resume();
 }
@@ -1244,7 +1520,7 @@ function guestStep(dt, now) {
   } else if (Net.hadHost && now - Net.hostSeenAt > 3500) {
     Net.hadHost = false; Net.st = null; Net.lastM = null;
     S.mode = 'lobby'; S.objs = [];
-    openOnline(); olError('انقطع الاتصال بالمضيف. انتظروا عودته أو غادروا الغرفة.');
+    openOnline(); olError('hostLost');
   }
   const st = Net.st;
   if (st && typeof st === 'object') {
@@ -1256,14 +1532,14 @@ function guestStep(dt, now) {
     S.lt = (+st.lt || 0) + (live ? age : 0);
     S.banner = Math.max(0, (+st.bn || 0) - (live ? age : 0));
     S.splitK = +st.k || 0;
-    S.pauseNote = typeof st.pn === 'string' ? st.pn.slice(0, 120) : '';
+    S.pauseNote = typeof st.pn === 'string' && STR.en[st.pn] ? st.pn : '';
     const oa = Net.myPart === 'iris' ? +st.ap : +st.ai;
     if (isFinite(oa)) { if (Net.myPart === 'iris') S.ap = oa; else S.ai = oa; }
     applyDrift(dt);
     S.objs = (Array.isArray(st.ob) ? st.ob : []).slice(0, 40).map(r => {
-      const t = TYPES[r[1]] || 'light';
-      const d = Math.max(0, (+r[3] || 0) - (live ? S.cfg.speed * (t === 'prism' ? 1.35 : 1) * age : 0));
-      return { id: r[0], t, a: +r[2] || 0, d, f: (r[4] || (t === 'shift' && d <= S.cfg.flipD)) ? 1 : 0 };
+      const type = TYPES[r[1]] || 'light';
+      const d = Math.max(0, (+r[3] || 0) - (live ? S.cfg.speed * (type === 'prism' ? 1.35 : 1) * age : 0));
+      return { id: r[0], t: type, a: +r[2] || 0, d, f: (r[4] || (type === 'shift' && d <= S.cfg.flipD)) ? 1 : 0 };
     });
     const evs = Array.isArray(st.ev) ? st.ev : [];
     if (Net.evSeen < 0) Net.evSeen = evs.reduce((m, e) => Math.max(m, Array.isArray(e) ? +e[0] || 0 : 0), 0);
@@ -1289,7 +1565,7 @@ function onGuestMode(m, prev, st) {
   } else if (m === 'over') {
     showOver(+st.sc || 0, +st.L || 1);
   } else if (m === 'pause') {
-    showPause(typeof st.pn === 'string' ? st.pn.slice(0, 120) : '');
+    showPause(typeof st.pn === 'string' && STR.en[st.pn] ? st.pn : '');
   } else if (m === 'lobby') {
     olView(); showScreen('scrOnline');
   }
@@ -1312,21 +1588,32 @@ function act(name) {
     else if (['next', 'again', 'resume', 'start'].includes(name)) guestSend({ nx: Date.now() });
     return;
   }
-  if (name === 'play' || name === 'again') newRun();
-  else if (name === 'start') { if (Net.role === 'host' && Net.partner) newRun(); }
-  else if (name === 'next') { if (S.mode === 'levelup') beginLevel(S.level + 1); }
+  if (name === 'solo') newRun(true);
+  else if (name === 'duo') newRun(false);
+  else if (name === 'again') { if (!S.busy) newRun(S.solo); }
+  else if (name === 'start') { if (Net.role === 'host' && Net.partner) newRun(false); }
+  else if (name === 'next') nextStage();
   else if (name === 'resume') resume();
-  else if (name === 'pause') pause(Net.role === 'host' ? 'أوقفت اللعب مؤقتًا.' : '');
+  else if (name === 'pause') pause(Net.role === 'host' ? 'youPaused' : '');
 }
-function toMenu() { if (Net.nr) leaveRoom(); S.mode = 'menu'; S.objs = []; S.openT = 1; showScreen('scrMenu'); }
+function toMenu() {
+  if (S.busy) return;
+  if (Net.nr) leaveRoom();
+  CG.gameplay(false);
+  S.mode = 'menu'; S.objs = []; S.openT = 1;
+  showScreen('scrMenu');
+}
 
-$('#btnPlay').addEventListener('click', () => act('play'));
+$('#btnSolo').addEventListener('click', () => act('solo'));
+$('#btnDuo').addEventListener('click', () => act('duo'));
 $('#btnHow').addEventListener('click', () => showScreen('scrHow'));
 $('#btnAch').addEventListener('click', () => showScreen('scrAch'));
+$('#btnLang').addEventListener('click', toggleLang);
 $('#btnOnline').addEventListener('click', openOnline);
 $$('[data-back]').forEach(b => b.addEventListener('click', () => showScreen('scrMenu')));
 $('#btnNext').addEventListener('click', () => act('next'));
 $('#btnAgain').addEventListener('click', () => act('again'));
+$('#btnCont').addEventListener('click', continueRun);
 $('#btnMenu').addEventListener('click', toMenu);
 $('#btnResume').addEventListener('click', () => act('resume'));
 $('#btnQuit').addEventListener('click', toMenu);
@@ -1344,7 +1631,7 @@ $('#btnCreate').addEventListener('click', () => {
 $('#joinForm').addEventListener('submit', e => {
   e.preventDefault();
   const code = $('#joinCode').value.trim().toLowerCase();
-  if (!/^[a-z0-9]{4}$/.test(code)) { olError('الرمز 4 حروف أو أرقام، كما يظهر عند شريكك.'); return; }
+  if (!/^[a-z0-9]{4}$/.test(code)) { olError('codeErr'); return; }
   joinRoom(code, 'guest');
 });
 $('#btnSwap').addEventListener('click', () => { Net.myPart = Net.myPart === 'iris' ? 'pupil' : 'iris'; olView(); });
@@ -1362,24 +1649,38 @@ function frame(now) {
   updateHud();
   requestAnimationFrame(frame);
 }
-function start(data) {
-  resize(); soundLabels(); renderAchCount(); showScreen('scrMenu');
+function pickLang() {
+  const saved = store.get('lang', '');
+  if (saved === 'en' || saved === 'ar') return saved;
+  const loc = String(CG.locale() || navigator.language || 'en').toLowerCase();
+  return loc.startsWith('ar') ? 'ar' : 'en';
+}
+async function boot(data) {
+  await CG.init();
+  ACHV = store.get('ach', {});
+  if (typeof ACHV !== 'object' || !ACHV) ACHV = {};
+  Snd.on = store.get('sound', true) !== false;
+  LANG = pickLang();
+  applyLang();
+  resize(); showScreen('scrMenu');
   const run = data && data.run;
   if (run && run.level > 0) {
+    S.solo = !!run.solo;
     beginLevel(Math.min(99, run.level | 0));
     S.score = run.score | 0; S.lives = Math.max(1, Math.min(3, run.lives | 0));
     S.banner = 0; S.openT = 1;
-    pause('عدنا بعد التحديث. اضغطوا استمرار عندما تكونون جاهزين.');
+    pause('restored');
   }
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { measureMenu(); if (S.mode === 'menu') applyGeom(); });
-  requestAnimationFrame(t => { last = t; frame(t); });
+  requestAnimationFrame(t0 => { last = t0; frame(t0); });
   initRoom();
+  readKeyboardLayout();
 }
 const hot = window.claude && window.claude.hot;
 if (hot && typeof hot.snapshot === 'function') {
-  hot.snapshot(() => ({ run: (!Net.role && ['play', 'pause', 'levelup'].includes(S.mode)) ? { level: S.level, score: S.score, lives: S.lives } : null }));
+  hot.snapshot(() => ({ run: (!Net.role && ['play', 'pause', 'levelup'].includes(S.mode)) ? { level: S.level, score: S.score, lives: S.lives, solo: S.solo } : null }));
 }
-if (hot && typeof hot.ready === 'function') hot.ready(start); else start((hot && hot.data) || {});
+if (hot && typeof hot.ready === 'function') hot.ready(boot); else boot((hot && hot.data) || {});
 })();
 </script>
 </body>
