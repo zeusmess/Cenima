@@ -82,8 +82,10 @@ kbd{font-family:var(--font-display);font-size:11px;font-weight:600;border:1.5px 
 .brand{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
 .logo{font-family:var(--font-display);font-weight:800;font-size:clamp(36px,min(11.2vw,15vh),104px);line-height:.95;letter-spacing:-.02em;margin:0;direction:ltr}
 .tag{max-width:36ch;font-size:15px;line-height:1.8;margin:0;text-wrap:balance}
-.menu-foot{width:100%;max-width:600px;display:flex;flex-direction:column;gap:14px}
-.modes{direction:ltr;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.menu-foot{width:100%;max-width:460px;display:flex;flex-direction:column;gap:14px}
+/* The eye game's two modes come first; the shootout is a separate, outlined tile below them */
+.modes{direction:ltr;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.modes .so{grid-column:1/-1}
 .best{direction:ltr;text-align:center;margin:0;display:flex;justify-content:center;align-items:baseline;gap:10px}
 .best b{font-family:var(--font-display);font-weight:600;font-size:14px;font-variant-numeric:tabular-nums}
 
@@ -98,6 +100,10 @@ kbd{font-family:var(--font-display);font-size:11px;font-weight:600;border:1.5px 
 .btn.mode b{font-family:var(--font-display);font-weight:800;font-size:15px;letter-spacing:.12em;line-height:1.2}
 .is-ar .btn.mode b{font-family:var(--font-body);font-weight:700;font-size:17px;letter-spacing:0}
 .btn.mode span{font-size:12px;font-weight:400;line-height:1.3}
+.btn.mode.so{background:transparent;color:var(--white);border-color:var(--white);flex-direction:row;gap:12px;min-height:58px}
+.is-ar .btn.mode.so{direction:rtl}
+.btn.mode.so .ball{width:26px;height:26px;flex:none}
+.so-txt{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:start}
 .btn svg.vid{width:18px;height:18px;flex:none}
 .btn:focus-visible,.icon-btn:focus-visible,.seg button:focus-visible,input:focus-visible{outline:2px solid var(--white);outline-offset:3px}
 .row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
@@ -184,8 +190,6 @@ p{margin:0;line-height:1.8}
 @keyframes toast-in{from{opacity:0;transform:translate(-50%,-8px)}to{opacity:1;transform:translate(-50%,0)}}
 
 @media (max-width:520px){
-  .modes{grid-template-columns:1fr 1fr}
-  .modes .so{grid-column:1/-1;order:-1}
   .sdots{gap:4px}
   .sdots svg{width:10px;height:10px}
   .so-lbl{font-size:10px;letter-spacing:.14em}
@@ -216,6 +220,13 @@ p{margin:0;line-height:1.8}
   .card{padding:20px 20px;gap:14px}
   .final{font-size:46px}
   .btn.big{min-height:48px}
+}
+/* Short landscape frames: the three menu tiles share one row to leave room for the eye */
+@media (max-height:560px) and (min-width:521px){
+  .menu-foot{max-width:600px}
+  .modes{grid-template-columns:1fr 1fr 1fr}
+  .modes .btn.mode.so{grid-column:auto;gap:8px;padding:6px 10px}
+  .btn.mode.so .ball{width:22px;height:22px}
 }
 /* Wide but short frames: the shootout sheet becomes two columns */
 @media (max-height:560px) and (min-width:700px){
@@ -287,8 +298,11 @@ p{margin:0;line-height:1.8}
     <div class="menu-foot">
       <div class="modes">
         <button class="btn mode" id="btnSolo"><b data-t="solo"></b><span data-t="soloSub"></span></button>
-        <button class="btn mode so" id="btnSO"><b data-t="so"></b><span data-t="soSub"></span></button>
         <button class="btn mode" id="btnDuo"><b data-t="duo"></b><span data-t="duoSub"></span></button>
+        <button class="btn mode so" id="btnSO">
+          <svg class="ball" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="14" cy="14" r="12"/><path d="M14 8.6l5.14 3.73-1.97 6.04h-6.34l-1.97-6.04z" fill="currentColor" stroke="none"/><path d="M14 8.6V3M19.14 12.33l5.32-1.73M17.17 18.37l3.3 4.53M10.83 18.37l-3.3 4.53M8.86 12.33l-5.32-1.73" stroke-width="1.5"/></svg>
+          <span class="so-txt"><b data-t="so"></b><span data-t="soSub"></span></span>
+        </button>
       </div>
       <div class="row">
         <button class="btn" id="btnOnline" hidden data-t="online"></button>
@@ -547,8 +561,8 @@ const STR = {
     canvas: 'Game area: an eye with two rings in the middle, with light and shadows moving toward it',
     eyebrow: 'One eye · Two minds',
     tag: 'Two rings, one eye. Light only gets in when both gaps line up.',
-    solo: '1 PLAYER', soloSub: 'You and an AI partner',
-    duo: '2 PLAYERS', duoSub: 'One keyboard or one screen',
+    solo: '1 PLAYER', soloSub: 'Light & shadow, with an AI partner',
+    duo: '2 PLAYERS', duoSub: 'Light & shadow, one keyboard or screen',
     online: 'Two devices', ach: 'Achievements', how: 'How to play', lang: 'عربي', langAria: 'التبديل إلى العربية',
     soundOn: 'Mute sound', soundOff: 'Turn sound on', soundState: 'Sound: {s}', on: 'on', off: 'off',
     pause: 'Pause', lives: 'Lives left: {n} of 3',
@@ -586,7 +600,7 @@ const STR = {
     pPaused: 'Your partner paused the game.', pLeft: 'Your partner left the room. They can rejoin with the same code.',
     youPaused: 'You paused the game.', hiddenPause: 'The game paused because the page was hidden.',
     canvasSO: 'Game area: a penalty shootout. The ball moves along the top of the eye and the keeper guards the goal line inside it',
-    so: 'SHOOTOUT', soSub: 'Penalties · 1 or 2 players',
+    so: 'SHOOTOUT', soSub: 'New: penalties for 1 or 2 players',
     soIntro: 'Penalties on the eye. The shooter slides the ball along the top, the keeper slides the gloves along the goal line. When the countdown ends, the ball flies straight in. 5 kicks each, then sudden death.',
     soKeys: 'White (left): {A} {D} or the left half of the screen. Black (right): {L} {R} or the right half. Against the AI you are White and can use either.',
     so2: 'Two players', so2Sub: 'One keyboard or one screen',
@@ -612,8 +626,8 @@ const STR = {
     canvas: 'ساحة اللعب: عين في المنتصف بحلقتين، وضوء وظل يقتربان منها',
     eyebrow: 'عين واحدة · عقلان',
     tag: 'حلقتان وعين واحدة. الضوء لا يدخل إلا إذا تطابقت الفتحتان.',
-    solo: 'لاعب واحد', soloSub: 'أنت وشريك آلي',
-    duo: 'لاعبان', duoSub: 'كيبورد واحد أو شاشة واحدة',
+    solo: 'لاعب واحد', soloSub: 'النور والظل مع شريك آلي',
+    duo: 'لاعبان', duoSub: 'النور والظل على كيبورد أو شاشة واحدة',
     online: 'على جهازين', ach: 'الإنجازات', how: 'طريقة اللعب', lang: 'English', langAria: 'Switch to English',
     soundOn: 'إطفاء الصوت', soundOff: 'تشغيل الصوت', soundState: 'الصوت: {s}', on: 'يعمل', off: 'مطفأ',
     pause: 'إيقاف مؤقت', lives: 'الأرواح المتبقية: {n} من 3',
@@ -651,7 +665,7 @@ const STR = {
     pPaused: 'شريكك أوقف اللعب مؤقتًا.', pLeft: 'شريكك خرج من الغرفة. يمكنه العودة بنفس الرمز.',
     youPaused: 'أوقفت اللعب مؤقتًا.', hiddenPause: 'توقف اللعب لأن الصفحة اختفت.',
     canvasSO: 'ساحة اللعب: ضربات ترجيح. الكرة تتحرك أعلى العين والحارس يحمي خط المرمى داخلها',
-    so: 'ضربات ترجيح', soSub: 'ركلات جزاء · لاعب أو اثنان',
+    so: 'ضربات ترجيح', soSub: 'جديد: ركلات جزاء للاعب أو اثنين',
     soIntro: 'ركلات جزاء على العين. المسدِّد يحرّك الكرة على الحافة العليا، والحارس يحرّك القفازين على خط المرمى. عندما ينتهي العدّ تنطلق الكرة مباشرة نحو المرمى. 5 ركلات لكل فريق، ثم الموت المفاجئ.',
     soKeys: 'الأبيض (يسار): {A} {D} أو النصف الأيسر من الشاشة. الأسود (يمين): {L} {R} أو النصف الأيمن. ضد الكمبيوتر أنت الأبيض وتستطيع استخدام أيٍّ منهما.',
     so2: 'لاعبان', so2Sub: 'كيبورد واحد أو شاشة واحدة',

@@ -28,8 +28,8 @@ DIST = ROOT / "dist"
 KEYSTORE = APP / "twinsight-release.keystore"
 PASSFILE = APP / "twinsight-release.password"
 ALIAS = "twinsight"
-VERSION_CODE = 2
-VERSION_NAME = "1.1.0"
+VERSION_CODE = 3
+VERSION_NAME = "1.1.1"
 MIN_SDK = 24
 TARGET_SDK = 36
 
